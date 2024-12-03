@@ -9,12 +9,13 @@
     <Grid>
         <Button x:Name="btnStart" Content="録音開始" HorizontalAlignment="Left" Margin="443,152,0,0" VerticalAlignment="Top" Click="btnStart_Click"/>
         <Button x:Name="btnStop" Content="録音停止" HorizontalAlignment="Left" Margin="443,230,0,0" VerticalAlignment="Top" Click="btnStop_Click"/>
-        <TextBox x:Name="txtOutput" HorizontalAlignment="Left" Margin="82,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="318" Height="414" VerticalScrollBarVisibility="Auto"/>
+        <TextBox x:Name="txtOutput" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="318" Height="414" VerticalScrollBarVisibility="Auto"/>
 
-        <ComboBox x:Name="ComboBox_AudioDevices" HorizontalAlignment="Left" Margin="405,10,0,0" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="Button_capture_start" Content="開始" HorizontalAlignment="Left" Margin="405,32,0,0" VerticalAlignment="Top" Click="Button_capture_start_Click"/>
-        <Label x:Name="Label_status" Content="録音停止" HorizontalAlignment="Left" Margin="433,32,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="Button_capture_stop" Content="停止" HorizontalAlignment="Left" Margin="496,32,0,0" VerticalAlignment="Top" Click="Button_capture_stop_Click"/>
-        <ComboBox x:Name="ComboBox_MicDevices" HorizontalAlignment="Left" Margin="530,10,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox x:Name="ComboBox_AudioDevices" HorizontalAlignment="Left" Margin="550,10,0,0" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="Button_capture_start" Content="開始" HorizontalAlignment="Left" Margin="550,32,0,0" VerticalAlignment="Top" Click="Button_capture_start_Click"/>
+        <Label x:Name="Label_status" Content="録音停止" HorizontalAlignment="Left" Margin="578,32,0,0" VerticalAlignment="Top" Width="64"/>
+        <Button x:Name="Button_capture_stop" Content="停止" HorizontalAlignment="Left" Margin="642,32,0,0" VerticalAlignment="Top" Click="Button_capture_stop_Click"/>
+        <ComboBox x:Name="ComboBox_MicDevices" HorizontalAlignment="Left" Margin="670,10,0,0" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="Button_Mute" Content="ミュートOFF" HorizontalAlignment="Left" Margin="710,32,0,0" VerticalAlignment="Top" Click="Button_Mute_Click" Background="#FFDDDDDD"/>
     </Grid>
 </Window>

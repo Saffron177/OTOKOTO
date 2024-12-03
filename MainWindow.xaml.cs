@@ -24,6 +24,8 @@ namespace HottoMotto
     {
         private WaveInEvent waveIn;
         private VoskRecognizer recognizer;
+        private VoskRecognizer mic_recognizer;
+
         private Model model;
         private MemoryStream audioStream;
         private FileStream fileStream;
@@ -32,7 +34,11 @@ namespace HottoMotto
         private WasapiLoopbackCapture capture;
         //録音データをWAV形式で保存するためのオブジェクト
         private WaveFileWriter writer;
-        
+        //WASAPIマイク録音用のオブジェクト
+        private WasapiCapture mic_capture;
+
+        //ミュートボタン用のフラグ
+        private bool is_mute = false;
         public MainWindow()
         {
             InitializeComponent();
@@ -47,6 +53,7 @@ namespace HottoMotto
             Console.WriteLine("モデルパス: " + modelPath);
             model = new Model(modelPath);
             recognizer = new VoskRecognizer(model, 16000.0f);
+            mic_recognizer = new VoskRecognizer(model, 16000.0f);
         }
         
         private void btnStart_Click(object sender, EventArgs e)
@@ -225,15 +232,24 @@ namespace HottoMotto
         {
             if (ComboBox_AudioDevices.SelectedIndex == -1)
             {
-                MessageBox.Show("デバイスを選択してください");
+                MessageBox.Show("再生デバイスを選択してください");
                 return;
             }
-
+            if (ComboBox_MicDevices.SelectedIndex == -1)
+            {
+                MessageBox.Show("録音デバイスを選択してください");
+                return;
+            }
             // 選択されたデバイスを取得
+            //再生デバイス
             var deviceEnumerator = new MMDeviceEnumerator();
             var devices = deviceEnumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active);
             var selectedDevice = devices[ComboBox_AudioDevices.SelectedIndex];
-            Debug.Print(selectedDevice.ID);
+            Debug.Print("再生デバイスID：" + selectedDevice.ID);
+            //録音デバイス
+            var mic_devices = deviceEnumerator.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active);
+            var mic_selectedDevice = mic_devices[ComboBox_MicDevices.SelectedIndex];
+            Debug.Print("録音デバイスID：" + mic_selectedDevice.ID);
 
             try
             {
@@ -299,20 +315,62 @@ namespace HottoMotto
                     writer?.Dispose();
                     writer = null;
                     capture.Dispose();
-
+                    mic_capture.Dispose();
                     Debug.Print("Stop");
                     // 最終結果を取得
                     var finalResult = recognizer.FinalResult();
                     UpdateTextBox(finalResult);
                 };
 
+                //マイク録音の処理
+                mic_capture = new WasapiCapture(mic_selectedDevice)
+                {
+                    WaveFormat = targetFormat,
+                };
+
+                
+                mic_capture.DataAvailable += (s, a) =>
+                {
+                    // 音声データを認識器に送信
+                    if (mic_recognizer.AcceptWaveform(a.Buffer, a.BytesRecorded))
+                    {
+                        var result = mic_recognizer.Result();
+                        Debug.Print(result);
+                        UpdateTextBox(result);
+                    }
+                    else
+                    {
+                        var partialResult = mic_recognizer.PartialResult();
+                        if (!IsEmptyPartialResult(partialResult))
+                        {
+                            //UpdateTextBox(partialResult);
+                        }
+                    }
+                };
+
+                mic_capture.RecordingStopped += (s, a) =>
+                {
+                    Debug.Print("mic_Stop");
+                    // 最終結果を取得
+                    var finalResult = recognizer.FinalResult();
+                    UpdateTextBox(finalResult);
+                    Button_Mute.IsEnabled = true;
+
+                };
+
+
                 //録音を開始
                 capture.StartRecording();
                 Label_status.Content = "録音中...";
+                if (!is_mute)
+                {
+                    mic_capture.StartRecording();
+                }
+               
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"エラー: {ex.Message}");
+                Debug.Print($"エラー: {ex.Message}");
             }
         }
         private void Button_capture_stop_Click(object sender, RoutedEventArgs e)
@@ -322,8 +380,32 @@ namespace HottoMotto
                 //録音を停止
                 capture.StopRecording();
                 Label_status.Content = "録音停止";
+                mic_capture.StopRecording();
+            }
+        }
 
-                
+        private void Button_Mute_Click(object sender, RoutedEventArgs e)
+        {
+            if (is_mute)
+            {
+                //ミュートをオフ
+                Button_Mute.Content = "ミュートOFF";
+                is_mute = false;
+                if(mic_capture != null)
+                {
+                    mic_capture.StartRecording();
+                }
+            }
+            else
+            {
+                //ミュートをオン
+                Button_Mute.Content = "ミュートON";
+                is_mute=true;
+                if (mic_capture != null)
+                {
+                    Button_Mute.IsEnabled = false;
+                    mic_capture.StopRecording();
+                }
             }
         }
     }
