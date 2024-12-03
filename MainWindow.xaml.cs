@@ -255,15 +255,18 @@ namespace HottoMotto
 
                     //Debug.Print("DataAvailable");
 
+                    //リサンプルをするためにBufferをIWaveProvider型に変換
                     using (var inputStream = new RawSourceWaveStream(a.Buffer, 0, a.BytesRecorded, capture.WaveFormat))
+                    //リサンプル処理
                     using (var resampler = new MediaFoundationResampler(inputStream, targetFormat))
                     {
-                        resampler.ResamplerQuality = 60; // リサンプル品質を設定
+                        //resampler.ResamplerQuality = 60; // リサンプル品質を設定
 
                         // リサンプルされたデータを格納するバッファ
                         byte[] resampledBuffer = new byte[4096];
                         int bytesResampled;
 
+                        //リサンプルデータが存在する限りループ
                         while ((bytesResampled = resampler.Read(resampledBuffer, 0, resampledBuffer.Length)) > 0)
                         {
                             //Debug.Print("while");
