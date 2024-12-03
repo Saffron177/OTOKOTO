@@ -129,6 +129,7 @@ namespace HottoMotto
             txtOutput.Dispatcher.Invoke(() =>
             {
                 txtOutput.Text += text + Environment.NewLine;
+                txtOutput.ScrollToEnd();
             });
         }
 
