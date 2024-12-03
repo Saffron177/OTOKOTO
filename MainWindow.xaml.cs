@@ -64,7 +64,7 @@ namespace HottoMotto
 
 
             // WAVファイルに保存する準備
-            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "recorded.wav");
+            string filePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "recorded.wav");
             fileStream = new FileStream(filePath, FileMode.Create);
 
             // WAVヘッダーを書き込む（後で更新するため、仮の値を設定）
@@ -242,13 +242,48 @@ namespace HottoMotto
                 capture = new WasapiLoopbackCapture(selectedDevice);
                 writer = new WaveFileWriter(outputPath, capture.WaveFormat);
 
+                // リサンプル用フォーマット（16kHz, モノラル）
+                var targetFormat = new WaveFormat(16000, 1);
+
+
                 //capture.DataAvailable: 録音データが利用可能になるたびに発生するイベント
                 //a.Buffer: 録音データが格納されたバッファ。
                 //writer.Write: 録音データをWAVファイルに書き込む。
                 capture.DataAvailable += (s, a) =>
                 {
                     writer.Write(a.Buffer, 0, a.BytesRecorded);
+
                     //Debug.Print("DataAvailable");
+
+                    using (var inputStream = new RawSourceWaveStream(a.Buffer, 0, a.BytesRecorded, capture.WaveFormat))
+                    using (var resampler = new MediaFoundationResampler(inputStream, targetFormat))
+                    {
+                        resampler.ResamplerQuality = 60; // リサンプル品質を設定
+
+                        // リサンプルされたデータを格納するバッファ
+                        byte[] resampledBuffer = new byte[4096];
+                        int bytesResampled;
+
+                        while ((bytesResampled = resampler.Read(resampledBuffer, 0, resampledBuffer.Length)) > 0)
+                        {
+                            //Debug.Print("while");
+                            // 音声データを認識器に送信
+                            if (recognizer.AcceptWaveform(resampledBuffer, bytesResampled))
+                            {
+                                var result = recognizer.Result();
+                                Debug.Print(result);
+                                UpdateTextBox(result);
+                            }
+                            else
+                            {
+                                var partialResult = recognizer.PartialResult();
+                                if (!IsEmptyPartialResult(partialResult))
+                                {
+                                    //UpdateTextBox(partialResult);
+                                }
+                            }
+                        }
+                    }
                 };
 
                 /*RecordingStopped: 録音が停止したときに発生するイベント。
@@ -260,6 +295,11 @@ namespace HottoMotto
                     writer?.Dispose();
                     writer = null;
                     capture.Dispose();
+
+                    Debug.Print("Stop");
+                    // 最終結果を取得
+                    var finalResult = recognizer.FinalResult();
+                    UpdateTextBox(finalResult);
                 };
 
                 //録音を開始
@@ -278,6 +318,8 @@ namespace HottoMotto
                 //録音を停止
                 capture.StopRecording();
                 Label_status.Content = "録音停止";
+
+                
             }
         }
     }
