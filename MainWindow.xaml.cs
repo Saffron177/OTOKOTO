@@ -29,6 +29,7 @@ namespace HottoMotto
         {
             InitializeComponent();
             LoadAudioDevices();
+            LoadMicDevices();
             Debug.Print("init");
         }
 
@@ -49,6 +50,24 @@ namespace HottoMotto
                 ComboBox_AudioDevices.SelectedIndex = 0; // 最初のデバイスを選択
             }
         }
+        //マイクデバイスを取得する関数
+        private void LoadMicDevices()
+        {
+            ComboBox_MicDevices.Items.Clear();
+            var deviceEnumerator = new MMDeviceEnumerator();
+            var devices = deviceEnumerator.EnumerateAudioEndPoints(DataFlow.Capture,DeviceState.Active);
+
+            foreach (var device in devices)
+            {
+                ComboBox_MicDevices.Items.Add(device.FriendlyName);
+            }
+
+            if(ComboBox_MicDevices.Items.Count > 0) 
+            { 
+                ComboBox_MicDevices.SelectedIndex = 0;
+            }
+        }
+
 
         private void Button_capture_start_Click(object sender, RoutedEventArgs e)
         {
