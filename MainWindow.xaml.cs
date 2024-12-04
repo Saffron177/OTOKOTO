@@ -210,6 +210,7 @@ namespace HottoMotto
                     writer = null;
                     capture.Dispose();
                     mic_capture.Dispose();
+                    mic_capture = null;
                     Debug.Print("Stop");
                     // 最終結果を取得
                     var finalResult = recognizer.FinalResult();
