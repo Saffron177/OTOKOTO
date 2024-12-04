@@ -14,7 +14,7 @@ using Vosk;
 using System.IO;
 using System.Windows.Shapes;
 using System.Text.RegularExpressions;
-
+using System.Text.Json;
 namespace HottoMotto
 {
     /// <summary>
@@ -209,6 +209,7 @@ namespace HottoMotto
                     writer?.Dispose();
                     writer = null;
                     capture.Dispose();
+                    capture = null;
                     mic_capture.Dispose();
                     mic_capture = null;
                     Debug.Print("Stop");
