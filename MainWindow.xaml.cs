@@ -62,6 +62,10 @@ namespace HottoMotto
                 txtOutput.Text += text + Environment.NewLine;
                 txtOutput.ScrollToEnd();
             });
+
+            JsonUtil jsonutil = new JsonUtil();
+
+            jsonutil.ToJson(text, true);
         }
 
         // PartialResultが空かどうかを判定するヘルパーメソッド
@@ -84,8 +88,9 @@ namespace HottoMotto
             return false;
         }       
         
-
-        //オーディオデバイスを取得する関数
+        ///<summary>
+        ///オーディオデバイスを取得する関数
+        ///</summary>
         private void LoadAudioDevices()
         {
             ComboBox_AudioDevices.Items.Clear();
@@ -103,7 +108,9 @@ namespace HottoMotto
             }
         }
 
-        //マイクデバイスを取得する関数
+        /// <summary>
+        /// マイクデバイスを取得する関数
+        /// </summary>
         private void LoadMicDevices()
         {
             ComboBox_MicDevices.Items.Clear();
@@ -122,6 +129,12 @@ namespace HottoMotto
         }
 
 
+
+        /// <summary>
+        /// ボタンを押したときのイベント関数
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_capture_start_Click(object sender, RoutedEventArgs e)
         {
             if (ComboBox_AudioDevices.SelectedIndex == -1)
