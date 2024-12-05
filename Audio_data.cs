@@ -65,12 +65,12 @@ namespace HottoMotto
         {
             if (ComboBox_AudioDevices.SelectedIndex == -1)
             {
-                MessageBox.Show("再生デバイスを選択してください");
+                System.Windows.MessageBox.Show("再生デバイスを選択してください");
                 return;
             }
             if (ComboBox_MicDevices.SelectedIndex == -1)
             {
-                MessageBox.Show("録音デバイスを選択してください");
+                System.Windows.MessageBox.Show("録音デバイスを選択してください");
                 return;
             }
             // 選択されたデバイスを取得
