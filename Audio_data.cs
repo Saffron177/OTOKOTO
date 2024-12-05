@@ -2,6 +2,7 @@
 using NAudio.Wave;
 using System.Diagnostics;
 using System.Windows;
+using System.IO;
 
 namespace HottoMotto
 {
