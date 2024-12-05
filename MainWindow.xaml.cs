@@ -1,6 +1,4 @@
-﻿using NAudio.CoreAudioApi;
-using NAudio.Wave;
-using System.Windows;
+﻿using System.Windows;
 using Vosk;
 namespace HottoMotto
 {
@@ -26,6 +24,7 @@ namespace HottoMotto
             model = new Model(modelPath);
             recognizer = new VoskRecognizer(model, 16000.0f);
             mic_recognizer = new VoskRecognizer(model, 16000.0f);
+            SetupNotifyIcon();
         }
 
         private void UpdateTextBox(string text, bool is_speaker)
