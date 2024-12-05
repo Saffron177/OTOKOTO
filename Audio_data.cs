@@ -134,11 +134,7 @@ namespace HottoMotto
                             }
                             else
                             {
-                                var partialResult = recognizer.PartialResult();
-                                if (!IsEmptyPartialResult(partialResult))
-                                {
-                                    //UpdateTextBox(partialResult);
-                                }
+                                //partialの処理
                             }
                         }
                     }
@@ -180,11 +176,7 @@ namespace HottoMotto
                     }
                     else
                     {
-                        var partialResult = mic_recognizer.PartialResult();
-                        if (!IsEmptyPartialResult(partialResult))
-                        {
-                            //UpdateTextBox(partialResult);
-                        }
+                        //partialの処理
                     }
                 };
 
