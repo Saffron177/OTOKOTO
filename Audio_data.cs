@@ -3,7 +3,9 @@ using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -130,7 +132,7 @@ namespace HottoMotto
                             {
                                 var result = recognizer.Result();
                                 Debug.Print(result);
-                                UpdateTextBox(result);
+                                UpdateTextBox(result, true);
                             }
                             else
                             {
@@ -155,7 +157,7 @@ namespace HottoMotto
                     Debug.Print("Stop");
                     // 最終結果を取得
                     var finalResult = recognizer.FinalResult();
-                    UpdateTextBox(finalResult);
+                    UpdateTextBox(finalResult, true);
                 };
 
                 //マイク録音の処理
@@ -172,7 +174,7 @@ namespace HottoMotto
                     {
                         var result = mic_recognizer.Result();
                         Debug.Print(result);
-                        UpdateTextBox(result);
+                        UpdateTextBox(result, false);
                     }
                     else
                     {
@@ -185,7 +187,7 @@ namespace HottoMotto
                     Debug.Print("mic_Stop");
                     // 最終結果を取得
                     var finalResult = mic_recognizer.FinalResult();
-                    UpdateTextBox(finalResult);
+                    UpdateTextBox(finalResult, false);
                     Button_Mute.IsEnabled = true;
 
                 };
@@ -213,6 +215,43 @@ namespace HottoMotto
                 capture.StopRecording();
                 Label_status.Content = "録音停止";
                 mic_capture.StopRecording();
+
+                //ログ保存先フォルダ
+                string log_directory = "../../../../Logs";
+                // フォルダが存在しない場合は作成
+                if (!Directory.Exists(log_directory))
+                {
+                    Directory.CreateDirectory(log_directory);
+                }
+                //ログファイルの採番
+                int log_index = 1;
+                string file_path = "";
+                //// ファイルが存在しない番号を探す
+                do
+                {
+                    file_path = Path.Combine(log_directory, $"log{log_index}.txt");
+                    log_index++;
+                } while (File.Exists(file_path));
+
+                //複数のjsonをリスト化
+                string log_text = $"{{{string.Join(",", json_list)}}}";
+
+                Debug.Print("以下、ログテキスト");
+                Debug.Print(log_text);
+
+                try
+                {
+                    // テキストファイルに書き出し
+                    File.WriteAllText(file_path, log_text);
+
+                    Console.WriteLine($"ファイルに書き出しました: {file_path}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"エラーが発生しました: {ex.Message}");
+                }
+
+                json_list.Clear();
             }
         }
 

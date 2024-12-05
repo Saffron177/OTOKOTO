@@ -12,6 +12,8 @@ namespace HottoMotto
         private VoskRecognizer recognizer;
         private VoskRecognizer mic_recognizer;
 
+        private List<string> json_list = new List<string>(); 
+
         private Model model;
         public MainWindow()
         {
@@ -26,7 +28,7 @@ namespace HottoMotto
             mic_recognizer = new VoskRecognizer(model, 16000.0f);
         }
 
-        private void UpdateTextBox(string text)
+        private void UpdateTextBox(string text, bool is_speaker)
         {
             // Dispatcher.Invokeを使用してUIスレッドで実行
             txtOutput.Dispatcher.Invoke(() =>
@@ -37,7 +39,7 @@ namespace HottoMotto
 
             JsonUtil jsonutil = new JsonUtil();
 
-            jsonutil.ToJson(text, true);
+            json_list.Add(jsonutil.ToJson(text, is_speaker));
         }
     }
 }
