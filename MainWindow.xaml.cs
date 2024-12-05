@@ -1,6 +1,4 @@
-﻿using NAudio.CoreAudioApi;
-using NAudio.Wave;
-using System.Windows;
+﻿using System.Windows;
 using Vosk;
 namespace HottoMotto
 {
@@ -11,7 +9,6 @@ namespace HottoMotto
     {
         private VoskRecognizer recognizer;
         private VoskRecognizer mic_recognizer;
-
         private Model model;
         public MainWindow()
         {
