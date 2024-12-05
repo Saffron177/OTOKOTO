@@ -66,27 +66,7 @@ namespace HottoMotto
             JsonUtil jsonutil = new JsonUtil();
 
             jsonutil.ToJson(text, true);
-        }
-
-        // PartialResultが空かどうかを判定するヘルパーメソッド
-        private bool IsEmptyPartialResult(string partialResult)
-        {
-            try
-            {
-                // JSON解析（System.Text.Jsonを使用）
-                var jsonDoc = System.Text.Json.JsonDocument.Parse(partialResult);
-                if (jsonDoc.RootElement.TryGetProperty("partial", out var partialProperty))
-                {
-                    return string.IsNullOrEmpty(partialProperty.GetString());
-                }
-            }
-            catch (System.Text.Json.JsonException ex)
-            {
-                // JSON解析に失敗した場合（デバッグ用にログ出力など）
-                Console.WriteLine("JSON解析エラー: " + ex.Message);
-            }
-            return false;
-        }       
+        }     
         
         ///<summary>
         ///オーディオデバイスを取得する関数
@@ -203,11 +183,7 @@ namespace HottoMotto
                             }
                             else
                             {
-                                var partialResult = recognizer.PartialResult();
-                                if (!IsEmptyPartialResult(partialResult))
-                                {
-                                    //UpdateTextBox(partialResult);
-                                }
+                                //partialの処理
                             }
                         }
                     }
@@ -249,11 +225,7 @@ namespace HottoMotto
                     }
                     else
                     {
-                        var partialResult = mic_recognizer.PartialResult();
-                        if (!IsEmptyPartialResult(partialResult))
-                        {
-                            //UpdateTextBox(partialResult);
-                        }
+                        //partialの処理
                     }
                 };
 
