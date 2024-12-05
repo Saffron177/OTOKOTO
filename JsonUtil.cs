@@ -17,7 +17,7 @@ namespace HottoMotto
     {
         public DateTime TimeStamp { get; set; }
         public string Text { get; set; }
-        public bool Flag { get; set; }
+        public bool IsSpeaker { get; set; }
     }
     /// <summary>
     /// Json処理用のクラス
@@ -30,13 +30,13 @@ namespace HottoMotto
         /// <param name="text"></param>
         /// <param name="flag"></param>
         /// <returns></returns>
-        public string ToJson(string text,bool flag)
+        public string ToJson(string text,bool is_speaker)
         {
             var log = new Conversation_Log_Data
             {
                 TimeStamp = DateTime.Now,
                 Text = text,
-                Flag = flag
+                IsSpeaker = is_speaker
             };
 
             string jsonstring = JsonSerializer.Serialize<Conversation_Log_Data>(log);
