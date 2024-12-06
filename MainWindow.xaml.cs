@@ -30,20 +30,31 @@ namespace HottoMotto
             SetupNotifyIcon();
         }
 
+        public class JsonText
+        {
+            public string text { get; set; }
+        }
+
         private void UpdateTextBox(string text, bool is_speaker)
         {
+            //"text"のみのjsonで送られてくるためパースする
+            JsonText json_text = JsonSerializer.Deserialize<JsonText>(text) ?? new JsonText();
+            Debug.Print("json_text:" + json_text.text);
 
-            // Dispatcher.Invokeを使用してUIスレッドで実行
-            txtOutput.Dispatcher.Invoke(() =>
+            //nullか空でない場合に書き起こす
+            if(json_text.text != null && json_text.text != "")
             {
-                txtOutput.Text += text + Environment.NewLine;
-                txtOutput.ScrollToEnd();
-            });
+                // Dispatcher.Invokeを使用してUIスレッドで実行
+                txtOutput.Dispatcher.Invoke(() =>
+                {
+                    txtOutput.Text += json_text.text + Environment.NewLine;
+                    txtOutput.ScrollToEnd();
+                });
 
-            JsonUtil jsonutil = new JsonUtil();
+                JsonUtil jsonutil = new JsonUtil();
 
-            Debug.Print("Updatetext" + text);
-            json_list.Add(jsonutil.ToJson(text, is_speaker));
+                json_list.Add(jsonutil.ToJson(json_text.text, is_speaker));
+            }
         }
 
         private void Button_Log_Click(object sender, RoutedEventArgs e)
