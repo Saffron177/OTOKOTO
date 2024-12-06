@@ -10,7 +10,7 @@
         <ListBox x:Name="LogListBox" HorizontalAlignment="Left" Height="414" Margin="251,0,0,0" VerticalAlignment="Center" Width="539">
             
         </ListBox>
-        <ListBox x:Name="logList" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,14,660,247"/>
+        <ListBox x:Name="logList" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,14,564,10"/>
 
     </Grid>
 </Window>
