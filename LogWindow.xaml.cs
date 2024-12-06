@@ -75,11 +75,12 @@ namespace HottoMotto
 
                 Debug.Print("selectedFile:" + selectedFile);
 
-                // コマンドを実行
+                //ログファイルの読み取りを実行
                 Load_Log(selectedFile);
             }
         }
 
+        //ログファイルの内容をListBoxに表示
         private void Load_Log(string selectedFile)
         {
             string filePath = "../../../../Logs/" + selectedFile;
