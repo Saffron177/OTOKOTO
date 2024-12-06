@@ -21,11 +21,17 @@
 
   <ItemGroup>
     <Folder Include="Models\" />
-  </ItemGroup>
+  </ItemGroup>  
 
   <ItemGroup>
-    <EmbeddedResource Include="Resource\Icon.ico">
+    <Content Include="Resource\Icon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
+    </Content>
   </ItemGroup>
+	
+   <ItemGroup>
+		<Content Include= "Models\**\*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 </Project>
