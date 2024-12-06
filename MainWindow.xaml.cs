@@ -40,5 +40,11 @@ namespace HottoMotto
 
             json_list.Add(jsonutil.ToJson(text, is_speaker));
         }
+
+        private void Button_Log_Click(object sender, RoutedEventArgs e)
+        {
+            LogWindow logWindow = new LogWindow();
+            logWindow.Show();
+        }
     }
 }
