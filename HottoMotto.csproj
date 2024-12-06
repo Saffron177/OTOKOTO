@@ -1,35 +1,35 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UseWPF>true</UseWPF>
-    <Platforms>AnyCPU;x64</Platforms>
-	<UseWindowsForms>true</UseWindowsForms>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+		<Platforms>AnyCPU;x64</Platforms>
+		<UseWindowsForms>true</UseWindowsForms>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Resource\Icon.ico" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="Resource\Icon.ico" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="NAudio" Version="2.2.1" />
-    <PackageReference Include="Vosk" Version="0.3.38" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="NAudio" Version="2.2.1" />
+		<PackageReference Include="Vosk" Version="0.3.38" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>  
+	<ItemGroup>
+		<Folder Include="Models\" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Content Include="Resource\Icon.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-	
-   <ItemGroup>
+	<ItemGroup>
+		<Content Include="Resource\Icon.ico">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	　<ItemGroup>
 		<Content Include= "Models\**\*">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
