@@ -210,43 +210,46 @@ namespace HottoMotto
                 Label_status.Content = "録音停止";
                 mic_capture.StopRecording();
 
-                //ログ保存先フォルダ
-                string log_directory = "../../../../Logs";
-                // フォルダが存在しない場合は作成
-                if (!Directory.Exists(log_directory))
-                {
-                    Directory.CreateDirectory(log_directory);
-                }
-                //ログファイルの採番
-                int log_index = 1;
-                string file_path = "";
-                //// ファイルが存在しない番号を探す
-                do
-                {
-                    file_path = Path.Combine(log_directory, $"log{log_index}.txt");
-                    log_index++;
-                } while (File.Exists(file_path));
-
-                //複数のjsonをリスト化
-                string log_text = $"{{{string.Join(",", json_list)}}}";
-
-                Debug.Print("以下、ログテキスト");
-                Debug.Print(log_text);
-
-                try
-                {
-                    // テキストファイルに書き出し
-                    File.WriteAllText(file_path, log_text);
-
-                    Console.WriteLine($"ファイルに書き出しました: {file_path}");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"エラーが発生しました: {ex.Message}");
-                }
-
-                json_list.Clear();
+                File_Output();
             }
+        }
+
+        private void File_Output()
+        {
+            //ログ保存先フォルダ
+            string log_directory = "../../../../Logs";
+            // フォルダが存在しない場合は作成
+            if (!Directory.Exists(log_directory))
+            {
+                Directory.CreateDirectory(log_directory);
+            }
+
+            //ログファイルの採番
+            int log_index = 1;
+            string file_path = "";
+            //// ファイルが存在しない番号を探す
+            do
+            {
+                file_path = Path.Combine(log_directory, $"log{log_index}.txt");
+                log_index++;
+            } while (File.Exists(file_path));
+
+            //複数のjsonをリスト化
+            string log_text = $"{{{string.Join(",", json_list)}}}";
+
+            try
+            {
+                // テキストファイルに書き出し
+                File.WriteAllText(file_path, log_text);
+                Console.WriteLine($"ファイルに書き出しました: {file_path}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"エラーが発生しました: {ex.Message}");
+            }
+
+            //一時保存したログを消去
+            json_list.Clear();
         }
 
         private void Button_Mute_Click(object sender, RoutedEventArgs e)
