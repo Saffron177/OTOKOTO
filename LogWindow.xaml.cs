@@ -24,6 +24,8 @@ namespace HottoMotto
     /// </summary>
     public partial class LogWindow : Window
     {
+        //ファイル一覧を保持
+        string[] txtFiles;
         public LogWindow()
         {
             InitializeComponent();
@@ -40,7 +42,7 @@ namespace HottoMotto
             if (Directory.Exists(directoryPath))
             {
                 // ディレクトリ内のすべてのtxtファイルを検索
-                string[] txtFiles = Directory.GetFiles(directoryPath, "*.txt");
+                txtFiles = Directory.GetFiles(directoryPath, "*.txt");
 
                 // 取得したtxtファイルをListBoxに表示
                 logList.Items.Clear(); //ListBoxの中身を初期化
@@ -110,5 +112,36 @@ namespace HottoMotto
                 Debug.Print($"JSONの解析に失敗しました: {ex.Message}");
             }
         }
+
+        //ログ一覧内のファイル名を検索する
+        private void Search_Textbox_Changed(object sender, TextChangedEventArgs e)
+        {
+            if (txtFiles != null)
+            {
+                string searchWord = search_Textbox.Text; // 検索ボックスのテキストを取得
+                var filteredFiles = txtFiles
+                    .Where(fileName => System.IO.Path.GetFileName(fileName).ToLower().Contains(searchWord)) // 部分一致で検索
+                    .ToArray();
+
+                UpdateListBox(filteredFiles); // 検索結果でListBoxを更新
+            }
+
+        }
+
+        // ListBoxの内容を更新するメソッド
+        private void UpdateListBox(string[] filteredFiles)
+        {
+            logList.Items.Clear();
+            if (filteredFiles.Length <= 0)
+            {
+                logList.Items.Add("ファイルが見つかりませんでした。");
+                return;
+            }
+            foreach (string file in filteredFiles)
+            {
+                logList.Items.Add(System.IO.Path.GetFileName(file));
+            }
+        }
+
     }
 }
