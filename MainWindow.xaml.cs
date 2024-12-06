@@ -44,17 +44,19 @@ namespace HottoMotto
             //nullか空でない場合に書き起こす
             if(json_text.text != null && json_text.text != "")
             {
+                DateTime dateTime = DateTime.Now;
+
                 // Dispatcher.Invokeを使用してUIスレッドで実行
                 txtOutput.Dispatcher.Invoke(() =>
                 {
-                    txtOutput.Text += DateTime.Now + Environment.NewLine;
+                    txtOutput.Text += dateTime + Environment.NewLine;
                     txtOutput.Text += json_text.text + Environment.NewLine;
                     txtOutput.ScrollToEnd();
                 });
 
                 JsonUtil jsonutil = new JsonUtil();
 
-                json_list.Add(jsonutil.ToJson(json_text.text, is_speaker));
+                json_list.Add(jsonutil.ToJson(dateTime, json_text.text, is_speaker));
             }
         }
 

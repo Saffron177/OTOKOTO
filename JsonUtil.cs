@@ -31,11 +31,11 @@ namespace HottoMotto
         /// <param name="text"></param>
         /// <param name="flag"></param>
         /// <returns></returns>
-        public string ToJson(string text,bool is_speaker)
+        public string ToJson(DateTime timestamp, string text,bool is_speaker)
         {
             var log = new Conversation_Log_Data
             {
-                TimeStamp = DateTime.Now,
+                TimeStamp = timestamp,
                 Text = text,
                 IsSpeaker = is_speaker
             };
