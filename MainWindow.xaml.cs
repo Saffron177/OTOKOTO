@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using Microsoft.VisualBasic.Logging;
+using System.Diagnostics;
+using System.Text.Json;
+using System.Windows;
 using Vosk;
 namespace HottoMotto
 {
@@ -29,6 +32,7 @@ namespace HottoMotto
 
         private void UpdateTextBox(string text, bool is_speaker)
         {
+
             // Dispatcher.Invokeを使用してUIスレッドで実行
             txtOutput.Dispatcher.Invoke(() =>
             {
@@ -38,6 +42,7 @@ namespace HottoMotto
 
             JsonUtil jsonutil = new JsonUtil();
 
+            Debug.Print("Updatetext" + text);
             json_list.Add(jsonutil.ToJson(text, is_speaker));
         }
 

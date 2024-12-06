@@ -19,18 +19,19 @@
 		<PackageReference Include="Vosk" Version="0.3.38" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<Folder Include="Models\" />
-	</ItemGroup>
+  <ItemGroup>
+    <Folder Include="Logs\" />
+    <Folder Include="Models\" />
+  </ItemGroup>  
 
-	<ItemGroup>
-		<Content Include="Resource\Icon.ico">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
-
-	　<ItemGroup>
-		<Content Include= "Models\**\*">
+  <ItemGroup>
+    <Content Include="Resource\Icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+	
+   <ItemGroup>
+		<Content Include="Models\**\*">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>

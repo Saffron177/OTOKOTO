@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,6 +14,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.IO;
+using System.Diagnostics;
 
 namespace HottoMotto
 {
@@ -68,7 +71,43 @@ namespace HottoMotto
             {
                 string selectedFile = logList.SelectedItem.ToString();
 
+                Debug.Print("selectedFile:" + selectedFile);
+
                 // コマンドを実行
+                Load_Log(selectedFile);
+            }
+        }
+
+        private void Load_Log(string selectedFile)
+        {
+            string filePath = "../../../../Logs/" + selectedFile;
+
+            // ファイルが存在するかチェック
+            if (!File.Exists(filePath))
+            {
+                Debug.Print("JSONファイルが見つかりません。");
+                return;
+            }
+
+            // ファイルの内容を読み込む
+            string jsonText = File.ReadAllText(filePath);
+
+            try
+            {
+                // JSONをリストに変換（デシリアライズ）
+                var logs = JsonSerializer.Deserialize<List<Conversation_Log_Data>>(jsonText);
+
+                LogListBox.Items.Clear();
+                // リストボックスにデータを追加
+                foreach (var log in logs)
+                {
+                    LogListBox.Items.Add($"{log.TimeStamp}");
+                    LogListBox.Items.Add($"{log.Text}");
+                }
+            }
+            catch (JsonException ex)
+            {
+                Debug.Print($"JSONの解析に失敗しました: {ex.Message}");
             }
         }
     }

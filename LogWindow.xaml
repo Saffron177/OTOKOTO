@@ -7,8 +7,8 @@
         mc:Ignorable="d"
         Title="LogWindow" Height="450" Width="800">
     <Grid>
-        <ListBox HorizontalAlignment="Left" Height="414" Margin="251,0,0,0" VerticalAlignment="Center" Width="539">
-            <ListBox Height="100" Width="100" d:ItemsSource="{d:SampleData ItemCount=5}"/>
+        <ListBox x:Name="LogListBox" HorizontalAlignment="Left" Height="414" Margin="251,0,0,0" VerticalAlignment="Center" Width="539">
+            
         </ListBox>
         <ListBox x:Name="logList" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,14,660,247"/>
 
