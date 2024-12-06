@@ -16,5 +16,6 @@
         <ComboBox x:Name="ComboBox_MicDevices" HorizontalAlignment="Left" Margin="670,10,0,0" VerticalAlignment="Top" Width="120"/>
         <Button x:Name="Button_Mute" HorizontalAlignment="Left" Margin="710,32,0,0" VerticalAlignment="Top" Click="Button_Mute_Click" Background="#FFDDDDDD" Content="ミュートOFF"/>
         <Button Content="ログ一覧" HorizontalAlignment="Left" Margin="710,0,0,0" VerticalAlignment="Center" Click="Button_Log_Click"/>
+        <Button x:Name="Button_Save" Content="保存" HorizontalAlignment="Left" Margin="726,368,0,0" VerticalAlignment="Top" Click="Button_Save_Click"/>
     </Grid>
 </Window>

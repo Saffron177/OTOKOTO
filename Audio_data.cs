@@ -209,30 +209,66 @@ namespace HottoMotto
                 capture.StopRecording();
                 Label_status.Content = "録音停止";
                 mic_capture.StopRecording();
-
-                File_Output();
             }
         }
 
+        //保存ボタンのクリック処理
+        private void Button_Save_Click(object sender, RoutedEventArgs e)
+        {
+            File_Output();
+        }
+
+        //ファイルの保存関数
         private void File_Output()
         {
+            //保存時のダイアログのクラス
+            SaveFileDialog sfd = new SaveFileDialog();
+
             //ログ保存先フォルダ
-            string log_directory = "../../../../Logs";
+            string log_directory = "../../../../Logs"; //相対パスで取得
+            string directoryPath = System.IO.Path.GetFullPath(log_directory); // 絶対パスに変換
+
             // フォルダが存在しない場合は作成
-            if (!Directory.Exists(log_directory))
+            if (!Directory.Exists(directoryPath))
             {
-                Directory.CreateDirectory(log_directory);
+                Directory.CreateDirectory(directoryPath);
             }
 
-            //ログファイルの採番
-            int log_index = 1;
-            string file_path = "";
-            //// ファイルが存在しない番号を探す
-            do
+            //今日の日付を取得
+            DateTime today = DateTime.Now;
+            //ファイル名の初期設定
+            string file_name = today.Year.ToString() + "_" + today.Month.ToString() + "_" + today.Day.ToString() + "_" + today.Hour.ToString() + "_" + today.Minute.ToString() + "_" + today.Second.ToString();
+
+            //ダイアログを表示
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
             {
-                file_path = Path.Combine(log_directory, $"log{log_index}.txt");
-                log_index++;
-            } while (File.Exists(file_path));
+                // 初期フォルダを指定（オプション）
+                saveFileDialog.InitialDirectory = directoryPath;
+
+                //ファイルの初期名を指定
+                saveFileDialog.FileName = file_name;
+
+                // ファイル名のフィルタを設定（オプション）
+                saveFileDialog.Filter = "テキストファイル (*.txt)|*.txt";
+
+                // ダイアログを表示し、ユーザーがファイル名を指定した場合
+                if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    file_name = saveFileDialog.FileName; // ユーザーが選択したファイルパスを返す
+                }
+                else
+                {
+                    return;  // ユーザーがキャンセルした場合
+                }
+            }
+
+
+            // ユーザーがファイル名を指定しなかった場合は処理を終了
+            if (string.IsNullOrEmpty(file_name))
+            {
+                Console.WriteLine("保存するファイル名が指定されていません。");
+                return;
+            }
 
             //複数のjsonをリスト化
             string log_text = $"[{string.Join(",", json_list)}]";
@@ -240,8 +276,8 @@ namespace HottoMotto
             try
             {
                 // テキストファイルに書き出し
-                File.WriteAllText(file_path, log_text);
-                Console.WriteLine($"ファイルに書き出しました: {file_path}");
+                File.WriteAllText(file_name, log_text);
+                Console.WriteLine($"ファイルに書き出しました: {file_name}");
             }
             catch (Exception ex)
             {
@@ -251,6 +287,10 @@ namespace HottoMotto
             //一時保存したログを消去
             json_list.Clear();
         }
+
+
+        // ユーザーにファイル名を指定させるメソッド
+
 
         private void Button_Mute_Click(object sender, RoutedEventArgs e)
         {
