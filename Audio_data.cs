@@ -125,7 +125,7 @@ namespace HottoMotto
                             if (recognizer.AcceptWaveform(resampledBuffer, bytesResampled))
                             {
                                 var result = recognizer.Result();
-                                Debug.Print(result);
+                                Debug.Print("Audio" + result);
                                 UpdateTextBox(result, true);
                             }
                             else

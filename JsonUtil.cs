@@ -19,6 +19,7 @@ namespace HottoMotto
         public string Text { get; set; }
         public bool IsSpeaker { get; set; }
     }
+    
     /// <summary>
     /// Json処理用のクラス
     /// </summary>
@@ -41,6 +42,7 @@ namespace HottoMotto
 
             string jsonstring = JsonSerializer.Serialize<Conversation_Log_Data>(log);
             Debug.Print(jsonstring);
+            Debug.Print(log.Text);
             return jsonstring;
         }
     }
