@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -13,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.IO;
+using System.Diagnostics;
 
 namespace HottoMotto
 {
@@ -24,19 +27,65 @@ namespace HottoMotto
         public LogWindow()
         {
             InitializeComponent();
-            Load_Log();
-
+            logFileCheck();
+            logList.MouseDoubleClick += logList_DoubleClick;
         }
 
-        private void Load_Log()
+        //Logsファイルの中身を検索し、結果を出力する
+        public void logFileCheck()
         {
-            // ファイルパスを指定
-            string filePath = "../../../../Logs/log1.txt";
+            string relativePath = @"../../../../Logs"; // チェックしたいディレクトリのパス
+            string directoryPath = System.IO.Path.GetFullPath(relativePath); // 絶対パスに変換
+
+            if (Directory.Exists(directoryPath))
+            {
+                // ディレクトリ内のすべてのtxtファイルを検索
+                string[] txtFiles = Directory.GetFiles(directoryPath, "*.txt");
+
+                // 取得したtxtファイルをListBoxに表示
+                logList.Items.Clear(); //ListBoxの中身を初期化
+
+                if (txtFiles.Length > 0) //logfileが見つかればfile名を出力
+                {
+
+                    foreach (string file in txtFiles)
+                    {
+                        logList.Items.Add(System.IO.Path.GetFileName(file));
+                    }
+                }
+                else //fileがないばあい
+                {
+                    logList.Items.Add("logファイルがありません");
+                }
+            }
+            else //ディレクトリが存在しない場合
+            {
+                logList.Items.Add("指定したディレクトリが存在しません。");
+            }
+        }
+
+        // listBox中身をダブルクリックしたときに実行する関数
+        private void logList_DoubleClick(object sender, EventArgs e)
+        {
+            if (logList.SelectedItem != null)
+            {
+                string selectedFile = logList.SelectedItem.ToString();
+
+                Debug.Print("selectedFile:" + selectedFile);
+
+                // コマンドを実行
+                Load_Log(selectedFile);
+            }
+        }
+
+        private void Load_Log(string selectedFile)
+        {
+            string filePath = "../../../../Logs/" + selectedFile;
 
             // ファイルが存在するかチェック
             if (!File.Exists(filePath))
             {
-                Console.WriteLine("JSONファイルが見つかりません。");
+                Debug.Print("JSONファイルが見つかりません。");
                 return;
             }
 
@@ -48,6 +97,7 @@ namespace HottoMotto
                 // JSONをリストに変換（デシリアライズ）
                 var logs = JsonSerializer.Deserialize<List<Conversation_Log_Data>>(jsonText);
 
+                LogListBox.Items.Clear();
                 // リストボックスにデータを追加
                 foreach (var log in logs)
                 {
@@ -57,7 +107,7 @@ namespace HottoMotto
             }
             catch (JsonException ex)
             {
-                Console.WriteLine($"JSONの解析に失敗しました: {ex.Message}");
+                Debug.Print($"JSONの解析に失敗しました: {ex.Message}");
             }
         }
     }
