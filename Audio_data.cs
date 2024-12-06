@@ -235,7 +235,7 @@ namespace HottoMotto
             } while (File.Exists(file_path));
 
             //複数のjsonをリスト化
-            string log_text = $"{{{string.Join(",", json_list)}}}";
+            string log_text = $"[{string.Join(",", json_list)}]";
 
             try
             {

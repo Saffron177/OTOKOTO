@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Logs\" />
     <Folder Include="Models\" />
   </ItemGroup>  
 
@@ -30,7 +31,7 @@
   </ItemGroup>
 	
    <ItemGroup>
-		<Content Include= "Models\**\*">
+		<Content Include="Models\**\*">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
