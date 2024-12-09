@@ -49,14 +49,8 @@ namespace HottoMotto
                 // Dispatcher.Invokeを使用してUIスレッドで実行
                 RealtimeListBox.Dispatcher.Invoke(() =>
                 {
-                    if (is_speaker)
-                    {
-                        RealtimeListBox.Items.Add(dateTime + " (スピーカー)");
-                    }
-                    else
-                    {
-                        RealtimeListBox.Items.Add(dateTime + " (マイク)");
-                    }
+
+                    RealtimeListBox.Items.Add(dateTime + (is_speaker ? " (スピーカー)" : " (マイク)"));
                     RealtimeListBox.Items.Add(json_text.text);
                 });
 

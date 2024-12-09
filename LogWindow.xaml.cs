@@ -104,14 +104,7 @@ namespace HottoMotto
                 // リストボックスにデータを追加
                 foreach (var log in logs)
                 {
-                    if (log.IsSpeaker)
-                    {
-                        LogListBox.Items.Add($"{log.TimeStamp} (スピーカー)");
-                    }
-                    else
-                    {
-                        LogListBox.Items.Add($"{log.TimeStamp} (マイク)");
-                    }
+                    LogListBox.Items.Add($"{log.TimeStamp}" + (log.IsSpeaker ? "(スピーカー)" : "(マイク)"));
                     LogListBox.Items.Add($"{log.Text}");
                 }
             }
