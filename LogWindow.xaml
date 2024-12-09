@@ -9,13 +9,26 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="230"/>
-            <ColumnDefinition Width="570"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <ListBox x:Name="LogListBox" HorizontalAlignment="Left" Height="414" Margin="24,0,0,0" VerticalAlignment="Center" Width="539" Grid.Column="1">
-
+        <!--グリッド0(左側)-->
+        <!--ファイル表示用リストボックス-->
+        <ListBox x:Name="logList" Margin="20,56,0,20" Grid.Column="0"/>
+        <!--ファイル検索用テキストボックス-->
+        <TextBox x:Name="search_Textbox" HorizontalAlignment="Left" Height="25" Width="185" Margin="45,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="Search_Textbox_Changed" Grid.Column="0" />
+        <Image HorizontalAlignment="Left" Height="25" Margin="20,20,0,0" VerticalAlignment="Top" Width="25" Source="/Resource/search.png" Grid.Column="0"/>
+        
+        <!--グリッド1(右側)-->
+        <!--ログ表示用リストボックス-->
+        <ListBox x:Name="LogListBox" Margin="30,55,20,20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Column="1">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" TextWrapping="Wrap" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
         </ListBox>
-        <ListBox x:Name="logList" Margin="10,56,0,10"/>
-        <TextBox x:Name="search_Textbox" HorizontalAlignment="Left" Height="25" Width="190" Margin="40,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="Search_Textbox_Changed" />
+
+        <Label x:Name="file_Title" Grid.Column="1" Content="" HorizontalAlignment="Left" Margin="30,20,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

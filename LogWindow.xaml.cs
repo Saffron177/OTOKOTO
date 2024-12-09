@@ -94,6 +94,8 @@ namespace HottoMotto
 
             // ファイルの内容を読み込む
             string jsonText = File.ReadAllText(filePath);
+            //ファイル名を表示
+            file_Title.Content = System.IO.Path.GetFileName(filePath);
 
             try
             {
