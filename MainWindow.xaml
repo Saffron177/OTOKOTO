@@ -6,17 +6,69 @@
         xmlns:local="clr-namespace:HottoMotto"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    
+    <Window.Resources>
+        <Style x:Key="CActionButtons" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="50" Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Width" Value="50"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Background" Value="#FFDDDDDD"/>
+            <Setter Property="BorderBrush" Value="#FF000000"/>
+            <Setter Property="Foreground" Value="#FF000000"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="10"/>
+        </Style>
+    </Window.Resources>
+
     <Grid>
-        <ListBox x:Name="RealtimeListBox" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Center" Width="318" Height="414" />
-        
-        <ComboBox x:Name="ComboBox_AudioDevices" HorizontalAlignment="Left" Margin="550,10,0,0" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="Button_capture_start" Content="開始" HorizontalAlignment="Left" Margin="550,32,0,0" VerticalAlignment="Top" Click="Button_capture_start_Click"/>
-        <Label x:Name="Label_status" Content="録音停止" HorizontalAlignment="Left" Margin="578,32,0,0" VerticalAlignment="Top" Width="64"/>
-        <Button x:Name="Button_capture_stop" Content="停止" HorizontalAlignment="Left" Margin="642,32,0,0" VerticalAlignment="Top" Click="Button_capture_stop_Click"/>
-        <ComboBox x:Name="ComboBox_MicDevices" HorizontalAlignment="Left" Margin="670,10,0,0" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="Button_Mute" HorizontalAlignment="Left" Margin="710,32,0,0" VerticalAlignment="Top" Click="Button_Mute_Click" Background="#FFDDDDDD" Content="ミュートOFF"/>
-        <Button Content="ログ一覧" HorizontalAlignment="Left" Margin="710,0,0,0" VerticalAlignment="Center" Click="Button_Log_Click"/>
-        <Button x:Name="Button_Save" Content="保存" HorizontalAlignment="Left" Margin="726,368,0,0" VerticalAlignment="Top" Click="Button_Save_Click"/>
-        
+        <ListBox x:Name="RealtimeListBox" HorizontalAlignment="Left" Margin="134,55,0,0" VerticalAlignment="Top" Width="549" Height="305" RenderTransformOrigin="0.5,0.5" >
+            <ListBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.028"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </ListBox.RenderTransform>
+        </ListBox>
+
+        <ComboBox x:Name="ComboBox_AudioDevices" HorizontalAlignment="Left" Margin="207,21,0,0" VerticalAlignment="Top" Width="120"/>
+        <Image HorizontalAlignment="Left" Height="32" Margin="170,15,0,0" VerticalAlignment="Top" Width="36" Source="/Resource/speaker.png" Grid.Column="0"/>
+
+        <Button x:Name="Button_capture_start" HorizontalAlignment="Left" Margin="273,363,0,0" VerticalAlignment="Top" Click="Button_capture_start_Click" Style="{StaticResource CActionButtons}" Width="50" Background="#FFFBFAFA">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="Resource/play.png" Width="49" Height="39" RenderTransformOrigin="0.5,0.5"/>
+            </StackPanel>
+        </Button>
+
+        <Label x:Name="Label_status" Content="録音停止" HorizontalAlignment="Left" Margin="328,387,0,0" VerticalAlignment="Top" Width="64"/>
+
+        <Button x:Name="Button_capture_stop" HorizontalAlignment="Left" Margin="402,367,0,0" VerticalAlignment="Top" Click="Button_capture_stop_Click" Style="{StaticResource CActionButtons}" Background="#FFFBFAFA">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="Resource/stop.png" Width="29" Height="23"/>
+            </StackPanel>
+        </Button>
+
+        <ComboBox x:Name="ComboBox_MicDevices" HorizontalAlignment="Left" Margin="405,23,0,0" VerticalAlignment="Top" Width="120"/>
+        <Image HorizontalAlignment="Left" Height="34" Margin="366,15,0,0" VerticalAlignment="Top" Width="40" Source="/Resource/mic.png" Grid.Column="0"/>
+
+        <Button x:Name="Button_Mute" HorizontalAlignment="Left" Margin="470,367,0,0" VerticalAlignment="Top" Click="Button_Mute_Click"  Style="{StaticResource CActionButtons}" Background="#FFFBF9F9">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="Resource/mute.png" Width="35" Height="26"/>
+            </StackPanel>
+        </Button>
+
+        <Button Content="ログ一覧" HorizontalAlignment="Left" Margin="556,25,0,0" VerticalAlignment="Top" Click="Button_Log_Click" Width="63"/>
+
+        <Button x:Name="Button_Save" Content="保存" HorizontalAlignment="Left" Margin="619,25,0,0" VerticalAlignment="Top" Click="Button_Save_Click" Width="45"/>
+
     </Grid>
 </Window>
