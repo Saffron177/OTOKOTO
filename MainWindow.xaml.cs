@@ -22,7 +22,7 @@ namespace HottoMotto
             LoadAudioDevices();
             LoadMicDevices();
             // モデルをロード（解凍したモデルのパスを指定）
-            string modelPath = "Models/vosk-model-small-ja-0.22";
+            string modelPath = "Models/vosk-model-ja-0.22";
             Console.WriteLine("モデルパス: " + modelPath);
             model = new Model(modelPath);
             recognizer = new VoskRecognizer(model, 16000.0f);

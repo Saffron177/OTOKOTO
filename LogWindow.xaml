@@ -7,11 +7,15 @@
         mc:Ignorable="d"
         Title="LogWindow" Height="450" Width="800">
     <Grid>
-        <ListBox x:Name="LogListBox" HorizontalAlignment="Left" Height="414" Margin="251,0,0,0" VerticalAlignment="Center" Width="539">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="230"/>
+            <ColumnDefinition Width="570"/>
+        </Grid.ColumnDefinitions>
+        <ListBox x:Name="LogListBox" HorizontalAlignment="Left" Height="414" Margin="24,0,0,0" VerticalAlignment="Center" Width="539" Grid.Column="1">
 
         </ListBox>
-        <ListBox x:Name="logList" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,49,564,10"/>
-        <TextBox x:Name="search_Textbox" HorizontalAlignment="Left" Margin="30,22,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="206" TextChanged="Search_Textbox_Changed"/>
+        <ListBox x:Name="logList" Margin="10,56,0,10"/>
+        <TextBox x:Name="search_Textbox" HorizontalAlignment="Left" Height="25" Width="190" Margin="40,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="Search_Textbox_Changed" />
 
     </Grid>
 </Window>
