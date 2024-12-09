@@ -49,7 +49,15 @@ namespace HottoMotto
                 // Dispatcher.Invokeを使用してUIスレッドで実行
                 txtOutput.Dispatcher.Invoke(() =>
                 {
-                    txtOutput.Text += dateTime + Environment.NewLine;
+                    txtOutput.Text += dateTime;
+                    if (is_speaker)
+                    {
+                        txtOutput.Text += " (スピーカー)" + Environment.NewLine;
+                    }
+                    else
+                    {
+                        txtOutput.Text += " (マイク)" + Environment.NewLine;
+                    }
                     txtOutput.Text += json_text.text + Environment.NewLine;
                     txtOutput.ScrollToEnd();
                 });
