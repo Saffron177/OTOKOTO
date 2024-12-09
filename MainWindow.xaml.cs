@@ -47,19 +47,17 @@ namespace HottoMotto
                 DateTime dateTime = DateTime.Now;
 
                 // Dispatcher.Invokeを使用してUIスレッドで実行
-                txtOutput.Dispatcher.Invoke(() =>
+                RealtimeListBox.Dispatcher.Invoke(() =>
                 {
-                    txtOutput.Text += dateTime;
                     if (is_speaker)
                     {
-                        txtOutput.Text += " (スピーカー)" + Environment.NewLine;
+                        RealtimeListBox.Items.Add(dateTime + " (スピーカー)");
                     }
                     else
                     {
-                        txtOutput.Text += " (マイク)" + Environment.NewLine;
+                        RealtimeListBox.Items.Add(dateTime + " (マイク)");
                     }
-                    txtOutput.Text += json_text.text + Environment.NewLine;
-                    txtOutput.ScrollToEnd();
+                    RealtimeListBox.Items.Add(json_text.text);
                 });
 
                 JsonUtil jsonutil = new JsonUtil();
