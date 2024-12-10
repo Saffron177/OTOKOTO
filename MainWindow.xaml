@@ -67,9 +67,17 @@
             </StackPanel>
         </Button>
 
-        <Button Content="ログ一覧" HorizontalAlignment="Left" Margin="556,25,0,0" VerticalAlignment="Top" Click="Button_Log_Click" Width="63"/>
+        <Button HorizontalAlignment="Left" Margin="583,25,0,0" VerticalAlignment="Top" Click="Button_Log_Click" Width="67" Height="28" BorderBrush="{x:Null}" Background="{x:Null}">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="Resource/log.png" Width="47" Height="21" RenderTransformOrigin="0.5,0.5"/>
+            </StackPanel>
+        </Button>
 
-        <Button x:Name="Button_Save" Content="保存" HorizontalAlignment="Left" Margin="619,25,0,0" VerticalAlignment="Top" Click="Button_Save_Click" Width="45"/>
+        <Button x:Name="Button_Save" HorizontalAlignment="Left" Margin="659,25,0,0" VerticalAlignment="Top" Click="Button_Save_Click" Width="70" BorderBrush="{x:Null}" Background="{x:Null}">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="Resource/hozon.png" Width="24" Height="24" RenderTransformOrigin="0.5,0.5"/>
+            </StackPanel>
+        </Button>
 
     </Grid>
 </Window>
