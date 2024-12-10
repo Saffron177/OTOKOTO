@@ -11,8 +11,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Remove="Resource\Icon.ico" />
-		<None Remove="Resource\search.png" />
+		<None Remove="Filler_removal.exe" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -20,26 +19,26 @@
 		<PackageReference Include="Vosk" Version="0.3.38" />
 	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Logs\" />
-    <Folder Include="Models\" />
-  </ItemGroup>  
+	<ItemGroup>
+		<Folder Include="Logs\" />
+		<Folder Include="Models\" />
+		<Folder Include="Resource\"/>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Content Include="Resource\Icon.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-	
-   <ItemGroup>
+	<ItemGroup>
+		<Content Include="Resource\**\*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
 		<Content Include="Models\**\*">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
-	
-   <ItemGroup>
-     <Resource Include="Resource\search.png">
-       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-     </Resource>
-   </ItemGroup>
+	<ItemGroup>
+		<Content Include="Filler_removal.exe">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 </Project>
