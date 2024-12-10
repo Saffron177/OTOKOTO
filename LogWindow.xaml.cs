@@ -29,12 +29,12 @@ namespace HottoMotto
         public LogWindow()
         {
             InitializeComponent();
-            logFileCheck();
-            logList.MouseDoubleClick += logList_DoubleClick;
+            LogFileCheck();
+            logList.MouseDoubleClick += LogList_DoubleClick;
         }
 
         //Logsファイルの中身を検索し、結果を出力する
-        public void logFileCheck()
+        public void LogFileCheck()
         {
             string relativePath = @"../../../../Logs"; // チェックしたいディレクトリのパス
             string directoryPath = System.IO.Path.GetFullPath(relativePath); // 絶対パスに変換
@@ -67,7 +67,7 @@ namespace HottoMotto
         }
 
         // listBox中身をダブルクリックしたときに実行する関数
-        private void logList_DoubleClick(object sender, EventArgs e)
+        private void LogList_DoubleClick(object sender, EventArgs e)
         {
             if (logList.SelectedItem != null)
             {
@@ -131,6 +131,12 @@ namespace HottoMotto
 
         }
 
+        //ログ内のテキストを検索する
+        private void Log_Search_Text(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
         // ListBoxの内容を更新するメソッド
         private void UpdateListBox(string[] filteredFiles)
         {
@@ -145,6 +151,7 @@ namespace HottoMotto
                 logList.Items.Add(System.IO.Path.GetFileName(file));
             }
         }
+
 
     }
 }

@@ -132,6 +132,7 @@ namespace HottoMotto
                             else
                             {
                                 //partialの処理
+                                UpdateToPartial(recognizer.PartialResult(), true);
                             }
                         }
                     }
@@ -174,6 +175,7 @@ namespace HottoMotto
                     else
                     {
                         //partialの処理
+                        UpdateToPartial(mic_recognizer.PartialResult(), false);
                     }
                 };
 
@@ -271,6 +273,14 @@ namespace HottoMotto
                 return;
             }
 
+            //リアルタイムログを保存順から日付順に並び替え
+            List<Conversation_Log_Data> sortedRealtimeLogs = realtimeLogs.OrderBy(log => log.TimeStamp).ToList();
+            JsonUtil jsonUtil = new JsonUtil();
+            //リアルタイムログをjson化
+            foreach (Conversation_Log_Data log in sortedRealtimeLogs)
+            {
+                json_list.Add(jsonUtil.ToJson(log.TimeStamp, log.Text, log.IsSpeaker));
+            }
             //複数のjsonをリスト化
             string log_text = $"[{string.Join(",", json_list)}]";
 
@@ -298,7 +308,7 @@ namespace HottoMotto
             if (is_mute)
             {
                 //ミュートをオフ
-                Button_Mute.Content = "ミュートOFF";
+                //Button_Mute.Content = "ミュートOFF";
                 is_mute = false;
                 if (mic_capture != null)
                 {
@@ -309,7 +319,7 @@ namespace HottoMotto
             else
             {
                 //ミュートをオン
-                Button_Mute.Content = "ミュートON";
+                //Button_Mute.Content = "ミュートON";
                 is_mute = true;
                 if (mic_capture != null)
                 {
