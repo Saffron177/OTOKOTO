@@ -273,6 +273,14 @@ namespace HottoMotto
                 return;
             }
 
+            //リアルタイムログを保存順から日付順に並び替え
+            List<Conversation_Log_Data> sortedRealtimeLogs = realtimeLogs.OrderBy(log => log.TimeStamp).ToList();
+            JsonUtil jsonUtil = new JsonUtil();
+            //リアルタイムログをjson化
+            foreach (Conversation_Log_Data log in sortedRealtimeLogs)
+            {
+                json_list.Add(jsonUtil.ToJson(log.TimeStamp, log.Text, log.IsSpeaker));
+            }
             //複数のjsonをリスト化
             string log_text = $"[{string.Join(",", json_list)}]";
 

@@ -14,6 +14,9 @@ namespace HottoMotto
         private VoskRecognizer recognizer;
         private VoskRecognizer mic_recognizer;
 
+        //リアルタイムログの保存先
+        private List<Conversation_Log_Data> realtimeLogs = new List<Conversation_Log_Data>();
+        //リアルタイムログのjsonリスト
         private List<string> json_list = new List<string>(); 
 
         private Model model;
@@ -56,7 +59,6 @@ namespace HottoMotto
             if(json_text.text != null && json_text.text != "")
             {
                 DateTime dateTime = DateTime.Now;
-                JsonUtil jsonutil = new JsonUtil();
 
                 // Dispatcher.Invokeを使用してUIスレッドで実行
                 RealtimeListBox.Dispatcher.Invoke(() =>
@@ -78,7 +80,12 @@ namespace HottoMotto
                         }
                         //確定したテキストをjson化してリストに入れる
                         speakerIndex = null;
-                        json_list.Add(jsonutil.ToJson(speakerDateTime, json_text.text, is_speaker));
+                        realtimeLogs.Add(new Conversation_Log_Data
+                        {
+                            TimeStamp = speakerDateTime,
+                            Text = json_text.text,
+                            IsSpeaker = is_speaker,
+                        });
                     }
                     //マイク音声の処理
                     else
@@ -97,7 +104,12 @@ namespace HottoMotto
                         }
                         //確定したテキストをjson化してリストに入れる
                         micIndex = null;
-                        json_list.Add(jsonutil.ToJson(micDateTime, json_text.text, is_speaker));
+                        realtimeLogs.Add(new Conversation_Log_Data
+                        {
+                            TimeStamp = micDateTime,
+                            Text = json_text.text,
+                            IsSpeaker = is_speaker,
+                        });
                     }
                 });
             }
