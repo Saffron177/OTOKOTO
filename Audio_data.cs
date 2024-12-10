@@ -3,6 +3,7 @@ using NAudio.Wave;
 using System.Diagnostics;
 using System.Windows;
 using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace HottoMotto
 {
@@ -303,6 +304,7 @@ namespace HottoMotto
                 {
                     mic_capture.StartRecording();
                 }
+                ButtonIcon.Source = new BitmapImage(new Uri("Resource/unmute.png", UriKind.Relative));
             }
             else
             {
@@ -314,6 +316,7 @@ namespace HottoMotto
                     Button_Mute.IsEnabled = false;
                     mic_capture.StopRecording();
                 }
+                ButtonIcon.Source = new BitmapImage(new Uri("Resource/mute.png", UriKind.Relative));
             }
         }
     }
