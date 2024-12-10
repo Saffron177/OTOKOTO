@@ -304,7 +304,7 @@ namespace HottoMotto
                 {
                     mic_capture.StartRecording();
                 }
-                ButtonIcon.Source = new BitmapImage(new Uri("Resource/unmute.png", UriKind.Relative));
+                ButtonIcon.Source = new BitmapImage(new Uri("Resource/mute.png", UriKind.Relative));
             }
             else
             {
@@ -316,7 +316,7 @@ namespace HottoMotto
                     Button_Mute.IsEnabled = false;
                     mic_capture.StopRecording();
                 }
-                ButtonIcon.Source = new BitmapImage(new Uri("Resource/mute.png", UriKind.Relative));
+                ButtonIcon.Source = new BitmapImage(new Uri("Resource/unmute.png", UriKind.Relative));
             }
         }
     }
