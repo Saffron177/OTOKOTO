@@ -131,6 +131,7 @@ namespace HottoMotto
                             else
                             {
                                 //partialの処理
+                                UpdateToPartial(recognizer.PartialResult(), true);
                             }
                         }
                     }
@@ -173,6 +174,7 @@ namespace HottoMotto
                     else
                     {
                         //partialの処理
+                        UpdateToPartial(mic_recognizer.PartialResult(), false);
                     }
                 };
 

@@ -7,7 +7,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <ListBox x:Name="RealtimeListBox" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Center" Width="318" Height="414" />
+        <ListBox x:Name="RealtimeListBox" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Center" Width="318" Height="414" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" TextWrapping="Wrap" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
         
         <ComboBox x:Name="ComboBox_AudioDevices" HorizontalAlignment="Left" Margin="550,10,0,0" VerticalAlignment="Top" Width="120"/>
         <Button x:Name="Button_capture_start" Content="開始" HorizontalAlignment="Left" Margin="550,32,0,0" VerticalAlignment="Top" Click="Button_capture_start_Click"/>
