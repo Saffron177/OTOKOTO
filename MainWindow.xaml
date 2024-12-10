@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:HottoMotto"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    
+
     <Window.Resources>
         <Style x:Key="CActionButtons" TargetType="Button">
             <Setter Property="Template">
@@ -29,7 +29,7 @@
     </Window.Resources>
 
     <Grid>
-        <ListBox x:Name="RealtimeListBox" HorizontalAlignment="Left" Margin="134,55,0,0" VerticalAlignment="Top" Width="549" Height="305" RenderTransformOrigin="0.5,0.5" >
+        <ListBox x:Name="RealtimeListBox" HorizontalAlignment="Left" Margin="134,55,0,0" VerticalAlignment="Top" Width="549" Height="305" RenderTransformOrigin="0.5,0.5" BorderBrush="#FF0A43ED" >
             <ListBox.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -43,13 +43,13 @@
         <ComboBox x:Name="ComboBox_AudioDevices" HorizontalAlignment="Left" Margin="207,21,0,0" VerticalAlignment="Top" Width="120"/>
         <Image HorizontalAlignment="Left" Height="32" Margin="170,15,0,0" VerticalAlignment="Top" Width="36" Source="/Resource/speaker.png" Grid.Column="0"/>
 
-        <Button x:Name="Button_capture_start" HorizontalAlignment="Left" Margin="273,363,0,0" VerticalAlignment="Top" Click="Button_capture_start_Click" Style="{StaticResource CActionButtons}" Width="50" Background="#FFFBFAFA">
+        <Button x:Name="Button_capture_start" HorizontalAlignment="Left" Margin="277,365,0,0" VerticalAlignment="Top" Click="Button_capture_start_Click" Style="{StaticResource CActionButtons}" Width="50" Background="#FFFBFAFA" BorderBrush="#FFFBF9F9">
             <StackPanel Orientation="Horizontal">
                 <Image Source="Resource/play.png" Width="49" Height="39" RenderTransformOrigin="0.5,0.5"/>
             </StackPanel>
         </Button>
 
-        <Label x:Name="Label_status" Content="録音停止" HorizontalAlignment="Left" Margin="328,387,0,0" VerticalAlignment="Top" Width="64"/>
+        <Label x:Name="Label_status" Content="録音停止" HorizontalAlignment="Left" Margin="327,380,0,0" VerticalAlignment="Top" Width="64"/>
 
         <Button x:Name="Button_capture_stop" HorizontalAlignment="Left" Margin="402,367,0,0" VerticalAlignment="Top" Click="Button_capture_stop_Click" Style="{StaticResource CActionButtons}" Background="#FFFBFAFA">
             <StackPanel Orientation="Horizontal">
@@ -60,9 +60,10 @@
         <ComboBox x:Name="ComboBox_MicDevices" HorizontalAlignment="Left" Margin="405,23,0,0" VerticalAlignment="Top" Width="120"/>
         <Image HorizontalAlignment="Left" Height="34" Margin="366,15,0,0" VerticalAlignment="Top" Width="40" Source="/Resource/mic.png" Grid.Column="0"/>
 
-        <Button x:Name="Button_Mute" HorizontalAlignment="Left" Margin="470,367,0,0" VerticalAlignment="Top" Click="Button_Mute_Click"  Style="{StaticResource CActionButtons}" Background="#FFFBF9F9">
+        <Button x:Name="Button_Mute" HorizontalAlignment="Left" Margin="470,367,0,0" VerticalAlignment="Top" Click="Button_Mute_Click" Style="{StaticResource CActionButtons}" Background="#FFFBF9F9" BorderBrush="#FFFBF9F9">
             <StackPanel Orientation="Horizontal">
-                <Image Source="Resource/mute.png" Width="35" Height="26"/>
+                <Image x:Name="ButtonIcon" Source="Resource/mute.png" Width="33" Height="26"/>
+                <TextBlock x:Name="ButtonText"  VerticalAlignment="Center" Margin="5,0,0,0"/>
             </StackPanel>
         </Button>
 
