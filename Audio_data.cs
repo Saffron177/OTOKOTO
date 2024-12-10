@@ -298,7 +298,7 @@ namespace HottoMotto
             if (is_mute)
             {
                 //ミュートをオフ
-                Button_Mute.Content = "ミュートOFF";
+                //Button_Mute.Content = "ミュートOFF";
                 is_mute = false;
                 if (mic_capture != null)
                 {
@@ -309,7 +309,7 @@ namespace HottoMotto
             else
             {
                 //ミュートをオン
-                Button_Mute.Content = "ミュートON";
+                //Button_Mute.Content = "ミュートON";
                 is_mute = true;
                 if (mic_capture != null)
                 {
