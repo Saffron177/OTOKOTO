@@ -29,7 +29,7 @@
     </Window.Resources>
 
     <Grid>
-        <ListBox x:Name="RealtimeListBox" HorizontalAlignment="Left" Margin="134,55,0,0" VerticalAlignment="Top" Width="549" Height="305" RenderTransformOrigin="0.5,0.5" BorderBrush="#FF0A43ED" >
+        <ListBox x:Name="RealtimeListBox" HorizontalAlignment="Left" Margin="134,55,0,0" VerticalAlignment="Top" Width="549" Height="305" RenderTransformOrigin="0.5,0.5" BorderBrush="#FF0A43ED" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -38,6 +38,11 @@
                     <TranslateTransform/>
                 </TransformGroup>
             </ListBox.RenderTransform>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" TextWrapping="Wrap" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
         </ListBox>
 
         <ComboBox x:Name="ComboBox_AudioDevices" HorizontalAlignment="Left" Margin="207,21,0,0" VerticalAlignment="Top" Width="120"/>
