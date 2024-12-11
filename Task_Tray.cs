@@ -27,6 +27,7 @@ namespace HottoMotto
             // コンテキストメニューの設定
             var contextMenu = new ContextMenuStrip();
             contextMenu.Items.Add("開く", null, (s, e) => ShowWindow());
+            contextMenu.Items.Add(new ToolStripSeparator());
             contextMenu.Items.Add("終了", null, (s, e) => ExitApplication());
 
             notifyIcon.ContextMenuStrip = contextMenu;

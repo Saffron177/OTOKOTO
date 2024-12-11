@@ -65,6 +65,7 @@ namespace HottoMotto
         /// <param name="e"></param>
         private void Button_capture_start_Click(object sender, RoutedEventArgs e)
         {
+            Debug.Print("Button: capture_start_Click");
             if (ComboBox_AudioDevices.SelectedIndex == -1)
             {
                 System.Windows.MessageBox.Show("再生デバイスを選択してください");
@@ -206,6 +207,7 @@ namespace HottoMotto
         }
         private void Button_capture_stop_Click(object sender, RoutedEventArgs e)
         {
+            Debug.Print("Button: capture_stop_Click");
             if (capture != null)
             {
                 //録音を停止
@@ -218,6 +220,7 @@ namespace HottoMotto
         //保存ボタンのクリック処理
         private void Button_Save_Click(object sender, RoutedEventArgs e)
         {
+            Debug.Print("Button: Save_Click");
             File_Output();
         }
 
@@ -305,6 +308,7 @@ namespace HottoMotto
 
         private void Button_Mute_Click(object sender, RoutedEventArgs e)
         {
+            Debug.Print("Button: Mute_Click");
             if (is_mute)
             {
                 //ミュートをオフ

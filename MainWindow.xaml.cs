@@ -168,6 +168,7 @@ namespace HottoMotto
 
         private void Button_Log_Click(object sender, RoutedEventArgs e)
         {
+            Debug.Print("Button: Log_Click");
             LogWindow logWindow = new LogWindow();
             logWindow.Show();
         }
