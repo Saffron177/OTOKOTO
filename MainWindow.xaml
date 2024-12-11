@@ -29,7 +29,18 @@
     </Window.Resources>
 
     <Grid>
-        <ListBox x:Name="RealtimeListBox" HorizontalAlignment="Left" Margin="26,52,0,0" VerticalAlignment="Top" Width="549" Height="305" RenderTransformOrigin="0.5,0.5"  BorderBrush="#FF0A43ED" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <Button x:Name="Button_Save" Margin="710,30,0,0" Click="Button_Save_Click" BorderBrush="{x:Null}" Background="{x:Null}" Height="29" VerticalAlignment="Top" Width="29">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="Resource/hozon.png" Width="23" Height="23" RenderTransformOrigin="0.5,0.5"/>
+            </StackPanel>
+        </Button>
+
+        <ListBox x:Name="RealtimeListBox" HorizontalAlignment="Left" Margin="26,52,0,0" VerticalAlignment="Top" Width="549" Height="305" RenderTransformOrigin="0.5,0.5"  BorderBrush="Black" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="20"/>
+                </Style>
+            </ListBox.Resources>
             <ListBox.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -38,11 +49,6 @@
                     <TranslateTransform/>
                 </TransformGroup>
             </ListBox.RenderTransform>
-            <ListBox.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="20"/>
-                </Style>
-            </ListBox.Resources>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding}" TextWrapping="Wrap" />
@@ -59,7 +65,7 @@
             </StackPanel>
         </Button>
 
-        <Label x:Name="Label_status" Content="録音停止" HorizontalAlignment="Left" Margin="638,42,0,0" VerticalAlignment="Top" Width="64"/>
+        <Label x:Name="Label_status" Content="録音停止" HorizontalAlignment="Left" Margin="594,64,0,0" VerticalAlignment="Top" Width="64"/>
 
         <Button x:Name="Button_capture_stop" HorizontalAlignment="Left" Margin="628,185,0,0" VerticalAlignment="Top" Click="Button_capture_stop_Click" Style="{StaticResource CActionButtons}" Background="#FFFBFAFA">
             <StackPanel Orientation="Horizontal">
@@ -75,16 +81,9 @@
                 <TextBlock x:Name="ButtonText"  VerticalAlignment="Center" Margin="5,0,0,0"/>
             </StackPanel>
         </Button>
-
-        <Button HorizontalAlignment="Left" Margin="713,28,0,0" VerticalAlignment="Top" Click="Button_Log_Click" Width="44" Height="28" BorderBrush="{x:Null}" Background="{x:Null}">
+        <Button Margin="650,30,0,0" VerticalAlignment="Top" Click="Button_Log_Click" Height="29" BorderBrush="{x:Null}" Background="{x:Null}" Width="29">
             <StackPanel Orientation="Horizontal">
-                <Image Source="Resource/log.png" Width="47" Height="21" RenderTransformOrigin="0.5,0.5"/>
-            </StackPanel>
-        </Button>
-
-        <Button x:Name="Button_Save" HorizontalAlignment="Left" Margin="751,27,0,0" VerticalAlignment="Top" Click="Button_Save_Click" Width="36" BorderBrush="{x:Null}" Background="{x:Null}">
-            <StackPanel Orientation="Horizontal">
-                <Image Source="Resource/hozon.png" Width="24" Height="24" RenderTransformOrigin="0.5,0.5"/>
+                <Image Source="Resource/log.png" Width="23" Height="23" RenderTransformOrigin="0.5,0.5"/>
             </StackPanel>
         </Button>
 
