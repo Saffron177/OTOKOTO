@@ -171,5 +171,10 @@ namespace HottoMotto
             LogWindow logWindow = new LogWindow();
             logWindow.Show();
         }
+
+        private void ComboBox_AudioDevices_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
