@@ -71,7 +71,7 @@ namespace HottoMotto
         {
             if (logList.SelectedItem != null)
             {
-                string selectedFile = logList.SelectedItem.ToString();
+                string selectedFile = logList.SelectedItem.ToString() ?? "";
 
                 Debug.Print("selectedFile:" + selectedFile);
 
@@ -106,8 +106,7 @@ namespace HottoMotto
                 // リストボックスにデータを追加
                 foreach (var log in logs)
                 {
-                    LogListBox.Items.Add($"{log.TimeStamp}" + (log.IsSpeaker ? "(スピーカー)" : "(マイク)"));
-                    LogListBox.Items.Add($"{log.Text}");
+                    LogListBox.Items.Add($"{log.TimeStamp}" + (log.IsSpeaker ? "(スピーカー)" : "(マイク)") + "\n" + $"{log.Text}");
                 }
             }
             catch (JsonException ex)
@@ -151,7 +150,5 @@ namespace HottoMotto
                 logList.Items.Add(System.IO.Path.GetFileName(file));
             }
         }
-
-
     }
 }

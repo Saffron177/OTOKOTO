@@ -23,7 +23,9 @@
         <ListBox x:Name="LogListBox" Margin="30,55,20,20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Column="1">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding}" TextWrapping="Wrap" />
+                    <Border Background="AliceBlue" CornerRadius="5" Padding="5">
+                        <TextBlock Text="{Binding}" TextWrapping="Wrap" />
+                    </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
