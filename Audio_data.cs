@@ -18,6 +18,9 @@ namespace HottoMotto
 
         //ミュートボタン用のフラグ
         private bool is_mute = false;
+        //録音開始・停止フラグ
+        private bool recFlag = false;
+
         ///<summary>
         ///オーディオデバイスを取得する関数
         ///</summary>
@@ -219,6 +222,24 @@ namespace HottoMotto
         private void Button_Save_Click(object sender, RoutedEventArgs e)
         {
             File_Output();
+        }
+
+        private void Button_Capture_Click(object sender, RoutedEventArgs e)
+        {
+            if (recFlag)
+            {
+                CaptureStopImage.Source = new BitmapImage(new Uri(@"../../../../Resource/start.png", UriKind.Relative));
+                RecImage.Visibility = Visibility.Hidden;
+                Button_capture_stop_Click(sender, e);
+                recFlag = false;
+            }
+            else
+            {
+                CaptureStopImage.Source = new BitmapImage(new Uri(@"../../../../Resource/stop.png", UriKind.Relative));
+                RecImage.Visibility = Visibility.Visible;
+                Button_capture_start_Click(sender, e);
+                recFlag = true;
+            }
         }
 
         //ファイルの保存関数

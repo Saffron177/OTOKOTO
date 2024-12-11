@@ -48,17 +48,17 @@
         <ComboBox x:Name="ComboBox_AudioDevices" HorizontalAlignment="Left" Margin="663,353,0,0" VerticalAlignment="Top" Width="14" SelectionChanged="ComboBox_AudioDevices_SelectionChanged" Background="White" BorderBrush="{x:Null}"/>
         <Image HorizontalAlignment="Left" Height="32" Margin="631,359,0,0" VerticalAlignment="Top" Width="36" Source="/Resource/speaker.png" Grid.Column="0"/>
 
-        <Button x:Name="Button_capture_start" HorizontalAlignment="Left" Margin="597,30,0,0" VerticalAlignment="Top" Click="Button_capture_start_Click" Style="{StaticResource CActionButtons}" Width="50" Background="#FFFBFAFA" BorderBrush="#FFFBF9F9">
+        <Button x:Name="Button_capture_start" HorizontalAlignment="Left" Margin="597,30,0,0" VerticalAlignment="Top" Style="{StaticResource CActionButtons}" Width="50" Background="#FFFBFAFA" BorderBrush="#FFFBF9F9">
             <StackPanel Orientation="Horizontal">
-                <Image Source="Resource/play.png" Width="33" Height="25" RenderTransformOrigin="0.5,0.5"/>
+                <Image x:Name="RecImage" Source="Resource/play.png" Visibility="Hidden" Width="33" Height="25" RenderTransformOrigin="0.5,0.5"/>
             </StackPanel>
         </Button>
 
         <Label x:Name="Label_status" Content="録音停止" HorizontalAlignment="Left" Margin="638,42,0,0" VerticalAlignment="Top" Width="64"/>
 
-        <Button x:Name="Button_capture_stop" HorizontalAlignment="Left" Margin="628,185,0,0" VerticalAlignment="Top" Click="Button_capture_stop_Click" Style="{StaticResource CActionButtons}" Background="#FFFBFAFA">
+        <Button x:Name="Button_Capture" Click="Button_Capture_Click" HorizontalAlignment="Left" Margin="628,185,0,0" VerticalAlignment="Top" Style="{StaticResource CActionButtons}" Background="#FFFBFAFA" BorderBrush="#FFFBF9F9">
             <StackPanel Orientation="Horizontal">
-                <Image Source="Resource/stop.png" Width="29" Height="23" OpacityMask="#FFF6EEEE"/>
+                <Image x:Name="CaptureStopImage" Source="Resource/start.png" Width="48" Height="48"/>
             </StackPanel>
         </Button>
 
