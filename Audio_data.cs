@@ -259,7 +259,7 @@ namespace HottoMotto
             if (recFlag)
             {
                 //ボタンの画像を差し替え
-                CaptureStopImage.Source = new BitmapImage(new Uri(@"../../../../Resource/start.png", UriKind.Relative));
+                CaptureStopImage.Source = new BitmapImage(new Uri(@"Resource/start.png", UriKind.Relative));
                 //RECマークを非表示
                 RecImage.Visibility = Visibility.Hidden;
                 //録音停止メソッド
@@ -270,7 +270,7 @@ namespace HottoMotto
             else
             {
                 //ボタンの画像を差し替え
-                CaptureStopImage.Source = new BitmapImage(new Uri(@"../../../../Resource/stop.png", UriKind.Relative));
+                CaptureStopImage.Source = new BitmapImage(new Uri(@"Resource/stop.png", UriKind.Relative));
                 //RECマークを表示
                 RecImage.Visibility = Visibility.Visible;
                 //録音開始メソッド
