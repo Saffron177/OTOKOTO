@@ -96,6 +96,8 @@ namespace HottoMotto
             string jsonText = File.ReadAllText(filePath);
             //ファイル名を表示
             file_Title.Content = System.IO.Path.GetFileName(filePath);
+            Copy_Button.Content = "コピー";
+            Copy_Button.Visibility = Visibility.Visible;
 
             try
             {
@@ -196,7 +198,7 @@ namespace HottoMotto
 
                 // クリップボードにコピー
                 System.Windows.Clipboard.SetText(allItemsText);
-                System.Windows.MessageBox.Show("すべてのアイテムをクリップボードにコピーしました。", "コピー完了", MessageBoxButton.OK, MessageBoxImage.Information);
+                Copy_Button.Content = "コピーしました";
             }
             else
             {
