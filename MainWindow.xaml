@@ -79,7 +79,7 @@
 
         <Button x:Name="Button_Mute" HorizontalAlignment="Left" Margin="684,353,0,0" VerticalAlignment="Top" Click="Button_Mute_Click" Style="{StaticResource CActionButtons}" Background="#FFFBF9F9" BorderBrush="#FFFBF9F9" Width="44">
             <StackPanel Orientation="Horizontal">
-                <Image x:Name="ButtonIcon" Source="Resource/mute.png" Width="33" Height="26"/>
+                <Image x:Name="ButtonIcon" Source="Resource/unmute.png" Width="33" Height="26"/>
                 <TextBlock x:Name="ButtonText"  VerticalAlignment="Center" Margin="5,0,0,0"/>
             </StackPanel>
         </Button>
