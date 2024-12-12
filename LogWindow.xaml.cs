@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.IO;
 using System.Diagnostics;
+using System.Windows.Controls.Primitives;
 
 namespace HottoMotto
 {
@@ -149,46 +150,81 @@ namespace HottoMotto
         }
 
         //ログ内のテキストを検索する
-        private void Log_Search_Text(object sender, TextChangedEventArgs e)
+        private async void Log_Search_Text(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            //    string searchText = search_Textbox.Text.ToLower(); 
-            //    foreach (var item in LogListBox.Items)
-            //    {
-            //        ListBoxItem listBoxItem = LogListBox.ItemContainerGenerator.ContainerFromItem(item) as ListBoxItem; if (listBoxItem != null)
-            //        {
-            //            string itemText = item.ToString().ToLower();
-            //            if (itemText.Contains(searchText) && !string.IsNullOrWhiteSpace(searchText))
-            //            {
-            //                // ハイライトの適用
-            //                HighlightText(listBoxItem, itemText, searchText);
-            //            }
-            //            else
-            //            {
-            //                // 元の色に戻す
-            //                listBoxItem.Background = System.Windows.Media.Brushes.Transparent; 
-            //                listBoxItem.Content = item; // 元のテキストを戻す
-            //            }
-            //        }
-            //    }
+            if (e.Key == Key.Enter)
+            {
+                label1.Content = "検索!";
+                string searchText = search_Textbox.Text.ToLower();
+
+                foreach (var item in LogListBox.Items)
+                {
+                    ListBoxItem listBoxItem = null;
+
+                    // アイテムコンテナが生成されるのを待つ
+                    while(listBoxItem == null)
+                    {
+                        await System.Threading.Tasks.Task.Delay(10); // 少し待機
+                        listBoxItem = LogListBox.ItemContainerGenerator.ContainerFromItem(item) as ListBoxItem;
+                    }
+                    // アイテムコンテナが生成されたかを確認
+                    if (LogListBox.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
+                    {
+
+                        listBoxItem = LogListBox.ItemContainerGenerator.ContainerFromItem(item) as ListBoxItem;
+                        if (listBoxItem != null)
+                        {
+                            string itemText = item.ToString().ToLower();
+                            if (itemText.Contains(searchText) && !string.IsNullOrWhiteSpace(searchText))
+                            {
+                                // ハイライトの適用
+                                HighlightText(listBoxItem, itemText, searchText);
+                            }
+                            else
+                            {
+                                // 元の色に戻す
+                                listBoxItem.Background = System.Windows.Media.Brushes.Transparent;
+                                listBoxItem.Content = item;
+                            }
+                        }
+                        else
+                        {
+                            System.Windows.MessageBox.Show("エラー");
+                        }
+                    }
+                    else
+                    {
+                        // アイテムコンテナが生成されるのを待つ
+                        LogListBox.ItemContainerGenerator.StatusChanged += (s, args) =>
+                        {
+                            if (LogListBox.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
+                            {
+                                // 再度ハイライト処理を呼び出す
+                                Log_Search_Text(sender, e);
+                            }
+                        };
+                    }
+                }
+            }
         }
 
 
-        //private void HighlightText(ListBoxItem listBoxItem, string itemText, string searchText)
-        //{
-        //    int matchIndex = itemText.IndexOf(searchText);
-        //    string beforeMatch = listBoxItem.Content.ToString().Substring(0, matchIndex);
-        //    string match = listBoxItem.Content.ToString().Substring(matchIndex, searchText.Length);
-        //    string afterMatch = listBoxItem.Content.ToString().Substring(matchIndex + searchText.Length);
-        //    listBoxItem.Background = System.Windows.Media.Brushes.Transparent;
-        //    // 背景色を透明にしてカスタム描画を行う
-        //    TextBlock textBlock = new TextBlock();
-        //    textBlock.Inlines.Add(new Run(beforeMatch));
-        //    textBlock.Inlines.Add(new Run(match) { Background = System.Windows.Media.Brushes.Yellow });
-        //    textBlock.Inlines.Add(new Run(afterMatch));
-        //    listBoxItem.Content = textBlock;
-        //}
+        private void HighlightText(ListBoxItem listBoxItem, string itemText, string searchText)
+        {
+            int matchIndex = itemText.IndexOf(searchText);
+            string beforeMatch = listBoxItem.Content.ToString().Substring(0, matchIndex);
+            string match = listBoxItem.Content.ToString().Substring(matchIndex, searchText.Length);
+            string afterMatch = listBoxItem.Content.ToString().Substring(matchIndex + searchText.Length);
+            listBoxItem.Background = System.Windows.Media.Brushes.Transparent;
+            // 背景色を透明にしてカスタム描画を行う
+            TextBlock textBlock = new TextBlock();
+            textBlock.Inlines.Add(new Run(beforeMatch));
+            textBlock.Inlines.Add(new Run(match) { Background = System.Windows.Media.Brushes.Yellow });
+            textBlock.Inlines.Add(new Run(afterMatch));
+            listBoxItem.Content = textBlock;
+        }
 
-
+        //コピーボタンのクリック処理
         private void Copy_Button_Click(object sender, RoutedEventArgs e)
         {
             if (LogListBox.Items.Count > 0)
