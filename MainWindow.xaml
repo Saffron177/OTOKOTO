@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:HottoMotto"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
@@ -12,7 +13,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="50" Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}">
+                        <Border CornerRadius="50" Background="{TemplateBinding Background}" BorderThickness="1"  BorderBrush="{TemplateBinding BorderBrush}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
@@ -29,13 +30,13 @@
     </Window.Resources>
 
     <Grid>
-        <Button x:Name="Button_Save" Margin="710,30,0,0" Click="Button_Save_Click" BorderBrush="{x:Null}" Background="{x:Null}" Height="29" VerticalAlignment="Top" Width="29">
+        <Button x:Name="Button_Save" Margin="710,30,0,0" Click="Button_Save_Click" Style="{x:Null}" BorderBrush="{x:Null}" Background="{x:Null}" Height="29" VerticalAlignment="Top" Width="29">
             <StackPanel Orientation="Horizontal">
                 <Image Source="Resource/hozon.png" Width="23" Height="23" RenderTransformOrigin="0.5,0.5"/>
             </StackPanel>
         </Button>
 
-        <ListBox x:Name="RealtimeListBox" HorizontalAlignment="Left" Margin="26,52,0,0" VerticalAlignment="Top" Width="549" Height="305" RenderTransformOrigin="0.5,0.5"  BorderBrush="Black" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <ListBox x:Name="RealtimeListBox" HorizontalAlignment="Left" Margin="26,52,0,0" Style="{x:Null}" VerticalAlignment="Top" Width="549" Height="305" RenderTransformOrigin="0.5,0.5"  BorderBrush="Black" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.Resources>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="20"/>
@@ -58,10 +59,58 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <ComboBox x:Name="ComboBox_AudioDevices" HorizontalAlignment="Left" Margin="663,353,0,0" VerticalAlignment="Top" Width="14" SelectionChanged="ComboBox_AudioDevices_SelectionChanged" Background="White" BorderBrush="{x:Null}"/>
-        <Image HorizontalAlignment="Left" Height="32" Margin="631,359,0,0" VerticalAlignment="Top" Width="36" Source="/Resource/speaker.png" Grid.Column="0"/>
 
-        <Button x:Name="Button_capture_start" HorizontalAlignment="Left" Margin="597,30,0,0" VerticalAlignment="Top" Style="{StaticResource CActionButtons}" Width="50" Background="#FFFBFAFA" BorderBrush="#FFFBF9F9">
+
+
+        <ComboBox
+    x:Name="ComboBox_AudioDevices"
+    Margin="599,374,24,0"
+    materialDesign:HintAssist.Hint="再生デバイスを選択"
+    Style="{StaticResource MaterialDesignOutlinedComboBox}" VerticalAlignment="Top">
+            <ComboBox.ToolTip>
+                <ToolTip
+            Style="{StaticResource MaterialDesignToolTip}"
+            MaxWidth="300">
+                    <StackPanel>
+                        <TextBlock 
+                    Text="再生デバイスの選択"
+                    FontWeight="Bold"
+                    Margin="0,0,0,4"/>
+                        <TextBlock 
+                    Text="音声を出力しているデバイスを選択" 
+                    TextWrapping="Wrap"/>
+                    </StackPanel>
+                </ToolTip>
+            </ComboBox.ToolTip>
+        </ComboBox>
+
+        <ComboBox
+    x:Name="ComboBox_MicDevices"
+    Margin="599,314,24,0"
+    materialDesign:HintAssist.Hint="録音デバイスを選択"
+    Style="{StaticResource MaterialDesignOutlinedComboBox}" VerticalAlignment="Top">
+            <ComboBox.ToolTip>
+                <ToolTip
+            Style="{StaticResource MaterialDesignToolTip}"
+            MaxWidth="300">
+                    <StackPanel>
+                        <TextBlock 
+                    Text="録音デバイスの選択"
+                    FontWeight="Bold"
+                    Margin="0,0,0,4"/>
+                        <TextBlock 
+                    Text="音声が入力されているデバイスを選択" 
+                    TextWrapping="Wrap"/>
+                    </StackPanel>
+                </ToolTip>
+            </ComboBox.ToolTip>
+        </ComboBox>
+
+
+
+
+
+        <Button x:Name="Button_capture_start" HorizontalAlignment="Left"  Margin="597,30,0,0" VerticalAlignment="Top" Style="{StaticResource CActionButtons}" Width="50" Background="#FFFBFAFA" BorderBrush="#FFFBF9F9">
             <StackPanel Orientation="Horizontal">
                 <Image x:Name="RecImage" Source="Resource/play.png" Visibility="Hidden" Width="33" Height="25" RenderTransformOrigin="0.5,0.5"/>
             </StackPanel>
@@ -75,15 +124,14 @@
             </StackPanel>
         </Button>
 
-        <ComboBox x:Name="ComboBox_MicDevices" HorizontalAlignment="Left" Margin="728,353,0,0" VerticalAlignment="Top" Width="14" BorderBrush="White"/>
 
-        <Button x:Name="Button_Mute" HorizontalAlignment="Left" Margin="684,353,0,0" VerticalAlignment="Top" Click="Button_Mute_Click" Style="{StaticResource CActionButtons}" Background="#FFFBF9F9" BorderBrush="#FFFBF9F9" Width="44">
+        <Button x:Name="Button_Mute" HorizontalAlignment="Left" Margin="725,259,0,0" VerticalAlignment="Top" Click="Button_Mute_Click" Style="{StaticResource CActionButtons}" Background="#FFFBF9F9" BorderBrush="#FFFBF9F9" Width="44">
             <StackPanel Orientation="Horizontal">
                 <Image x:Name="ButtonIcon" Source="Resource/mute.png" Width="33" Height="26"/>
                 <TextBlock x:Name="ButtonText"  VerticalAlignment="Center" Margin="5,0,0,0"/>
             </StackPanel>
         </Button>
-        <Button Margin="650,30,0,0" VerticalAlignment="Top" Click="Button_Log_Click" Height="29" BorderBrush="{x:Null}" Background="{x:Null}" Width="29">
+        <Button Margin="650,30,0,0" VerticalAlignment="Top" Click="Button_Log_Click" Style="{x:Null}" Height="29" BorderBrush="{x:Null}" Background="{x:Null}" Width="29">
             <StackPanel Orientation="Horizontal">
                 <Image Source="Resource/log.png" Width="23" Height="23" RenderTransformOrigin="0.5,0.5"/>
             </StackPanel>

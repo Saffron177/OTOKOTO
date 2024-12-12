@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Text.Json;
 using System.Windows;
 using Vosk;
+using System.Windows.Controls;
 namespace HottoMotto
 {
     /// <summary>
@@ -26,7 +27,7 @@ namespace HottoMotto
             LoadAudioDevices();
             LoadMicDevices();
             // モデルをロード（解凍したモデルのパスを指定）
-            string modelPath = "Models/vosk-model-small-ja-0.22";
+            string modelPath = "Models/vosk-model-ja-0.22";
             Console.WriteLine("モデルパス: " + modelPath);
             model = new Model(modelPath);
             recognizer = new VoskRecognizer(model, 16000.0f);
@@ -160,6 +161,21 @@ namespace HottoMotto
                     }
                 });
             }
+        }
+
+      
+
+
+
+        //conboboxのやーつ
+        private void ClearAudioDevices_Click(object sender, RoutedEventArgs e)
+        {
+            ComboBox_AudioDevices.SelectedIndex = -1;
+        }
+
+        private void ClearMicDevices_Click(object sender, RoutedEventArgs e)
+        {
+            ComboBox_MicDevices.SelectedIndex = -1;
         }
 
         private void Button_Log_Click(object sender, RoutedEventArgs e)
