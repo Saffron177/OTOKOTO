@@ -68,7 +68,20 @@
                                 </Style.Triggers>
                             </Style>
                         </Border.Style>
-                        <TextBlock Text="{Binding Text}" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding Text}" TextWrapping="Wrap">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <!-- デフォルトのフォントサイズ -->
+                                    <Setter Property="FontSize" Value="10" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                                            <!-- IsHighlightedがTrueのときフォントサイズを変更 -->
+                                            <Setter Property="FontSize" Value="12" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
                     </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>
