@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualBasic.Logging;
 using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text.Json;
 using System.Windows;
@@ -145,7 +146,7 @@ namespace HottoMotto
                         else
                         {
                             //出力中のテキストを上書き
-                            RealtimeListBox.Items[(int)speakerIndex] = speakerDateTime + " (スピーカー)" + "\n" + json_text.partial;
+                            RealtimeListBox.Items[(int)speakerIndex] = new ListBoxModel { Text = json_text.partial, IsHighlighted = true };
                         }
                     }
                     //マイク音声の処理
