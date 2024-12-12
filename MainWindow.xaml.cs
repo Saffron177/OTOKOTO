@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Text.Json;
 using System.Windows;
 using Vosk;
-
+using System.Windows.Controls;
 namespace HottoMotto
 {
     /// <summary>
@@ -170,6 +170,21 @@ namespace HottoMotto
                     }
                 });
             }
+        }
+
+      
+
+
+
+        //conboboxのやーつ
+        private void ClearAudioDevices_Click(object sender, RoutedEventArgs e)
+        {
+            ComboBox_AudioDevices.SelectedIndex = -1;
+        }
+
+        private void ClearMicDevices_Click(object sender, RoutedEventArgs e)
+        {
+            ComboBox_MicDevices.SelectedIndex = -1;
         }
 
         private void Button_Log_Click(object sender, RoutedEventArgs e)

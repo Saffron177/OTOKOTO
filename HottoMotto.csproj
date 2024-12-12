@@ -15,6 +15,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="MaterialDesignColors" Version="3.1.0" />
+		<PackageReference Include="MaterialDesignThemes" Version="5.1.0" />
+		<PackageReference Include="MaterialDesignThemes.MahApps" Version="3.1.0" />
 		<PackageReference Include="NAudio" Version="2.2.1" />
 		<PackageReference Include="Vosk" Version="0.3.38" />
 	</ItemGroup>
@@ -22,7 +25,7 @@
 	<ItemGroup>
 		<Folder Include="Logs\" />
 		<Folder Include="Models\" />
-		<Folder Include="Resource\"/>
+		<Folder Include="Resource\" />
 	</ItemGroup>
 
 	<ItemGroup>
