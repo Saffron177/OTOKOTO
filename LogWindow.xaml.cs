@@ -108,7 +108,8 @@ namespace HottoMotto
                 // リストボックスにデータを追加
                 foreach (var log in logs)
                 {
-                    LogListBox.Items.Add($"{log.TimeStamp}" + (log.IsSpeaker ? "(スピーカー)" : "(マイク)") + "\n" + $"{log.Text}");
+                    LogListBox.Items.Add(new ListBoxModel { Text = (log.TimeStamp + (log.IsSpeaker ? "(スピーカー)" : "(マイク)")), IsHighlighted = false });
+                    LogListBox.Items.Add(new ListBoxModel { Text = log.Text, IsHighlighted = true });
                 }
             }
             catch (JsonException ex)

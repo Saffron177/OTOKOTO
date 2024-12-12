@@ -183,10 +183,10 @@ namespace HottoMotto
         {
 
         }
-        public class ListBoxModel
-        {
-            public string Text { get; set; }
-            public bool IsHighlighted { get; set; }
-        }
+    }
+    public class ListBoxModel
+    {
+        public string Text { get; set; }
+        public bool IsHighlighted { get; set; }
     }
 }
