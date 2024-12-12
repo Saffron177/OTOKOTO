@@ -55,14 +55,14 @@ namespace HottoMotto
                         logList.Items.Add(System.IO.Path.GetFileName(file));
                     }
                 }
-                else //fileがないばあい
+                else //fileがない場合
                 {
-                    logList.Items.Add("logファイルがありません");
+                    logList.Items.Add("ログが見つかりませんでした。");
                 }
             }
             else //ディレクトリが存在しない場合
             {
-                logList.Items.Add("指定したディレクトリが存在しません。");
+                logList.Items.Add("ログを保存するとここから確認できるようになります。");
             }
         }
 
