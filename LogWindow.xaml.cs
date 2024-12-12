@@ -170,6 +170,7 @@ namespace HottoMotto
             //    }
         }
 
+
         //private void HighlightText(ListBoxItem listBoxItem, string itemText, string searchText)
         //{
         //    int matchIndex = itemText.IndexOf(searchText);
@@ -185,5 +186,22 @@ namespace HottoMotto
         //    listBoxItem.Content = textBlock;
         //}
 
+
+        private void Copy_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (LogListBox.Items.Count > 0)
+            {
+                // すべてのアイテムを文字列として結合
+                string allItemsText = string.Join("\n", LogListBox.Items.Cast<object>().Select(item => item.ToString()));
+
+                // クリップボードにコピー
+                System.Windows.Clipboard.SetText(allItemsText);
+                System.Windows.MessageBox.Show("すべてのアイテムをクリップボードにコピーしました。", "コピー完了", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("リストボックスにアイテムがありません。", "エラー", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
     }
 }

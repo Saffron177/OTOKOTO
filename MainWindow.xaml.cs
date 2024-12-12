@@ -143,7 +143,6 @@ namespace HottoMotto
                         {
                             //出力中のテキストを上書き
                             RealtimeListBox.Items[(int)speakerIndex] = speakerDateTime + " (スピーカー)" + "\n" + json_text.partial;
-                            RealtimeListBox.ScrollIntoView(RealtimeListBox.Items[RealtimeListBox.Items.Count - 1]);
                         }
                     }
                     //マイク音声の処理
@@ -162,7 +161,6 @@ namespace HottoMotto
                         {
                             //出力中のテキストを上書き
                             RealtimeListBox.Items[(int)micIndex] = micDateTime + " (マイク)" + "\n" + json_text.partial;
-                            RealtimeListBox.ScrollIntoView(RealtimeListBox.Items[RealtimeListBox.Items.Count - 1]);
                         }
                     }
                 });
