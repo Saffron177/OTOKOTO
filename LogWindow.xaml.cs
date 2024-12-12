@@ -55,14 +55,14 @@ namespace HottoMotto
                         logList.Items.Add(System.IO.Path.GetFileName(file));
                     }
                 }
-                else //fileがないばあい
+                else //fileがない場合
                 {
-                    logList.Items.Add("logファイルがありません");
+                    logList.Items.Add("ログが見つかりませんでした。");
                 }
             }
             else //ディレクトリが存在しない場合
             {
-                logList.Items.Add("指定したディレクトリが存在しません。");
+                logList.Items.Add("ログを保存するとここから確認できるようになります。");
             }
         }
 
@@ -96,6 +96,8 @@ namespace HottoMotto
             string jsonText = File.ReadAllText(filePath);
             //ファイル名を表示
             file_Title.Content = System.IO.Path.GetFileName(filePath);
+            Copy_Button.Content = "コピー";
+            Copy_Button.Visibility = Visibility.Visible;
 
             try
             {
@@ -106,7 +108,8 @@ namespace HottoMotto
                 // リストボックスにデータを追加
                 foreach (var log in logs)
                 {
-                    LogListBox.Items.Add($"{log.TimeStamp}" + (log.IsSpeaker ? "(スピーカー)" : "(マイク)") + "\n" + $"{log.Text}");
+                    LogListBox.Items.Add(new ListBoxModel { Text = (log.TimeStamp + (log.IsSpeaker ? "(スピーカー)" : "(マイク)")), IsHighlighted = false });
+                    LogListBox.Items.Add(new ListBoxModel { Text = log.Text, IsHighlighted = true });
                 }
             }
             catch (JsonException ex)
@@ -130,11 +133,6 @@ namespace HottoMotto
 
         }
 
-        //ログ内のテキストを検索する
-        private void Log_Search_Text(object sender, TextChangedEventArgs e)
-        {
-
-        }
 
         // ListBoxの内容を更新するメソッド
         private void UpdateListBox(string[] filteredFiles)
@@ -148,6 +146,64 @@ namespace HottoMotto
             foreach (string file in filteredFiles)
             {
                 logList.Items.Add(System.IO.Path.GetFileName(file));
+            }
+        }
+
+        //ログ内のテキストを検索する
+        private void Log_Search_Text(object sender, TextChangedEventArgs e)
+        {
+            //    string searchText = search_Textbox.Text.ToLower(); 
+            //    foreach (var item in LogListBox.Items)
+            //    {
+            //        ListBoxItem listBoxItem = LogListBox.ItemContainerGenerator.ContainerFromItem(item) as ListBoxItem; if (listBoxItem != null)
+            //        {
+            //            string itemText = item.ToString().ToLower();
+            //            if (itemText.Contains(searchText) && !string.IsNullOrWhiteSpace(searchText))
+            //            {
+            //                // ハイライトの適用
+            //                HighlightText(listBoxItem, itemText, searchText);
+            //            }
+            //            else
+            //            {
+            //                // 元の色に戻す
+            //                listBoxItem.Background = System.Windows.Media.Brushes.Transparent; 
+            //                listBoxItem.Content = item; // 元のテキストを戻す
+            //            }
+            //        }
+            //    }
+        }
+
+
+        //private void HighlightText(ListBoxItem listBoxItem, string itemText, string searchText)
+        //{
+        //    int matchIndex = itemText.IndexOf(searchText);
+        //    string beforeMatch = listBoxItem.Content.ToString().Substring(0, matchIndex);
+        //    string match = listBoxItem.Content.ToString().Substring(matchIndex, searchText.Length);
+        //    string afterMatch = listBoxItem.Content.ToString().Substring(matchIndex + searchText.Length);
+        //    listBoxItem.Background = System.Windows.Media.Brushes.Transparent;
+        //    // 背景色を透明にしてカスタム描画を行う
+        //    TextBlock textBlock = new TextBlock();
+        //    textBlock.Inlines.Add(new Run(beforeMatch));
+        //    textBlock.Inlines.Add(new Run(match) { Background = System.Windows.Media.Brushes.Yellow });
+        //    textBlock.Inlines.Add(new Run(afterMatch));
+        //    listBoxItem.Content = textBlock;
+        //}
+
+
+        private void Copy_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (LogListBox.Items.Count > 0)
+            {
+                // すべてのアイテムを文字列として結合
+                string allItemsText = string.Join("\n", LogListBox.Items.Cast<ListBoxModel>().Select(item => item.Text));
+
+                // クリップボードにコピー
+                System.Windows.Clipboard.SetText(allItemsText);
+                Copy_Button.Content = "コピーしました";
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("リストボックスにアイテムがありません。", "エラー", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
     }

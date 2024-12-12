@@ -52,8 +52,24 @@
             </ListBox.RenderTransform>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Border Background="AliceBlue" CornerRadius="5" Padding="5">
-                        <TextBlock Text="{Binding}" TextWrapping="Wrap" />
+                    <Border CornerRadius="5">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <!-- 背景色のデフォルト（何も設定しない場合は透明になる） -->
+                                <Setter Property="Background" Value="{x:Null}" />
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="Margin" Value="0"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                                        <!-- IsHighlightedがTrueのときに背景色をBlueに設定 -->
+                                        <Setter Property="Background" Value="AliceBlue" />
+                                        <Setter Property="Padding" Value="8"/>
+                                        <Setter Property="Margin" Value="0,0,0,5"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock Text="{Binding Text}" TextWrapping="Wrap" />
                     </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -127,7 +143,7 @@
 
         <Button x:Name="Button_Mute" HorizontalAlignment="Left" Margin="725,259,0,0" VerticalAlignment="Top" Click="Button_Mute_Click" Style="{StaticResource CActionButtons}" Background="#FFFBF9F9" BorderBrush="#FFFBF9F9" Width="44">
             <StackPanel Orientation="Horizontal">
-                <Image x:Name="ButtonIcon" Source="Resource/mute.png" Width="33" Height="26"/>
+                <Image x:Name="ButtonIcon" Source="Resource/unmute.png" Width="33" Height="26"/>
                 <TextBlock x:Name="ButtonText"  VerticalAlignment="Center" Margin="5,0,0,0"/>
             </StackPanel>
         </Button>
