@@ -53,6 +53,7 @@ namespace HottoMotto
         {
             //"text"のみのjsonで送られてくるためパースする
             JsonText json_text = JsonSerializer.Deserialize<JsonText>(text) ?? new JsonText();
+            json_text.text = json_text.text.Replace(" ", "");
             Debug.Print("json_text:" + json_text.text);
 
             //nullか空でない場合に書き起こす
@@ -117,9 +118,10 @@ namespace HottoMotto
         {
             //"partial"のみのjsonで送られてくるためパースする
             JsonText json_text = JsonSerializer.Deserialize<JsonText>(partial) ?? new JsonText();
+            json_text.partial = json_text.partial.Replace(" ", "");
 
             //空文字を除去
-            if(json_text.partial != null && json_text.partial != "")
+            if (json_text.partial != null && json_text.partial != "")
             {
                 // Dispatcher.Invokeを使用してUIスレッドで実行
                 RealtimeListBox.Dispatcher.Invoke(() =>
