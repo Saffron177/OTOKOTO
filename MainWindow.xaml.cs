@@ -69,14 +69,13 @@ namespace HottoMotto
                         //出力中のテキストを上書きして確定する
                         if(speakerIndex != null)
                         {
-                            RealtimeListBox.Items[(int)speakerIndex] = json_text.text;
+                            RealtimeListBox.Items[(int)speakerIndex] = speakerDateTime + " (スピーカー)" + "\n" + json_text.text;
                         }
                         //出力中のテキストがなければ行追加して出力する
                         else
                         {
                             speakerDateTime = DateTime.Now;
-                            RealtimeListBox.Items.Add(speakerDateTime + " (スピーカー)");
-                            RealtimeListBox.Items.Add(json_text.text);
+                            RealtimeListBox.Items.Add(speakerDateTime + " (スピーカー)" + "\n" + json_text.text);
                         }
                         //確定したテキストをjson化してリストに入れる
                         speakerIndex = null;
@@ -93,14 +92,13 @@ namespace HottoMotto
                         //出力中のテキストを上書きして確定する
                         if (micIndex != null)
                         {
-                            RealtimeListBox.Items[(int)micIndex] = json_text.text;
+                            RealtimeListBox.Items[(int)micIndex] = micDateTime + " (マイク)" + "\n" + json_text.text;
                         }
                         //出力中のテキストがなければ行追加して出力する
                         else
                         {
                             micDateTime = DateTime.Now;
-                            RealtimeListBox.Items.Add(micDateTime + " (マイク)");
-                            RealtimeListBox.Items.Add(json_text.text);
+                            RealtimeListBox.Items.Add(micDateTime + " (マイク)" + "\n" + json_text.text);
                         }
                         //確定したテキストをjson化してリストに入れる
                         micIndex = null;
@@ -133,15 +131,14 @@ namespace HottoMotto
                         if(speakerIndex == null)
                         {
                             speakerDateTime = DateTime.Now;
-                            RealtimeListBox.Items.Add(speakerDateTime + " (スピーカー)");
-                            RealtimeListBox.Items.Add(json_text.partial);
+                            RealtimeListBox.Items.Add(speakerDateTime + " (スピーカー)" + "\n" + json_text.partial);
                             //出力中の行番号を保存
                             speakerIndex = RealtimeListBox.Items.Count - 1;
                         }
                         else
                         {
                             //出力中のテキストを上書き
-                            RealtimeListBox.Items[(int)speakerIndex] = json_text.partial;
+                            RealtimeListBox.Items[(int)speakerIndex] = speakerDateTime + " (スピーカー)" + "\n" + json_text.partial;
                         }
                     }
                     //マイク音声の処理
@@ -151,16 +148,15 @@ namespace HottoMotto
                         if (micIndex == null)
                         {
                             micDateTime = DateTime.Now;
-                            RealtimeListBox.Items.Add(micDateTime + " (マイク)");
-                            RealtimeListBox.Items.Add(json_text.partial);
+                            RealtimeListBox.Items.Add(micDateTime + " (マイク)" + "\n" + json_text.partial);
                             //出力中の行番号を保存
                             micIndex = RealtimeListBox.Items.Count - 1;
                         }
                         else
                         {
                             //出力中のテキストを上書き
-                            RealtimeListBox.Items[(int)micIndex] = json_text.partial;
-                        }
+                            RealtimeListBox.Items[(int)micIndex] = micDateTime + " (マイク)" + "\n" + json_text.partial;
+            }
                     }
                 });
             }

@@ -18,6 +18,9 @@ namespace HottoMotto
 
         //ミュートボタン用のフラグ
         private bool is_mute = false;
+        //録音開始・停止フラグ
+        private bool recFlag = false;
+
         //マイク接続確認フラグ
         private bool is_Mic_Connected = true;
         ///<summary>
@@ -65,7 +68,7 @@ namespace HottoMotto
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Button_capture_start_Click(object sender, RoutedEventArgs e)
+        private void ButtonCaptureStart(object sender, RoutedEventArgs e)
         {
             is_Mic_Connected = true;
             Debug.Print("Button: capture_start_Click");
@@ -227,7 +230,7 @@ namespace HottoMotto
                 Debug.Print($"エラー: {ex.Message}");
             }
         }
-        private void Button_capture_stop_Click(object sender, RoutedEventArgs e)
+        private void ButtonCaptureStop(object sender, RoutedEventArgs e)
         {
             Debug.Print("Button: capture_stop_Click");
             if (capture != null)
@@ -247,6 +250,33 @@ namespace HottoMotto
         {
             Debug.Print("Button: Save_Click");
             File_Output();
+        }
+
+        //録音ボタン
+        private void Button_Capture_Click(object sender, RoutedEventArgs e)
+        {
+            //録音中の場合は停止処理
+            if (recFlag)
+            {
+                //ボタンの画像を差し替え
+                CaptureStopImage.Source = new BitmapImage(new Uri(@"../../../../Resource/start.png", UriKind.Relative));
+                //RECマークを非表示
+                RecImage.Visibility = Visibility.Hidden;
+                //録音停止メソッド
+                ButtonCaptureStop(sender, e);
+                recFlag = false;
+            }
+            //開始処理
+            else
+            {
+                //ボタンの画像を差し替え
+                CaptureStopImage.Source = new BitmapImage(new Uri(@"../../../../Resource/stop.png", UriKind.Relative));
+                //RECマークを表示
+                RecImage.Visibility = Visibility.Visible;
+                //録音開始メソッド
+                ButtonCaptureStart(sender, e);
+                recFlag = true;
+            }
         }
 
         //ファイルの保存関数
