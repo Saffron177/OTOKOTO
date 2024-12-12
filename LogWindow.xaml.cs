@@ -130,11 +130,6 @@ namespace HottoMotto
 
         }
 
-        //ログ内のテキストを検索する
-        private void Log_Search_Text(object sender, TextChangedEventArgs e)
-        {
-
-        }
 
         // ListBoxの内容を更新するメソッド
         private void UpdateListBox(string[] filteredFiles)
@@ -150,5 +145,45 @@ namespace HottoMotto
                 logList.Items.Add(System.IO.Path.GetFileName(file));
             }
         }
+
+        //ログ内のテキストを検索する
+        private void Log_Search_Text(object sender, TextChangedEventArgs e)
+        {
+            //    string searchText = search_Textbox.Text.ToLower(); 
+            //    foreach (var item in LogListBox.Items)
+            //    {
+            //        ListBoxItem listBoxItem = LogListBox.ItemContainerGenerator.ContainerFromItem(item) as ListBoxItem; if (listBoxItem != null)
+            //        {
+            //            string itemText = item.ToString().ToLower();
+            //            if (itemText.Contains(searchText) && !string.IsNullOrWhiteSpace(searchText))
+            //            {
+            //                // ハイライトの適用
+            //                HighlightText(listBoxItem, itemText, searchText);
+            //            }
+            //            else
+            //            {
+            //                // 元の色に戻す
+            //                listBoxItem.Background = System.Windows.Media.Brushes.Transparent; 
+            //                listBoxItem.Content = item; // 元のテキストを戻す
+            //            }
+            //        }
+            //    }
+        }
+
+        //private void HighlightText(ListBoxItem listBoxItem, string itemText, string searchText)
+        //{
+        //    int matchIndex = itemText.IndexOf(searchText);
+        //    string beforeMatch = listBoxItem.Content.ToString().Substring(0, matchIndex);
+        //    string match = listBoxItem.Content.ToString().Substring(matchIndex, searchText.Length);
+        //    string afterMatch = listBoxItem.Content.ToString().Substring(matchIndex + searchText.Length);
+        //    listBoxItem.Background = System.Windows.Media.Brushes.Transparent;
+        //    // 背景色を透明にしてカスタム描画を行う
+        //    TextBlock textBlock = new TextBlock();
+        //    textBlock.Inlines.Add(new Run(beforeMatch));
+        //    textBlock.Inlines.Add(new Run(match) { Background = System.Windows.Media.Brushes.Yellow });
+        //    textBlock.Inlines.Add(new Run(afterMatch));
+        //    listBoxItem.Content = textBlock;
+        //}
+
     }
 }
