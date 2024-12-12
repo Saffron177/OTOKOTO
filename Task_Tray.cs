@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.ApplicationServices;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,8 +26,20 @@ namespace HottoMotto
                 Text = "アプリケーション名"
             };
 
+
             // コンテキストメニューの設定
-            var contextMenu = new ContextMenuStrip();
+            var contextMenu = new ContextMenuStrip()
+            {
+                ShowImageMargin = false,
+            };
+            ToolStripLabel status = new ToolStripLabel()
+            {
+                Text = "Welcome",
+                Font = new Font("Yu Gothic UI", 12),
+            };
+
+            contextMenu.Items.Add(status);
+            contextMenu.Items.Add(new ToolStripSeparator());
             contextMenu.Items.Add("開く", null, (s, e) => ShowWindow());
             contextMenu.Items.Add(new ToolStripSeparator());
             contextMenu.Items.Add("終了", null, (s, e) => ExitApplication());
@@ -64,9 +78,13 @@ namespace HottoMotto
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             base.OnClosing(e);
-
             e.Cancel = true; // 閉じる動作をキャンセル
             this.Hide(); // ウィンドウを非表示にする
+        }
+
+        private void Task_Tray_icon_change()
+        {
+
         }
     }
 }

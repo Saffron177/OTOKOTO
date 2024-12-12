@@ -1,10 +1,11 @@
 ﻿using Microsoft.VisualBasic.Logging;
 using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text.Json;
 using System.Windows;
 using Vosk;
-
+using System.Windows.Controls;
 namespace HottoMotto
 {
     /// <summary>
@@ -145,7 +146,7 @@ namespace HottoMotto
                         else
                         {
                             //出力中のテキストを上書き
-                            RealtimeListBox.Items[(int)speakerIndex] = speakerDateTime + " (スピーカー)" + "\n" + json_text.partial;
+                            RealtimeListBox.Items[(int)speakerIndex] = new ListBoxModel { Text = json_text.partial, IsHighlighted = true };
                         }
                     }
                     //マイク音声の処理
@@ -171,6 +172,21 @@ namespace HottoMotto
             }
         }
 
+      
+
+
+
+        //conboboxのやーつ
+        private void ClearAudioDevices_Click(object sender, RoutedEventArgs e)
+        {
+            ComboBox_AudioDevices.SelectedIndex = -1;
+        }
+
+        private void ClearMicDevices_Click(object sender, RoutedEventArgs e)
+        {
+            ComboBox_MicDevices.SelectedIndex = -1;
+        }
+
         private void Button_Log_Click(object sender, RoutedEventArgs e)
         {
             Debug.Print("Button: Log_Click");
@@ -182,10 +198,10 @@ namespace HottoMotto
         {
 
         }
-        public class ListBoxModel
-        {
-            public string Text { get; set; }
-            public bool IsHighlighted { get; set; }
-        }
+    }
+    public class ListBoxModel
+    {
+        public string Text { get; set; }
+        public bool IsHighlighted { get; set; }
     }
 }
