@@ -1,9 +1,11 @@
 ﻿using Microsoft.VisualBasic.Logging;
 using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text.Json;
 using System.Windows;
 using Vosk;
+using System.Windows.Controls;
 namespace HottoMotto
 {
     /// <summary>
@@ -53,6 +55,7 @@ namespace HottoMotto
         {
             //"text"のみのjsonで送られてくるためパースする
             JsonText json_text = JsonSerializer.Deserialize<JsonText>(text) ?? new JsonText();
+            json_text.text = json_text.text.Replace(" ", "");
             Debug.Print("json_text:" + json_text.text);
 
             //nullか空でない場合に書き起こす
@@ -69,13 +72,14 @@ namespace HottoMotto
                         //出力中のテキストを上書きして確定する
                         if(speakerIndex != null)
                         {
-                            RealtimeListBox.Items[(int)speakerIndex] = speakerDateTime + " (スピーカー)" + "\n" + json_text.text;
+                            RealtimeListBox.Items[(int)speakerIndex] = new ListBoxModel { Text = json_text.text, IsHighlighted = true };
                         }
                         //出力中のテキストがなければ行追加して出力する
                         else
                         {
                             speakerDateTime = DateTime.Now;
-                            RealtimeListBox.Items.Add(speakerDateTime + " (スピーカー)" + "\n" + json_text.text);
+                            RealtimeListBox.Items.Add(new ListBoxModel { Text = speakerDateTime + " (スピーカー)", IsHighlighted = false });
+                            RealtimeListBox.Items.Add(new ListBoxModel { Text = json_text.text, IsHighlighted = true });
                         }
                         //確定したテキストをjson化してリストに入れる
                         speakerIndex = null;
@@ -92,13 +96,14 @@ namespace HottoMotto
                         //出力中のテキストを上書きして確定する
                         if (micIndex != null)
                         {
-                            RealtimeListBox.Items[(int)micIndex] = micDateTime + " (マイク)" + "\n" + json_text.text;
+                            RealtimeListBox.Items[(int)micIndex] = new ListBoxModel { Text = json_text.text, IsHighlighted = true };
                         }
                         //出力中のテキストがなければ行追加して出力する
                         else
                         {
                             micDateTime = DateTime.Now;
-                            RealtimeListBox.Items.Add(micDateTime + " (マイク)" + "\n" + json_text.text);
+                            RealtimeListBox.Items.Add(new ListBoxModel { Text = micDateTime + " (マイク)", IsHighlighted = false });
+                            RealtimeListBox.Items.Add(new ListBoxModel { Text = json_text.text, IsHighlighted = true });
                         }
                         //確定したテキストをjson化してリストに入れる
                         micIndex = null;
@@ -117,9 +122,10 @@ namespace HottoMotto
         {
             //"partial"のみのjsonで送られてくるためパースする
             JsonText json_text = JsonSerializer.Deserialize<JsonText>(partial) ?? new JsonText();
+            json_text.partial = json_text.partial.Replace(" ", "");
 
             //空文字を除去
-            if(json_text.partial != null && json_text.partial != "")
+            if (json_text.partial != null && json_text.partial != "")
             {
                 // Dispatcher.Invokeを使用してUIスレッドで実行
                 RealtimeListBox.Dispatcher.Invoke(() =>
@@ -131,14 +137,16 @@ namespace HottoMotto
                         if(speakerIndex == null)
                         {
                             speakerDateTime = DateTime.Now;
-                            RealtimeListBox.Items.Add(speakerDateTime + " (スピーカー)" + "\n" + json_text.partial);
+                            RealtimeListBox.Items.Add(new ListBoxModel { Text = speakerDateTime + " (スピーカー)", IsHighlighted = false });
+                            RealtimeListBox.Items.Add(new ListBoxModel { Text = json_text.partial, IsHighlighted = true });
                             //出力中の行番号を保存
                             speakerIndex = RealtimeListBox.Items.Count - 1;
+                            RealtimeListBox.ScrollIntoView(RealtimeListBox.Items[RealtimeListBox.Items.Count - 1]);
                         }
                         else
                         {
                             //出力中のテキストを上書き
-                            RealtimeListBox.Items[(int)speakerIndex] = speakerDateTime + " (スピーカー)" + "\n" + json_text.partial;
+                            RealtimeListBox.Items[(int)speakerIndex] = new ListBoxModel { Text = json_text.partial, IsHighlighted = true };
                         }
                     }
                     //マイク音声の処理
@@ -148,18 +156,35 @@ namespace HottoMotto
                         if (micIndex == null)
                         {
                             micDateTime = DateTime.Now;
-                            RealtimeListBox.Items.Add(micDateTime + " (マイク)" + "\n" + json_text.partial);
+                            RealtimeListBox.Items.Add(new ListBoxModel { Text = micDateTime + " (マイク)", IsHighlighted = false });
+                            RealtimeListBox.Items.Add(new ListBoxModel { Text = json_text.partial, IsHighlighted = true });
                             //出力中の行番号を保存
                             micIndex = RealtimeListBox.Items.Count - 1;
+                            RealtimeListBox.ScrollIntoView(RealtimeListBox.Items[RealtimeListBox.Items.Count - 1]);
                         }
                         else
                         {
                             //出力中のテキストを上書き
-                            RealtimeListBox.Items[(int)micIndex] = micDateTime + " (マイク)" + "\n" + json_text.partial;
-            }
+                            RealtimeListBox.Items[(int)micIndex] = new ListBoxModel { Text = json_text.partial, IsHighlighted = true };
+                        }
                     }
                 });
             }
+        }
+
+      
+
+
+
+        //conboboxのやーつ
+        private void ClearAudioDevices_Click(object sender, RoutedEventArgs e)
+        {
+            ComboBox_AudioDevices.SelectedIndex = -1;
+        }
+
+        private void ClearMicDevices_Click(object sender, RoutedEventArgs e)
+        {
+            ComboBox_MicDevices.SelectedIndex = -1;
         }
 
         private void Button_Log_Click(object sender, RoutedEventArgs e)
@@ -173,5 +198,10 @@ namespace HottoMotto
         {
 
         }
+    }
+    public class ListBoxModel
+    {
+        public string Text { get; set; }
+        public bool IsHighlighted { get; set; }
     }
 }

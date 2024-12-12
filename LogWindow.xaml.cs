@@ -96,6 +96,8 @@ namespace HottoMotto
             string jsonText = File.ReadAllText(filePath);
             //ファイル名を表示
             file_Title.Content = System.IO.Path.GetFileName(filePath);
+            Copy_Button.Content = "コピー";
+            Copy_Button.Visibility = Visibility.Visible;
 
             try
             {
@@ -106,7 +108,8 @@ namespace HottoMotto
                 // リストボックスにデータを追加
                 foreach (var log in logs)
                 {
-                    LogListBox.Items.Add($"{log.TimeStamp}" + (log.IsSpeaker ? "(スピーカー)" : "(マイク)") + "\n" + $"{log.Text}");
+                    LogListBox.Items.Add(new ListBoxModel { Text = (log.TimeStamp + (log.IsSpeaker ? "(スピーカー)" : "(マイク)")), IsHighlighted = false });
+                    LogListBox.Items.Add(new ListBoxModel { Text = log.Text, IsHighlighted = true });
                 }
             }
             catch (JsonException ex)
@@ -170,6 +173,7 @@ namespace HottoMotto
             //    }
         }
 
+
         //private void HighlightText(ListBoxItem listBoxItem, string itemText, string searchText)
         //{
         //    int matchIndex = itemText.IndexOf(searchText);
@@ -185,5 +189,22 @@ namespace HottoMotto
         //    listBoxItem.Content = textBlock;
         //}
 
+
+        private void Copy_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (LogListBox.Items.Count > 0)
+            {
+                // すべてのアイテムを文字列として結合
+                string allItemsText = string.Join("\n", LogListBox.Items.Cast<ListBoxModel>().Select(item => item.Text));
+
+                // クリップボードにコピー
+                System.Windows.Clipboard.SetText(allItemsText);
+                Copy_Button.Content = "コピーしました";
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("リストボックスにアイテムがありません。", "エラー", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
     }
 }

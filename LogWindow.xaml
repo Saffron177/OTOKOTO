@@ -20,11 +20,27 @@
 
         <!--グリッド1(右側)-->
         <!--ログ表示用リストボックス-->
-        <ListBox x:Name="LogListBox" Margin="30,55,20,20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Column="1">
+        <ListBox x:Name="LogListBox" Margin="30,55,20,20" Padding="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Column="1">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Border Background="AliceBlue" CornerRadius="5" Padding="5">
-                        <TextBlock Text="{Binding}" TextWrapping="Wrap" />
+                    <Border CornerRadius="5">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <!-- 背景色のデフォルト（何も設定しない場合は透明になる） -->
+                                <Setter Property="Background" Value="{x:Null}" />
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="Margin" Value="0"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                                        <!-- IsHighlightedがTrueのときに背景色をBlueに設定 -->
+                                        <Setter Property="Background" Value="AliceBlue" />
+                                        <Setter Property="Padding" Value="8"/>
+                                        <Setter Property="Margin" Value="0,0,0,5"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock Text="{Binding Text}" TextWrapping="Wrap" />
                     </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -34,6 +50,7 @@
         <!--ログ内容の検索用テキストボックス-->
         <TextBox x:Name="log_Search_Textbox" Grid.Column="1" HorizontalAlignment="Right" Margin="0,20,20,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="25" Width="150" TextChanged="Log_Search_Text" FontSize="15" Cursor=""/>
         <Image HorizontalAlignment="Right" Height="25" Margin="0,20,170,0" VerticalAlignment="Top" Width="25" Source="/Resource/search.png" Grid.Column="1"/>
+        <Button x:Name="Copy_Button" Grid.Column="1" Content="コピー" HorizontalAlignment="Right" Margin="0,71,40,0" VerticalAlignment="Top" Click="Copy_Button_Click" Width="65" Visibility="Hidden"/>
 
     </Grid>
 </Window>
