@@ -51,8 +51,24 @@
             </ListBox.RenderTransform>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Border Background="AliceBlue" CornerRadius="5" Padding="5">
-                        <TextBlock Text="{Binding}" TextWrapping="Wrap" />
+                    <Border CornerRadius="5">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <!-- 背景色のデフォルト（何も設定しない場合は透明になる） -->
+                                <Setter Property="Background" Value="{x:Null}" />
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="Margin" Value="0"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                                        <!-- IsHighlightedがTrueのときに背景色をBlueに設定 -->
+                                        <Setter Property="Background" Value="AliceBlue" />
+                                        <Setter Property="Padding" Value="8"/>
+                                        <Setter Property="Margin" Value="0,0,0,5"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock Text="{Binding Text}" TextWrapping="Wrap" />
                     </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>
