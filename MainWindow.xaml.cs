@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Text.Json;
 using System.Windows;
 using Vosk;
+
 namespace HottoMotto
 {
     /// <summary>
@@ -136,11 +137,13 @@ namespace HottoMotto
                             RealtimeListBox.Items.Add(speakerDateTime + " (スピーカー)" + "\n" + json_text.partial);
                             //出力中の行番号を保存
                             speakerIndex = RealtimeListBox.Items.Count - 1;
+                            RealtimeListBox.ScrollIntoView(RealtimeListBox.Items[RealtimeListBox.Items.Count - 1]);
                         }
                         else
                         {
                             //出力中のテキストを上書き
                             RealtimeListBox.Items[(int)speakerIndex] = speakerDateTime + " (スピーカー)" + "\n" + json_text.partial;
+                            RealtimeListBox.ScrollIntoView(RealtimeListBox.Items[RealtimeListBox.Items.Count - 1]);
                         }
                     }
                     //マイク音声の処理
@@ -153,12 +156,14 @@ namespace HottoMotto
                             RealtimeListBox.Items.Add(micDateTime + " (マイク)" + "\n" + json_text.partial);
                             //出力中の行番号を保存
                             micIndex = RealtimeListBox.Items.Count - 1;
+                            RealtimeListBox.ScrollIntoView(RealtimeListBox.Items[RealtimeListBox.Items.Count - 1]);
                         }
                         else
                         {
                             //出力中のテキストを上書き
                             RealtimeListBox.Items[(int)micIndex] = micDateTime + " (マイク)" + "\n" + json_text.partial;
-            }
+                            RealtimeListBox.ScrollIntoView(RealtimeListBox.Items[RealtimeListBox.Items.Count - 1]);
+                        }
                     }
                 });
             }
