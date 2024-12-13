@@ -109,7 +109,7 @@ namespace HottoMotto
             try
             {
                 //出力先パス
-                string outputPath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "recorded_audio.wav");
+                string outputPath = System.IO.Path.Combine("recorded_audio.wav");
                 //オブジェクト生成
                 capture = new WasapiLoopbackCapture(selectedDevice);
                 writer = new WaveFileWriter(outputPath, capture.WaveFormat);
