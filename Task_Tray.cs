@@ -12,8 +12,9 @@ namespace HottoMotto
 {
     partial class MainWindow : Window
     {
-        private NotifyIcon notifyIcon;
-
+        private NotifyIcon notifyIcon;                //タスクトレイアイコン
+        private ToolStripMenuItem menu_capture_click_button; //タスクトレイの録音開始・停止ボタン
+        private ToolStripLabel menu_status;                //タスクトレイのステータスラベル
         /// <summary>
         /// タスクトレイを設定する関数
         /// </summary>
@@ -32,14 +33,27 @@ namespace HottoMotto
             {
                 ShowImageMargin = false,
             };
-            ToolStripLabel status = new ToolStripLabel()
+            menu_status = new ToolStripLabel()
             {
                 Text = "Welcome",
                 Font = new Font("Yu Gothic UI", 12),
             };
 
-            contextMenu.Items.Add(status);
+            menu_capture_click_button = new ToolStripMenuItem()
+            {
+                Text = "録音開始",
+                Image = null,
+            };
+
+            menu_capture_click_button.Click += (s, e) => 
+            {
+                RoutedEventArgs dummy_Event = new RoutedEventArgs();
+                Button_Capture_Click(s,dummy_Event);
+            };
+
+            contextMenu.Items.Add(menu_status);
             contextMenu.Items.Add(new ToolStripSeparator());
+            contextMenu.Items.Add(menu_capture_click_button);
             contextMenu.Items.Add("開く", null, (s, e) => ShowWindow());
             contextMenu.Items.Add(new ToolStripSeparator());
             contextMenu.Items.Add("終了", null, (s, e) => ExitApplication());

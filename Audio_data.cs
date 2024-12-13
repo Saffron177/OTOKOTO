@@ -255,6 +255,7 @@ namespace HottoMotto
         //録音ボタン
         private void Button_Capture_Click(object sender, RoutedEventArgs e)
         {
+            Debug.Print("Button: Capture_Click");
             //録音中の場合は停止処理
             if (recFlag)
             {
@@ -264,6 +265,10 @@ namespace HottoMotto
                 RecImage.Visibility = Visibility.Hidden;
                 //録音停止メソッド
                 ButtonCaptureStop(sender, e);
+
+                //タスクトレイを変更
+                menu_capture_click_button.Text = "録音開始";
+                menu_status.Text = "Welcome";
                 recFlag = false;
             }
             //開始処理
@@ -275,6 +280,10 @@ namespace HottoMotto
                 RecImage.Visibility = Visibility.Visible;
                 //録音開始メソッド
                 ButtonCaptureStart(sender, e);
+
+                //タスクトレイを変更
+                menu_capture_click_button.Text = "録音停止";
+                menu_status.Text = "録音中...";
                 recFlag = true;
             }
         }
