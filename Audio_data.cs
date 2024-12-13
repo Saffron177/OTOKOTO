@@ -70,6 +70,8 @@ namespace HottoMotto
         /// <param name="e"></param>
         private void ButtonCaptureStart(object sender, RoutedEventArgs e)
         {
+            ComboBox_AudioDevices.IsEnabled = false;
+            ComboBox_MicDevices.IsEnabled = false;
             is_Mic_Connected = true;
             Debug.Print("Button: capture_start_Click");
             if (ComboBox_AudioDevices.SelectedIndex == -1)
@@ -233,6 +235,8 @@ namespace HottoMotto
         private void ButtonCaptureStop(object sender, RoutedEventArgs e)
         {
             Debug.Print("Button: capture_stop_Click");
+            ComboBox_AudioDevices.IsEnabled = true;
+            ComboBox_MicDevices.IsEnabled = true;
             if (capture != null)
             {
                 //録音を停止
