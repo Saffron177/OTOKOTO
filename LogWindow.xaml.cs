@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using System.IO;
 using System.Diagnostics;
 using System.Windows.Controls.Primitives;
+using System.Collections.ObjectModel;
 
 namespace HottoMotto
 {
@@ -27,11 +28,18 @@ namespace HottoMotto
     {
         //ファイル一覧を保持
         string[] txtFiles;
+
+        //ログ操作用
+        public ObservableCollection<ListBoxModel> LogListBoxItems { get; set; }
+
         public LogWindow()
         {
             InitializeComponent();
             LogFileCheck();
             logList.MouseDoubleClick += LogList_DoubleClick;
+            //ログのリストボックスを操作するためのアイテムソースを設定
+            LogListBoxItems = new ObservableCollection<ListBoxModel>();
+            LogListBox.ItemsSource = LogListBoxItems;
         }
 
         //Logsファイルの中身を検索し、結果を出力する
@@ -105,12 +113,12 @@ namespace HottoMotto
                 // JSONをリストに変換（デシリアライズ）
                 var logs = JsonSerializer.Deserialize<List<Conversation_Log_Data>>(jsonText);
 
-                LogListBox.Items.Clear();
+                LogListBoxItems.Clear();
                 // リストボックスにデータを追加
                 foreach (var log in logs)
                 {
-                    LogListBox.Items.Add(new ListBoxModel { Text = (log.TimeStamp + (log.IsSpeaker ? "(スピーカー)" : "(マイク)")), IsHighlighted = false });
-                    LogListBox.Items.Add(new ListBoxModel { Text = log.Text, IsHighlighted = true });
+                    LogListBoxItems.Add(new ListBoxModel { Text = (log.TimeStamp + (log.IsSpeaker ? "(スピーカー)" : "(マイク)")), IsHighlighted = false , IsSpeaker = log.IsSpeaker});
+                    LogListBoxItems.Add(new ListBoxModel { Text = log.Text, IsHighlighted = true , IsSpeaker = log.IsSpeaker});
                 }
             }
             catch (JsonException ex)
