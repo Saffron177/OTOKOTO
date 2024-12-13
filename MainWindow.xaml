@@ -31,21 +31,23 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="304*"/>
+            <RowDefinition Height="244*"/>
+            <RowDefinition Height="60*"/>
             <RowDefinition Height="65*"/>
             <RowDefinition Height="65*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="29*"/>
-            <ColumnDefinition Width="11*"/>
+            <ColumnDefinition Width="116*"/>
+            <ColumnDefinition Width="27*"/>
+            <ColumnDefinition Width="17*"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="Button_Save" Margin="160,30,30,0" Click="Button_Save_Click" Style="{x:Null}" BorderBrush="{x:Null}" Background="{x:Null}" Height="29" VerticalAlignment="Top" Width="29" Grid.Column="1">
+        <Button x:Name="Button_Save" Margin="25,30,30,0" Click="Button_Save_Click" Style="{x:Null}" BorderBrush="{x:Null}" Background="{x:Null}" Height="29" VerticalAlignment="Top" Width="29" Grid.Column="2">
             <StackPanel Orientation="Horizontal">
                 <Image Source="Resource/hozon.png" Width="23" Height="23" RenderTransformOrigin="0.5,0.5"/>
             </StackPanel>
         </Button>
 
-        <ListBox x:Name="RealtimeListBox" Margin="26,52,5,12" Style="{x:Null}" RenderTransformOrigin="0.5,0.5"  BorderBrush="Black" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.RowSpan="2">
+        <ListBox x:Name="RealtimeListBox" Margin="26,52,5,12" Style="{x:Null}" RenderTransformOrigin="0.5,0.5"  BorderBrush="Black" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.RowSpan="3">
             <ListBox.Resources>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="20"/>
@@ -104,7 +106,7 @@
     x:Name="ComboBox_AudioDevices"
     Margin="19,5,24,10"
     materialDesign:HintAssist.Hint="再生デバイスを選択"
-    Style="{StaticResource MaterialDesignOutlinedComboBox}" VerticalAlignment="Stretch" Grid.Column="1" Grid.Row="2">
+    Style="{StaticResource MaterialDesignOutlinedComboBox}" VerticalAlignment="Stretch" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2">
             <ComboBox.ToolTip>
                 <ToolTip
             Style="{StaticResource MaterialDesignToolTip}"
@@ -126,7 +128,7 @@
     x:Name="ComboBox_MicDevices"
     Margin="19,10,24,5"
     materialDesign:HintAssist.Hint="録音デバイスを選択"
-    Style="{StaticResource MaterialDesignOutlinedComboBox}" VerticalAlignment="Stretch" Grid.Column="1" Grid.Row="1">
+    Style="{StaticResource MaterialDesignOutlinedComboBox}" VerticalAlignment="Stretch" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2">
             <ComboBox.ToolTip>
                 <ToolTip
             Style="{StaticResource MaterialDesignToolTip}"
@@ -156,20 +158,20 @@
 
         <Label x:Name="Label_status" Content="録音停止" HorizontalAlignment="Left" Margin="14,64,0,0" VerticalAlignment="Top" Width="64" Grid.Column="1"/>
 
-        <Button x:Name="Button_Capture" Click="Button_Capture_Click" HorizontalAlignment="Left" Margin="48,185,0,0" VerticalAlignment="Top" Style="{StaticResource CActionButtons}" Background="#FFFBFAFA" BorderBrush="#FFFBF9F9" Grid.Column="1">
+        <Button x:Name="Button_Capture" Click="Button_Capture_Click" Margin="80,5,5,5" Style="{StaticResource CActionButtons}" Background="#FFFBFAFA" BorderBrush="#FFFBF9F9" Grid.Column="1" Grid.Row="1">
             <StackPanel Orientation="Horizontal">
                 <Image x:Name="CaptureStopImage" Source="Resource/start.png" Width="48" Height="48"/>
             </StackPanel>
         </Button>
 
 
-        <Button x:Name="Button_Mute" HorizontalAlignment="Left" Margin="145,259,0,0" VerticalAlignment="Top" Click="Button_Mute_Click" Style="{StaticResource CActionButtons}" Background="#FFFBF9F9" BorderBrush="#FFFBF9F9" Width="44" Grid.Column="1" Grid.RowSpan="2">
+        <Button x:Name="Button_Mute" Margin="6,5,35,5" Click="Button_Mute_Click" Style="{StaticResource CActionButtons}" Background="#FFFBF9F9" BorderBrush="#FFFBF9F9" Width="NaN" Grid.Column="2" Grid.Row="1">
             <StackPanel Orientation="Horizontal">
                 <Image x:Name="ButtonIcon" Source="Resource/unmute.png" Width="33" Height="26"/>
                 <TextBlock x:Name="ButtonText"  VerticalAlignment="Center" Margin="5,0,0,0"/>
             </StackPanel>
         </Button>
-        <Button Margin="130,30,60,0" VerticalAlignment="Top" Click="Button_Log_Click" Style="{x:Null}" Height="29" BorderBrush="{x:Null}" Background="{x:Null}" Width="29" Grid.Column="1">
+        <Button Margin="130,30,60,0" VerticalAlignment="Top" Click="Button_Log_Click" Style="{x:Null}" Height="29" BorderBrush="{x:Null}" Background="{x:Null}" Width="29" Grid.Column="1" Grid.ColumnSpan="2">
             <StackPanel Orientation="Horizontal">
                 <Image Source="Resource/log.png" Width="23" Height="23" RenderTransformOrigin="0.5,0.5"/>
             </StackPanel>
