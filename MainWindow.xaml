@@ -47,7 +47,7 @@
             <ColumnDefinition Width="27*"/>
             <ColumnDefinition Width="17*"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="Button_Save" Margin="25,30,30,0" Click="Button_Save_Click" Style="{x:Null}" BorderBrush="{x:Null}" Background="{x:Null}" Height="29" VerticalAlignment="Top" Grid.Column="2">
+        <Button x:Name="Button_Save" Margin="0,30,30,0" Click="Button_Save_Click" Style="{x:Null}" BorderBrush="{x:Null}" Background="{x:Null}" Height="29" VerticalAlignment="Top" Grid.Column="2" Width="29" HorizontalAlignment="Right">
             <StackPanel Orientation="Horizontal">
                 <Image Source="Resource/hozon.png" Width="23" Height="23" RenderTransformOrigin="0.5,0.5"/>
             </StackPanel>
@@ -185,11 +185,11 @@
 
         <Button x:Name="Button_Mute" Margin="11,5,30,5" Click="Button_Mute_Click" Style="{StaticResource CActionButtons}" Width="NaN" Grid.Column="2" Grid.Row="1" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="{x:Null}">
             <StackPanel Orientation="Horizontal">
-                <Image x:Name="ButtonIcon" Source="Resource/unmute.png" Width="33" Height="26"/>
+                <Image x:Name="ButtonIcon" Source="Resource/unmute.png" Width="42" Height="30"/>
                 <TextBlock x:Name="ButtonText"  VerticalAlignment="Center" Margin="5,0,0,0"/>
             </StackPanel>
         </Button>
-        <Button Margin="130,30,60,0" VerticalAlignment="Top" Click="Button_Log_Click" Style="{x:Null}" Height="29" BorderBrush="{x:Null}" Background="{x:Null}" Grid.Column="1" Grid.ColumnSpan="2">
+        <Button Margin="0,30,64,0" VerticalAlignment="Top" Click="Button_Log_Click" Style="{x:Null}" Height="29" BorderBrush="{x:Null}" Background="{x:Null}" Grid.Column="1" Grid.ColumnSpan="2" Width="29" HorizontalAlignment="Right">
             <StackPanel Orientation="Horizontal">
                 <Image Source="Resource/log.png" Width="23" Height="23" RenderTransformOrigin="0.5,0.5"/>
             </StackPanel>
