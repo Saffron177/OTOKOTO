@@ -56,44 +56,130 @@
             </StackPanel>
         </Button>
 
-        <ListBox x:Name="RealtimeListBox" Margin="26,52,5,12" Style="{x:Null}" RenderTransformOrigin="0.5,0.5"  BorderBrush="Black" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.RowSpan="3">
+        <ListBox x:Name="RealtimeListBox" 
+         Margin="26,52,5,12" 
+         Style="{x:Null}" 
+         RenderTransformOrigin="0.5,0.5"  
+         BorderBrush="Black" 
+         ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+         Grid.RowSpan="3">
             <ListBox.Resources>
+                <!-- 基本的なBorderスタイル -->
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="20"/>
                 </Style>
+
+                <!-- スクロールバーのThumbスタイル -->
+                <Style x:Key="ScrollBarThumbStyle" TargetType="{x:Type Thumb}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Thumb}">
+                                <Border Background="#AAAAAA" 
+                                CornerRadius="3"
+                                Margin="2,0,2,0"/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+                <!-- スクロールバー全体のスタイル -->
+                <Style x:Key="FadingScrollBarStyle" TargetType="{x:Type ScrollBar}">
+                    <Setter Property="Width" Value="8"/>
+                    <Setter Property="Margin" Value="0,1,1,1"/>
+                    <Setter Property="Opacity" Value="0"/>
+                    <Style.Triggers>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                           To="1" Duration="0:0:0.2"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                           To="0" Duration="0:0:0.8"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Style.Triggers>
+                </Style>
+
+                <!-- ScrollViewerのスタイル -->
+                <Style x:Key="FadingScrollViewerStyle" TargetType="{x:Type ScrollViewer}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ScrollContentPresenter Grid.Column="0"/>
+                                    <ScrollBar x:Name="PART_VerticalScrollBar"
+                                     Grid.Column="1"
+                                     Value="{TemplateBinding VerticalOffset}"
+                                     Maximum="{TemplateBinding ScrollableHeight}"
+                                     ViewportSize="{TemplateBinding ViewportHeight}"
+                                     Style="{StaticResource FadingScrollBarStyle}">
+                                        <ScrollBar.Template>
+                                            <ControlTemplate TargetType="{x:Type ScrollBar}">
+                                                <Grid>
+                                                    <Track x:Name="PART_Track" IsDirectionReversed="True">
+                                                        <Track.Thumb>
+                                                            <Thumb Style="{StaticResource ScrollBarThumbStyle}"/>
+                                                        </Track.Thumb>
+                                                    </Track>
+                                                </Grid>
+                                            </ControlTemplate>
+                                        </ScrollBar.Template>
+                                    </ScrollBar>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
             </ListBox.Resources>
-            <ListBox.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-0.028"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </ListBox.RenderTransform>
+
+            <ListBox.Template>
+                <ControlTemplate TargetType="ListBox">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="1"
+                    Background="{TemplateBinding Background}">
+                        <ScrollViewer Style="{StaticResource FadingScrollViewerStyle}"
+                            Padding="{TemplateBinding Padding}"
+                            Focusable="False">
+                            <ItemsPresenter/>
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </ListBox.Template>
+
+            <!-- ItemContainerStyle -->
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
-                    <!--IsSpeakerがTrueの場合は左寄せ-->
                     <Setter Property="HorizontalContentAlignment" Value="Left"/>
                     <Style.Triggers>
-                        <!--IsSpeakerがFalseの場合は右寄せ-->
                         <DataTrigger Binding="{Binding IsSpeaker}" Value="False">
                             <Setter Property="HorizontalContentAlignment" Value="Right"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </ListBox.ItemContainerStyle>
+
+            <!-- ItemTemplate -->
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border CornerRadius="5">
                         <Border.Style>
                             <Style TargetType="Border">
-                                <!-- 背景色のデフォルト（何も設定しない場合は透明になる） -->
                                 <Setter Property="Background" Value="{x:Null}" />
                                 <Setter Property="Padding" Value="0"/>
                                 <Setter Property="Margin" Value="0"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
-                                        <!-- IsHighlightedがTrueのときに背景色をBlueに設定 -->
                                         <Setter Property="Background" Value="AliceBlue" />
                                         <Setter Property="Padding" Value="8"/>
                                         <Setter Property="Margin" Value="0,0,0,5"/>
@@ -104,11 +190,9 @@
                         <TextBlock Text="{Binding Text}" TextWrapping="Wrap">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
-                                    <!-- デフォルトのフォントサイズ -->
                                     <Setter Property="FontSize" Value="10" />
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
-                                            <!-- IsHighlightedがTrueのときフォントサイズを変更 -->
                                             <Setter Property="FontSize" Value="12" />
                                         </DataTrigger>
                                     </Style.Triggers>
