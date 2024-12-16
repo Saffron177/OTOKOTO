@@ -77,7 +77,7 @@ namespace HottoMotto
                 // Dispatcher.Invokeを使用してUIスレッドで実行
                 try
                 {
-                    RealtimeListBox.Dispatcher.Invoke(() =>
+                    RealtimeListBox.Dispatcher.BeginInvoke(() =>
                 {
                     Debug.Print("Dispatcher.Invoke");
                     //スピーカー音声の処理
