@@ -222,7 +222,6 @@ namespace HottoMotto
 
                 //録音を開始
                 capture.StartRecording();
-                Label_status.Content = "録音中...";
                 if (!is_mute)
                 {
                     mic_capture.StartRecording();
@@ -243,7 +242,6 @@ namespace HottoMotto
             {
                 //録音を停止
                 capture.StopRecording();
-                Label_status.Content = "録音停止";
                 if (is_Mic_Connected)
                 {
                     mic_capture.StopRecording();
@@ -270,6 +268,9 @@ namespace HottoMotto
 
                 //RECマークを非表示
                 RecImage.Visibility = Visibility.Hidden;
+                //RECラベルを変更
+                Label_status.Content = "録音停止中";
+
                 //録音停止メソッド
                 ButtonCaptureStop(sender, e);
 
@@ -286,6 +287,9 @@ namespace HottoMotto
 
                 //RECマークを表示
                 RecImage.Visibility = Visibility.Visible;
+                //RECラベルを変更
+                Label_status.Content = "録音中...";
+
                 //録音開始メソッド
                 ButtonCaptureStart(sender, e);
 
