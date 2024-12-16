@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Windows;
 using System.IO;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Animation;
+using System.Windows.Interop;
 
 namespace HottoMotto
 {
@@ -263,8 +265,9 @@ namespace HottoMotto
             //録音中の場合は停止処理
             if (recFlag)
             {
-                //ボタンの画像を差し替え
-                CaptureStopImage.Source = new BitmapImage(new Uri(@"Resource/start.png", UriKind.Relative));
+                //画像を差し替え
+                FadeAnimation(CaptureButtonImage, "Resource/start.png");
+
                 //RECマークを非表示
                 RecImage.Visibility = Visibility.Hidden;
                 //録音停止メソッド
@@ -278,8 +281,9 @@ namespace HottoMotto
             //開始処理
             else
             {
-                //ボタンの画像を差し替え
-                CaptureStopImage.Source = new BitmapImage(new Uri(@"Resource/stop.png", UriKind.Relative));
+                //画像を差し替え
+                FadeAnimation(CaptureButtonImage, "Resource/stop.png");
+
                 //RECマークを表示
                 RecImage.Visibility = Visibility.Visible;
                 //録音開始メソッド
@@ -290,6 +294,23 @@ namespace HottoMotto
                 menu_status.Text = "録音中...";
                 recFlag = true;
             }
+        }
+
+        //Imageコントロールに画像をフェードインで差し替えるメソッド
+        private void FadeAnimation(System.Windows.Controls.Image image, string imagePath)
+        {
+            // フェードアウトアニメーション
+            var fadeOut = new DoubleAnimation(1, 0, TimeSpan.FromSeconds(0.1));
+            fadeOut.Completed += (s, _) =>
+            {
+                // フェードアウト完了後に画像を変更
+                image.Source = new BitmapImage(new Uri(imagePath, UriKind.Relative));
+                // フェードインアニメーション
+                var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(0.1));
+                image.BeginAnimation(UIElement.OpacityProperty, fadeIn);
+            };
+            // アニメーション開始
+            image.BeginAnimation(UIElement.OpacityProperty, fadeOut);
         }
 
         //ファイルの保存関数
