@@ -253,7 +253,7 @@
         </ComboBox>
 
         <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="80" Height="54" Grid.Column="1" Grid.Row="1">
-            <Image x:Name="RecImage" Source="Resource/rec.png"  Visibility="Visible" Width="30" Height="30" RenderTransformOrigin="0.5,0.5"/>
+            <Image x:Name="RecImage" Source="Resource/rec.png"  Visibility="Hidden" Width="30" Height="30" RenderTransformOrigin="0.5,0.5"/>
             <Label x:Name="Label_status" Content="録音停止中" Margin="0" Width="80" Height="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
         </StackPanel>
         
