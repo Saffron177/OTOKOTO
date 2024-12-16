@@ -185,12 +185,15 @@ namespace HottoMotto
                 capture.RecordingStopped += (s, a) =>
                 {
                     writer?.Dispose();
+                    Debug.Print("writer:Dispose");
                     writer = null;
                     capture.Dispose();
+                    Debug.Print("capture:Dispose");
                     capture = null;
                     if (is_Mic_Connected)//マイクが接続されているときのみ
                     {
                         mic_capture.Dispose();
+                        Debug.Print("mic_capture:Dispose");
                         mic_capture = null;
                     }
                     Debug.Print("Stop");
@@ -272,9 +275,11 @@ namespace HottoMotto
             {
                 //録音を停止
                 capture.StopRecording();
+                Debug.Print("capture.StopRecording");
                 if (is_Mic_Connected)
                 {
                     mic_capture.StopRecording();
+                    Debug.Print("mic_capture.StopRecording");
                 }
             }
         }

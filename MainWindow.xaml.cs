@@ -63,6 +63,7 @@ namespace HottoMotto
 
         private void UpdateTextBox(string text, bool is_speaker,string audiopath)
         {
+            Debug.Print("UpdateTextBox");
             //"text"のみのjsonで送られてくるためパースする
             JsonText json_text = JsonSerializer.Deserialize<JsonText>(text) ?? new JsonText();
             json_text.text = json_text.text.Replace(" ", "");
@@ -74,15 +75,18 @@ namespace HottoMotto
                 DateTime dateTime = DateTime.Now;
 
                 // Dispatcher.Invokeを使用してUIスレッドで実行
-                RealtimeListBox.Dispatcher.Invoke(() =>
+                try
                 {
+                    RealtimeListBox.Dispatcher.Invoke(() =>
+                {
+                    Debug.Print("Dispatcher.Invoke");
                     //スピーカー音声の処理
                     if (is_speaker)
                     {
                         //出力中のテキストを上書きして確定する
-                        if(speakerIndex != null)
+                        if (speakerIndex != null)
                         {
-                            RealtimeListBox.Items[(int)speakerIndex] = new ListBoxModel { Text = json_text.text, IsHighlighted = true, IsSpeaker = is_speaker};
+                            RealtimeListBox.Items[(int)speakerIndex] = new ListBoxModel { Text = json_text.text, IsHighlighted = true, IsSpeaker = is_speaker };
                         }
                         //出力中のテキストがなければ行追加して出力する
                         else
@@ -125,6 +129,10 @@ namespace HottoMotto
                         });
                     }
                 });
+                }
+                catch (Exception ex){
+                    Debug.Print(ex.ToString());
+                }
             }
         }
 
@@ -138,7 +146,7 @@ namespace HottoMotto
             if (json_text.partial != null && json_text.partial != "")
             {
                 // Dispatcher.Invokeを使用してUIスレッドで実行
-                RealtimeListBox.Dispatcher.Invoke(() =>
+                RealtimeListBox.Dispatcher.BeginInvoke(() =>
                 {
                     //スピーカー音声の処理
                     if (is_speaker)
