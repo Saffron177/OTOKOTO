@@ -178,7 +178,7 @@
 
         <Button x:Name="Button_Capture" Click="Button_Capture_Click" Margin="80,5,5,5" Style="{StaticResource CActionButtons}" Background="#FFFBFAFA" BorderBrush="#FFFBF9F9" Grid.Column="1" Grid.Row="1">
             <StackPanel Orientation="Horizontal">
-                <Image x:Name="CaptureStopImage" Source="Resource/start.png" Width="48" Height="48"/>
+                <Image x:Name="CaptureButtonImage" Source="Resource/start.png" Width="48" Height="48"/>
             </StackPanel>
         </Button>
 
