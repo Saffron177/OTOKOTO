@@ -5,6 +5,8 @@ using System.Windows;
 using System.IO;
 using System.Windows.Media.Imaging;
 using NAudio.MediaFoundation;
+using System.Windows.Media.Animation;
+using System.Windows.Interop;
 
 namespace HottoMotto
 {
@@ -236,7 +238,6 @@ namespace HottoMotto
 
                 //録音を開始
                 capture.StartRecording();
-                Label_status.Content = "録音中...";
                 if (!is_mute)
                 {
                     mic_capture.StartRecording();
@@ -257,7 +258,6 @@ namespace HottoMotto
             {
                 //録音を停止
                 capture.StopRecording();
-                Label_status.Content = "録音停止";
                 if (is_Mic_Connected)
                 {
                     mic_capture.StopRecording();
@@ -279,10 +279,14 @@ namespace HottoMotto
             //録音中の場合は停止処理
             if (recFlag)
             {
-                //ボタンの画像を差し替え
-                CaptureStopImage.Source = new BitmapImage(new Uri(@"Resource/start.png", UriKind.Relative));
+                //画像を差し替え
+                FadeAnimation(CaptureButtonImage, "Resource/start.png");
+
                 //RECマークを非表示
                 RecImage.Visibility = Visibility.Hidden;
+                //RECラベルを変更
+                Label_status.Content = "録音停止中";
+
                 //録音停止メソッド
                 ButtonCaptureStop(sender, e);
 
@@ -294,10 +298,14 @@ namespace HottoMotto
             //開始処理
             else
             {
-                //ボタンの画像を差し替え
-                CaptureStopImage.Source = new BitmapImage(new Uri(@"Resource/stop.png", UriKind.Relative));
+                //画像を差し替え
+                FadeAnimation(CaptureButtonImage, "Resource/stop.png");
+
                 //RECマークを表示
                 RecImage.Visibility = Visibility.Visible;
+                //RECラベルを変更
+                Label_status.Content = "録音中...";
+
                 //録音開始メソッド
                 ButtonCaptureStart(sender, e);
 
@@ -306,6 +314,23 @@ namespace HottoMotto
                 menu_status.Text = "録音中...";
                 recFlag = true;
             }
+        }
+
+        //Imageコントロールに画像をフェードインで差し替えるメソッド
+        private void FadeAnimation(System.Windows.Controls.Image image, string imagePath)
+        {
+            // フェードアウトアニメーション
+            var fadeOut = new DoubleAnimation(1, 0, TimeSpan.FromSeconds(0.1));
+            fadeOut.Completed += (s, _) =>
+            {
+                // フェードアウト完了後に画像を変更
+                image.Source = new BitmapImage(new Uri(imagePath, UriKind.Relative));
+                // フェードインアニメーション
+                var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(0.1));
+                image.BeginAnimation(UIElement.OpacityProperty, fadeIn);
+            };
+            // アニメーション開始
+            image.BeginAnimation(UIElement.OpacityProperty, fadeOut);
         }
 
         //ファイルの保存関数
@@ -402,7 +427,7 @@ namespace HottoMotto
                 {
                     mic_capture.StartRecording();
                 }
-                ButtonIcon.Source = new BitmapImage(new Uri("Resource/unmute.png", UriKind.Relative));
+                ButtonIcon.Source = new BitmapImage(new Uri("Resource/mic.png", UriKind.Relative));
             }
             else
             {
@@ -414,7 +439,7 @@ namespace HottoMotto
                     Button_Mute.IsEnabled = false;
                     mic_capture.StopRecording();
                 }
-                ButtonIcon.Source = new BitmapImage(new Uri("Resource/mute.png", UriKind.Relative));
+                ButtonIcon.Source = new BitmapImage(new Uri("Resource/mic_off.png", UriKind.Relative));
             }
         }
     }
