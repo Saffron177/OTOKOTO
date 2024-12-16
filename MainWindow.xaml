@@ -262,7 +262,7 @@
             </StackPanel>
         </Button>
 
-        <Label x:Name="Label_status" Content="録音停止" HorizontalAlignment="Left" Margin="14,64,0,0" VerticalAlignment="Top" Width="64" Grid.Column="1" Height="24"/>
+        <Label x:Name="Label_status" Content="録音停止中" HorizontalAlignment="Left" Margin="14,64,0,0" VerticalAlignment="Top" Width="70" Grid.Column="1" Height="24"/>
 
         <Button x:Name="Button_Capture" Click="Button_Capture_Click" Margin="80,0,0,5" Style="{StaticResource CActionButtons}" BorderBrush="{x:Null}" Grid.Column="1" Grid.Row="1">
             <StackPanel Orientation="Horizontal">
