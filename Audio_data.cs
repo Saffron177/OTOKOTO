@@ -121,7 +121,6 @@ namespace HottoMotto
 
                 string S_outputPath = System.IO.Path.Combine($"./Audio/S_{DateTime.Now:yyMMddHHmmss}.wav");
                 var S_writer = new WaveFileWriter(S_outputPath,capture.WaveFormat);
-
                 // リサンプル用フォーマット（16kHz, モノラル）
                 var targetFormat = new WaveFormat(16000, 1);
 
@@ -157,14 +156,14 @@ namespace HottoMotto
                                 //音声ファイル保存
                                 S_writer.Flush();
                                 S_writer.Dispose();
-
-                                S_outputPath = System.IO.Path.Combine($"./Audio/S_{DateTime.Now:yyMMddHHmmss}.wav");
-                                S_writer = new WaveFileWriter(S_outputPath, capture.WaveFormat);
-
                                 var result = recognizer.Result();
+                                UpdateTextBox(result, true, S_outputPath);
                                 Debug.Print("Audio" + result);
 
-                                UpdateTextBox(result, true);
+                                //次の音声ファイルの準備
+                                S_outputPath = System.IO.Path.Combine($"./Audio/S_{DateTime.Now:yyMMddHHmmss}.wav");
+                                S_writer = new WaveFileWriter(S_outputPath, capture.WaveFormat);
+                                
                             }
                             else
                             {
@@ -196,7 +195,7 @@ namespace HottoMotto
                     S_writer.Flush();
                     S_writer.Dispose();
                     var finalResult = recognizer.FinalResult();
-                    UpdateTextBox(finalResult, true);
+                    UpdateTextBox(finalResult, true,S_outputPath);
                 };
 
                 //マイク録音の処理--マイクが接続されているときのみ
@@ -207,16 +206,25 @@ namespace HottoMotto
                         WaveFormat = targetFormat,
                     };
 
+                    string M_outputPath = System.IO.Path.Combine($"./Audio/M_{DateTime.Now:yyMMddHHmmss}.wav");
+                    var M_writer = new WaveFileWriter(M_outputPath, mic_capture.WaveFormat);
+
 
 
                     mic_capture.DataAvailable += (s, a) =>
                     {
+                        M_writer.Write(a.Buffer, 0,a.BytesRecorded);
                         // 音声データを認識器に送信
                         if (mic_recognizer.AcceptWaveform(a.Buffer, a.BytesRecorded))
                         {
+                            M_writer.Flush();
+                            M_writer.Dispose();
                             var result = mic_recognizer.Result();
+                            
+                            UpdateTextBox(result, false,result);
                             Debug.Print(result);
-                            UpdateTextBox(result, false);
+                            M_outputPath = System.IO.Path.Combine($"./Audio/M_{DateTime.Now:yyMMddHHmmss}.wav");
+                            M_writer = new WaveFileWriter(M_outputPath, mic_capture.WaveFormat);
                         }
                         else
                         {
@@ -229,8 +237,10 @@ namespace HottoMotto
                     {
                         Debug.Print("mic_Stop");
                         // 最終結果を取得
+                        M_writer.Flush();
+                        M_writer.Dispose();
                         var finalResult = mic_recognizer.FinalResult();
-                        UpdateTextBox(finalResult, false);
+                        UpdateTextBox(finalResult, false,M_outputPath);
                         Button_Mute.IsEnabled = true;
 
                     };

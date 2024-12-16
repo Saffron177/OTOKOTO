@@ -53,7 +53,7 @@ namespace HottoMotto
         //マイクログの出力先の行番号(出力中でない場合はnull)
         private int? micIndex = null;
 
-        private void UpdateTextBox(string text, bool is_speaker)
+        private void UpdateTextBox(string text, bool is_speaker,string audiopath)
         {
             //"text"のみのjsonで送られてくるためパースする
             JsonText json_text = JsonSerializer.Deserialize<JsonText>(text) ?? new JsonText();
