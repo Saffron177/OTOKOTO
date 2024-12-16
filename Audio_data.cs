@@ -7,6 +7,7 @@ using System.Windows.Media.Imaging;
 using NAudio.MediaFoundation;
 using System.Windows.Media.Animation;
 using System.Windows.Interop;
+using System.Xml;
 
 namespace HottoMotto
 {
@@ -18,6 +19,9 @@ namespace HottoMotto
         private WaveFileWriter writer;
         //WASAPIマイク録音用のオブジェクト
         private WasapiCapture mic_capture;
+
+        private string M_outputPath;
+        private WaveFileWriter M_writer;
 
         //ミュートボタン用のフラグ
         private bool is_mute = false;
@@ -206,8 +210,8 @@ namespace HottoMotto
                         WaveFormat = targetFormat,
                     };
 
-                    string M_outputPath = System.IO.Path.Combine($"./Audio/M_{DateTime.Now:yyMMddHHmmss}.wav");
-                    var M_writer = new WaveFileWriter(M_outputPath, mic_capture.WaveFormat);
+                    M_outputPath = System.IO.Path.Combine($"./Audio/M_{DateTime.Now:yyMMddHHmmss}.wav");
+                    M_writer = new WaveFileWriter(M_outputPath, mic_capture.WaveFormat);
 
 
 
@@ -455,6 +459,8 @@ namespace HottoMotto
                 if (mic_capture != null)
                 {
                     mic_capture.StartRecording();
+                    M_outputPath = System.IO.Path.Combine($"./Audio/M_{DateTime.Now:yyMMddHHmmss}.wav");
+                    M_writer = new WaveFileWriter(M_outputPath, mic_capture.WaveFormat);
                 }
                 ButtonIcon.Source = new BitmapImage(new Uri("Resource/mic.png", UriKind.Relative));
             }
