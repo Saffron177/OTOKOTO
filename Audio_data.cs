@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.IO;
 using System.Windows.Media.Imaging;
+using NAudio.MediaFoundation;
 
 namespace HottoMotto
 {
@@ -116,6 +117,9 @@ namespace HottoMotto
                 capture = new WasapiLoopbackCapture(selectedDevice);
                 writer = new WaveFileWriter(outputPath, capture.WaveFormat);
 
+                string S_outputPath = System.IO.Path.Combine($"./Audio/S_{DateTime.Now:yyMMddHHmmss}.wav");
+                var S_writer = new WaveFileWriter(S_outputPath,capture.WaveFormat);
+
                 // リサンプル用フォーマット（16kHz, モノラル）
                 var targetFormat = new WaveFormat(16000, 1);
 
@@ -126,6 +130,7 @@ namespace HottoMotto
                 capture.DataAvailable += (s, a) =>
                 {
                     writer.Write(a.Buffer, 0, a.BytesRecorded);
+                    S_writer.Write(a.Buffer,0,a.BytesRecorded);
 
                     //Debug.Print("DataAvailable");
 
@@ -147,8 +152,16 @@ namespace HottoMotto
                             // 音声データを認識器に送信
                             if (recognizer.AcceptWaveform(resampledBuffer, bytesResampled))
                             {
+                                //音声ファイル保存
+                                S_writer.Flush();
+                                S_writer.Dispose();
+
+                                S_outputPath = System.IO.Path.Combine($"./Audio/S_{DateTime.Now:yyMMddHHmmss}.wav");
+                                S_writer = new WaveFileWriter(S_outputPath, capture.WaveFormat);
+
                                 var result = recognizer.Result();
                                 Debug.Print("Audio" + result);
+
                                 UpdateTextBox(result, true);
                             }
                             else
@@ -176,7 +189,10 @@ namespace HottoMotto
                         mic_capture = null;
                     }
                     Debug.Print("Stop");
+
                     // 最終結果を取得
+                    S_writer.Flush();
+                    S_writer.Dispose();
                     var finalResult = recognizer.FinalResult();
                     UpdateTextBox(finalResult, true);
                 };
