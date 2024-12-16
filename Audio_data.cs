@@ -299,7 +299,7 @@ namespace HottoMotto
             SaveFileDialog sfd = new SaveFileDialog();
 
             //ログ保存先フォルダ
-            string log_directory = "../../../../Logs"; //相対パスで取得
+            string log_directory = "./Logs"; //相対パスで取得
             string directoryPath = System.IO.Path.GetFullPath(log_directory); // 絶対パスに変換
 
             // フォルダが存在しない場合は作成
