@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.IO;
 using System.Windows.Media.Imaging;
+using NAudio.MediaFoundation;
 using System.Windows.Media.Animation;
 using System.Windows.Interop;
 
@@ -118,6 +119,9 @@ namespace HottoMotto
                 capture = new WasapiLoopbackCapture(selectedDevice);
                 writer = new WaveFileWriter(outputPath, capture.WaveFormat);
 
+                string S_outputPath = System.IO.Path.Combine($"./Audio/S_{DateTime.Now:yyMMddHHmmss}.wav");
+                var S_writer = new WaveFileWriter(S_outputPath,capture.WaveFormat);
+
                 // リサンプル用フォーマット（16kHz, モノラル）
                 var targetFormat = new WaveFormat(16000, 1);
 
@@ -128,6 +132,7 @@ namespace HottoMotto
                 capture.DataAvailable += (s, a) =>
                 {
                     writer.Write(a.Buffer, 0, a.BytesRecorded);
+                    S_writer.Write(a.Buffer,0,a.BytesRecorded);
 
                     //Debug.Print("DataAvailable");
 
@@ -149,8 +154,16 @@ namespace HottoMotto
                             // 音声データを認識器に送信
                             if (recognizer.AcceptWaveform(resampledBuffer, bytesResampled))
                             {
+                                //音声ファイル保存
+                                S_writer.Flush();
+                                S_writer.Dispose();
+
+                                S_outputPath = System.IO.Path.Combine($"./Audio/S_{DateTime.Now:yyMMddHHmmss}.wav");
+                                S_writer = new WaveFileWriter(S_outputPath, capture.WaveFormat);
+
                                 var result = recognizer.Result();
                                 Debug.Print("Audio" + result);
+
                                 UpdateTextBox(result, true);
                             }
                             else
@@ -178,7 +191,10 @@ namespace HottoMotto
                         mic_capture = null;
                     }
                     Debug.Print("Stop");
+
                     // 最終結果を取得
+                    S_writer.Flush();
+                    S_writer.Dispose();
                     var finalResult = recognizer.FinalResult();
                     UpdateTextBox(finalResult, true);
                 };
@@ -222,7 +238,6 @@ namespace HottoMotto
 
                 //録音を開始
                 capture.StartRecording();
-                Label_status.Content = "録音中...";
                 if (!is_mute)
                 {
                     mic_capture.StartRecording();
@@ -243,7 +258,6 @@ namespace HottoMotto
             {
                 //録音を停止
                 capture.StopRecording();
-                Label_status.Content = "録音停止";
                 if (is_Mic_Connected)
                 {
                     mic_capture.StopRecording();
@@ -270,6 +284,9 @@ namespace HottoMotto
 
                 //RECマークを非表示
                 RecImage.Visibility = Visibility.Hidden;
+                //RECラベルを変更
+                Label_status.Content = "録音停止中";
+
                 //録音停止メソッド
                 ButtonCaptureStop(sender, e);
 
@@ -286,6 +303,9 @@ namespace HottoMotto
 
                 //RECマークを表示
                 RecImage.Visibility = Visibility.Visible;
+                //RECラベルを変更
+                Label_status.Content = "録音中...";
+
                 //録音開始メソッド
                 ButtonCaptureStart(sender, e);
 
@@ -320,7 +340,7 @@ namespace HottoMotto
             SaveFileDialog sfd = new SaveFileDialog();
 
             //ログ保存先フォルダ
-            string log_directory = "../../../../Logs"; //相対パスで取得
+            string log_directory = "./Logs"; //相対パスで取得
             string directoryPath = System.IO.Path.GetFullPath(log_directory); // 絶対パスに変換
 
             // フォルダが存在しない場合は作成
