@@ -22,7 +22,8 @@
                                 <!--カーソルを手の形に変更-->
                                 <Setter Property="Cursor" Value="Hand"/>
                                 <!--背景を青に変更-->
-                                <Setter Property="Background" Value="#FFCCE4FF"/>
+                                <Setter Property="Background" Value="#FFEEEEEE"/>
+                                <Setter Property="BorderBrush" Value="#FF77AAFF"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -263,7 +264,7 @@
 
         <Label x:Name="Label_status" Content="録音停止" HorizontalAlignment="Left" Margin="14,64,0,0" VerticalAlignment="Top" Width="64" Grid.Column="1" Height="24"/>
 
-        <Button x:Name="Button_Capture" Click="Button_Capture_Click" Margin="80,0,0,5" Style="{StaticResource CActionButtons}" Grid.Column="1" Grid.Row="1">
+        <Button x:Name="Button_Capture" Click="Button_Capture_Click" Margin="80,0,0,5" Style="{StaticResource CActionButtons}" BorderBrush="{x:Null}" Grid.Column="1" Grid.Row="1">
             <StackPanel Orientation="Horizontal">
                 <Image x:Name="CaptureButtonImage" Source="Resource/start.png" Width="48" Height="48"/>
             </StackPanel>
