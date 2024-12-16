@@ -270,6 +270,8 @@ namespace HottoMotto
                 RecImage.Visibility = Visibility.Hidden;
                 //RECラベルを変更
                 Label_status.Content = "録音停止中";
+                // アニメーションを停止
+                RecImage.BeginAnimation(UIElement.OpacityProperty, null);
 
                 //録音停止メソッド
                 ButtonCaptureStop(sender, e);
@@ -289,6 +291,8 @@ namespace HottoMotto
                 RecImage.Visibility = Visibility.Visible;
                 //RECラベルを変更
                 Label_status.Content = "録音中...";
+                //点滅アニメーションを適用
+                RecImage.BeginAnimation(UIElement.OpacityProperty, BlinkAnimation());
 
                 //録音開始メソッド
                 ButtonCaptureStart(sender, e);
@@ -315,6 +319,21 @@ namespace HottoMotto
             };
             // アニメーション開始
             image.BeginAnimation(UIElement.OpacityProperty, fadeOut);
+        }
+
+        //点滅アニメーション
+        private DoubleAnimation BlinkAnimation()
+        {
+            DoubleAnimation blinkAnimation;
+            blinkAnimation = new DoubleAnimation
+            {
+                From = 1.0, // 完全に表示
+                To = 0.0,   // 完全に非表示
+                Duration = TimeSpan.FromSeconds(1), // 半分の時間で切り替え
+                AutoReverse = true, // 元の状態に戻る
+                RepeatBehavior = RepeatBehavior.Forever // 永遠に繰り返し
+            };
+            return blinkAnimation;
         }
 
         //ファイルの保存関数
