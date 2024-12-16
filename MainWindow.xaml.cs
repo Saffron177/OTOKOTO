@@ -7,6 +7,7 @@ using System.Windows;
 using Vosk;
 using System.Windows.Controls;
 using System.ComponentModel;
+using System.IO;
 namespace HottoMotto
 {
     /// <summary>
@@ -36,6 +37,13 @@ namespace HottoMotto
             recognizer = new VoskRecognizer(model, 16000.0f);
             mic_recognizer = new VoskRecognizer(model, 16000.0f);
             SetupNotifyIcon();
+
+            //音声ファイル保存先フォルダが存在しない場合は作成
+            // フォルダが存在しない場合は作成
+            if (!Directory.Exists("Audio"))
+            {
+                Directory.CreateDirectory("Audio");
+            }
         }
 
         public class JsonText

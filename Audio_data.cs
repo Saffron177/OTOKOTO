@@ -295,7 +295,7 @@ namespace HottoMotto
                 //RECマークを非表示
                 RecImage.Visibility = Visibility.Hidden;
                 //RECラベルを変更
-                Label_status.Content = "録音停止中";
+                Label_status.Content = "";
                 // アニメーションを停止
                 RecImage.BeginAnimation(UIElement.OpacityProperty, null);
 
