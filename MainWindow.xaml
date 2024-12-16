@@ -76,8 +76,8 @@
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type Thumb}">
                                 <Border Background="#AAAAAA" 
-                                CornerRadius="3"
-                                Margin="2,0,2,0"/>
+                                CornerRadius="4"
+                                Margin="2,4,2,4"/>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
@@ -85,27 +85,22 @@
 
                 <!-- スクロールバー全体のスタイル -->
                 <Style x:Key="FadingScrollBarStyle" TargetType="{x:Type ScrollBar}">
-                    <Setter Property="Width" Value="8"/>
-                    <Setter Property="Margin" Value="0,1,1,1"/>
-                    <Setter Property="Opacity" Value="0"/>
-                    <Style.Triggers>
-                        <EventTrigger RoutedEvent="MouseEnter">
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                           To="1" Duration="0:0:0.2"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                        <EventTrigger RoutedEvent="MouseLeave">
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                           To="0" Duration="0:0:0.8"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                    </Style.Triggers>
+                    <Setter Property="Width" Value="10"/>
+                    <Setter Property="Margin" Value="0,2,2,2"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ScrollBar}">
+                                <Grid x:Name="GridRoot">
+                                    <Track x:Name="PART_Track" 
+                                   IsDirectionReversed="True">
+                                        <Track.Thumb>
+                                            <Thumb Style="{StaticResource ScrollBarThumbStyle}"/>
+                                        </Track.Thumb>
+                                    </Track>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
 
                 <!-- ScrollViewerのスタイル -->
@@ -113,36 +108,65 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type ScrollViewer}">
-                                <Grid>
+                                <Grid Margin="1">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <ScrollContentPresenter Grid.Column="0"/>
-                                    <ScrollBar x:Name="PART_VerticalScrollBar"
-                                     Grid.Column="1"
-                                     Value="{TemplateBinding VerticalOffset}"
-                                     Maximum="{TemplateBinding ScrollableHeight}"
-                                     ViewportSize="{TemplateBinding ViewportHeight}"
-                                     Style="{StaticResource FadingScrollBarStyle}">
-                                        <ScrollBar.Template>
-                                            <ControlTemplate TargetType="{x:Type ScrollBar}">
-                                                <Grid>
-                                                    <Track x:Name="PART_Track" IsDirectionReversed="True">
-                                                        <Track.Thumb>
-                                                            <Thumb Style="{StaticResource ScrollBarThumbStyle}"/>
-                                                        </Track.Thumb>
-                                                    </Track>
-                                                </Grid>
-                                            </ControlTemplate>
-                                        </ScrollBar.Template>
-                                    </ScrollBar>
+                                    <ScrollContentPresenter Grid.Column="0" Margin="0,0,2,0"/>
+                                    <Border x:Name="ScrollBarBorder" 
+                                    Grid.Column="1" 
+                                    Background="Transparent" 
+                                    CornerRadius="4" 
+                                    Width="16"
+                                    Margin="0,2,2,2">
+                                        <ScrollBar x:Name="PART_VerticalScrollBar"
+                                         Value="{TemplateBinding VerticalOffset}"
+                                         Maximum="{TemplateBinding ScrollableHeight}"
+                                         ViewportSize="{TemplateBinding ViewportHeight}"
+                                         Style="{StaticResource FadingScrollBarStyle}"
+                                         Opacity="0"/>
+                                    </Border>
                                 </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True" 
+                                     SourceName="ScrollBarBorder">
+                                        <Trigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation 
+                                                Storyboard.TargetName="PART_VerticalScrollBar"
+                                                Storyboard.TargetProperty="Opacity"
+                                                To="1" Duration="0:0:0.2"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.EnterActions>
+                                        <Trigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation 
+                                                Storyboard.TargetName="PART_VerticalScrollBar"
+                                                Storyboard.TargetProperty="Opacity"
+                                                To="0" Duration="0:0:0.8"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.ExitActions>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
                 </Style>
             </ListBox.Resources>
+
+            <ListBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.028"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </ListBox.RenderTransform>
 
             <ListBox.Template>
                 <ControlTemplate TargetType="ListBox">
@@ -158,7 +182,6 @@
                 </ControlTemplate>
             </ListBox.Template>
 
-            <!-- ItemContainerStyle -->
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="HorizontalContentAlignment" Value="Left"/>
@@ -170,7 +193,6 @@
                 </Style>
             </ListBox.ItemContainerStyle>
 
-            <!-- ItemTemplate -->
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border CornerRadius="5">
