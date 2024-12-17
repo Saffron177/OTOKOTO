@@ -8,6 +8,7 @@ using NAudio.MediaFoundation;
 using System.Windows.Media.Animation;
 using System.Windows.Interop;
 using System.Xml;
+using System.Formats.Asn1;
 
 namespace HottoMotto
 {
@@ -22,6 +23,7 @@ namespace HottoMotto
 
         private string M_outputPath;
         private WaveFileWriter M_writer;
+        private WaveFileWriter S_writer;
 
         //ミュートボタン用のフラグ
         private bool is_mute = false;
@@ -124,7 +126,7 @@ namespace HottoMotto
                 writer = new WaveFileWriter(outputPath, capture.WaveFormat);
 
                 string S_outputPath = System.IO.Path.Combine($"./Audio/S_{DateTime.Now:yyMMddHHmmss}.wav");
-                var S_writer = new WaveFileWriter(S_outputPath,capture.WaveFormat);
+                S_writer = new WaveFileWriter(S_outputPath,capture.WaveFormat);
                 // リサンプル用フォーマット（16kHz, モノラル）
                 var targetFormat = new WaveFormat(16000, 1);
 
@@ -246,6 +248,7 @@ namespace HottoMotto
                         // 最終結果を取得
                         M_writer.Flush();
                         M_writer.Dispose();
+                        M_writer = null;
                         var finalResult = mic_recognizer.FinalResult();
                         UpdateTextBox(finalResult, false,M_outputPath);
                         Button_Mute.IsEnabled = true;
@@ -261,9 +264,17 @@ namespace HottoMotto
                 }
 
             }
+            catch (IOException ex)
+            {
+                Debug.Print($"エラー: {ex.Message}");
+                System.Windows.MessageBox.Show("連打するな🫵", "エラー");
+                ExitApplication();
+            }
             catch (Exception ex)
             {
                 Debug.Print($"エラー: {ex.Message}");
+                System.Windows.MessageBox.Show(ex.Message,"エラー");
+                ExitApplication();
             }
         }
         private void ButtonCaptureStop(object sender, RoutedEventArgs e)
@@ -464,8 +475,11 @@ namespace HottoMotto
                 if (mic_capture != null)
                 {
                     mic_capture.StartRecording();
-                    M_outputPath = System.IO.Path.Combine($"./Audio/M_{DateTime.Now:yyMMddHHmmss}.wav");
-                    M_writer = new WaveFileWriter(M_outputPath, mic_capture.WaveFormat);
+                    if (M_writer == null)
+                    {
+                        M_outputPath = System.IO.Path.Combine($"./Audio/M_{DateTime.Now:yyMMddHHmmss}.wav");
+                        M_writer = new WaveFileWriter(M_outputPath, mic_capture.WaveFormat);
+                    }
                 }
                 ButtonIcon.Source = new BitmapImage(new Uri("Resource/mic.png", UriKind.Relative));
             }
