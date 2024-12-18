@@ -297,11 +297,32 @@
             </ComboBox.ToolTip>
         </ComboBox>
 
+        <!-- おじいさんの動かない古時計 -->
+        <TextBlock x:Name="RecordingTimeLabel" 
+           Text="録音時間" 
+           Grid.Column="1"
+           HorizontalAlignment="Left" 
+           Margin="16,89,0,0" 
+           VerticalAlignment="Top" 
+           Foreground="#424242"
+           FontSize="12"/>
+
+        <TextBlock x:Name="RecordingTimeText" 
+           Grid.Column="1"
+           Grid.ColumnSpan="2"
+           HorizontalAlignment="Left" 
+           Margin="14,110,0,0" 
+           VerticalAlignment="Top" 
+           Foreground="Black"
+           FontSize="16" 
+           FontWeight="Medium"
+           Text="00:00:00"/>
+
         <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="80" Height="54" Grid.Column="1" Grid.Row="1">
             <Image x:Name="RecImage" Source="Resource/rec.png"  Visibility="Hidden" Width="30" Height="30" RenderTransformOrigin="0.5,0.5"/>
             <Label x:Name="Label_status" Margin="0" Width="80" Height="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
         </StackPanel>
-        
+
         <Button x:Name="Button_Capture" Click="Button_Capture_Click" Style="{StaticResource CActionButtons}" BorderBrush="{x:Null}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" Margin="0,0,5,0">
             <StackPanel Orientation="Horizontal">
                 <Image x:Name="CaptureButtonImage" Source="Resource/start.png" Width="48" Height="48"/>
