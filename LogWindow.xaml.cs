@@ -256,7 +256,7 @@ namespace HottoMotto
                 //ボタンが含まれるリストボックスのアイテムを取得
                 ListBoxModel listBoxModel = button.DataContext as ListBoxModel;
                 //ボタンのタグからImageを取得
-                if (button.Tag is System.Windows.Controls.Image image)
+                if (button.Tag is System.Windows.Controls.Image image && listBoxModel != null)
                 {
                     //クリックイベントを設定
                     button.Click += (s, args) => OnButtonClick(image, listBoxModel);
@@ -280,12 +280,19 @@ namespace HottoMotto
             }
             else
             {
-                //画像を変更
-                image.Source = new BitmapImage(new Uri("Resource/stop.png", UriKind.Relative));
-                //音声を再生
-                playAudio.play(log.AudioPath);
-                //フラグを変更
-                isAudioPlaying = true;
+                if (log.AudioPath != null)
+                {
+                    //画像を変更
+                    image.Source = new BitmapImage(new Uri("Resource/stop.png", UriKind.Relative));
+                    //音声を再生
+                    playAudio.play(log.AudioPath);
+                    //フラグを変更
+                    isAudioPlaying = true;
+                }
+                else
+                {
+                    Debug.Print("AudioPathがNullです");
+                }
             }
         }
     }

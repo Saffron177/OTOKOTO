@@ -224,30 +224,6 @@ namespace HottoMotto
         public string Text {  get; set; }       //ログのテキスト
         public bool IsHighlighted { get; set; } //背景ありか(日時かテキストか)
         public bool IsSpeaker {  get; set; }    //スピーカーかマイクか
-
         public string AudioPath {  get; set; }
-    }
-
-    public class MyTemplateSelector : DataTemplateSelector
-    {
-        public DataTemplate MicTemplate { get; set; }
-        public DataTemplate SpeakerTemplate { get; set; }
-        public DataTemplate DateTemplate { get; set; }
-
-        public override DataTemplate SelectTemplate(object item, DependencyObject container)
-        {
-            ListBoxModel? listBoxModel = item as ListBoxModel;
-            if (listBoxModel != null)
-            {
-                //日時の行の場合
-                if (!listBoxModel.IsHighlighted)
-                {
-                    return DateTemplate;
-                }
-                //スピーカーの場合：マイクの場合
-                return listBoxModel.IsSpeaker ? SpeakerTemplate : MicTemplate;
-            }
-            return base.SelectTemplate(item, container);
-        }
     }
 }
