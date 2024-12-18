@@ -112,7 +112,7 @@ namespace HottoMotto
                 foreach (var log in logs)
                 {
                     LogListBox.Items.Add(new ListBoxModel { Text = (log.TimeStamp + (log.IsSpeaker ? "(スピーカー)" : "(マイク)")), IsHighlighted = false , IsSpeaker = log.IsSpeaker});
-                    LogListBox.Items.Add(new ListBoxModel { Text = log.Text, IsHighlighted = true , IsSpeaker = log.IsSpeaker, AudioPath = "" });
+                    LogListBox.Items.Add(new ListBoxModel { Text = log.Text, IsHighlighted = true , IsSpeaker = log.IsSpeaker, AudioPath = log.AudioPath });
                 }
             }
             catch (JsonException ex)
@@ -254,9 +254,11 @@ namespace HottoMotto
             }
         }
 
-        private void OnButtonClick(ListBoxModel item)
+        private void OnButtonClick(ListBoxModel log)
         {
-            System.Windows.MessageBox.Show($"{item.AudioPath}");
+            //System.Windows.MessageBox.Show($"{log.AudioPath}");
+            PlayAudio playAudio = new PlayAudio();
+            playAudio.play(log.AudioPath);
         }
     }
 }
