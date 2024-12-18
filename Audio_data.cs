@@ -440,7 +440,7 @@ namespace HottoMotto
             //リアルタイムログをjson化
             foreach (Conversation_Log_Data log in sortedRealtimeLogs)
             {
-                json_list.Add(jsonUtil.ToJson(log.TimeStamp, log.Text, log.IsSpeaker));
+                json_list.Add(jsonUtil.ToJson(log.TimeStamp, log.Text, log.IsSpeaker,log.AudioPath));
             }
             //複数のjsonをリスト化
             string log_text = $"[{string.Join(",", json_list)}]";
