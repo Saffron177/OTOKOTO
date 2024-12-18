@@ -496,22 +496,5 @@ namespace HottoMotto
                 ButtonIcon.Source = new BitmapImage(new Uri("Resource/mic_off.png", UriKind.Relative));
             }
         }
-
-        private async Task PlayAudio(string path)
-        {
-            using (var reader = new AudioFileReader(path))
-            using (var waveOut = new WaveOut())
-            {
-                reader.Position = 0;
-                waveOut.Init(reader);
-                waveOut.Play();
-
-                // 再生の終了を待つ
-                while (waveOut.PlaybackState == PlaybackState.Playing)
-                {
-                    await Task.Delay(100); // 少し待機してループを制御
-                }
-            }
-        }
     }
 }
