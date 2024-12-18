@@ -10,28 +10,67 @@ namespace HottoMotto
 {
     internal class PlayAudio
     {
+        private AudioFileReader reader;
+        private WaveOut waveOut;
+
+        private bool isPlaying = false;
         public async Task play(string path)
         {
+            stop();
             try
             {
-                using (var reader = new AudioFileReader(path))
-                using (var waveOut = new WaveOut())
-                {
-                    reader.Position = 0;
-                    waveOut.Init(reader);
-                    waveOut.Play();
+                reader = new AudioFileReader(path);
+                waveOut = new WaveOut();
 
-                    // 再生の終了を待つ
-                    while (waveOut.PlaybackState == PlaybackState.Playing)
-                    {
-                        await Task.Delay(100); // 少し待機してループを制御
-                    }
+                reader.Position = 0;
+                waveOut.Init(reader);
+                waveOut.Play();
+                isPlaying = true;
+
+                // 再生の終了を待つ
+                while (waveOut.PlaybackState == PlaybackState.Playing)
+                {
+                    await Task.Delay(100); // 少し待機してループを制御
                 }
+
             }
             catch (Exception ex)
             {
                 Debug.Print("error:" + ex.Message);
             }
+            finally
+            {
+                // 再生終了時にリソースを解放
+                Cleanup();
+            }
+        }
+        public async Task stop()
+        {
+            try
+            {
+                if (isPlaying && waveOut != null)
+                {
+                    waveOut.Stop();
+                }
+                isPlaying = false;
+            }
+            catch(Exception ex)
+            {
+                Debug.Print("error:" + ex.Message);
+            }
+            finally
+            {
+                // 再生終了時にリソースを解放
+                Cleanup();
+            }
+        }
+
+        private void Cleanup()
+        {
+            waveOut?.Dispose();
+            reader?.Dispose();
+            waveOut = null;
+            reader = null;
         }
     }
 }
