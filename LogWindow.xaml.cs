@@ -267,11 +267,14 @@ namespace HottoMotto
         //録音データを再生するボタンのクリックイベント
         private void OnButtonClick(System.Windows.Controls.Image image, ListBoxModel log)
         {
-            if(isAudioPlaying)
+            PlayAudio playAudio = new PlayAudio();
+            if (isAudioPlaying)
             {
-                //ここに再生を止める処理
                 //画像を変更
                 image.Source = new BitmapImage(new Uri("Resource/start.png", UriKind.Relative));
+                //音声を停止
+                playAudio.stop();
+                //フラグを変更
                 isAudioPlaying = false;
             }
             else
@@ -279,8 +282,8 @@ namespace HottoMotto
                 //画像を変更
                 image.Source = new BitmapImage(new Uri("Resource/stop.png", UriKind.Relative));
                 //音声を再生
-                PlayAudio playAudio = new PlayAudio();
                 playAudio.play(log.AudioPath);
+                //フラグを変更
                 isAudioPlaying = true;
             }
         }
