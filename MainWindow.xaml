@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:HottoMotto"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" MinWidth="800" MinHeight="450">
@@ -58,26 +59,40 @@
         </Button>
 
         <ListBox x:Name="RealtimeListBox" 
-         Margin="26,52,5,12" 
+         Margin="26,52,5,12"
+         Padding="5,10,0,10"
          Style="{x:Null}" 
          RenderTransformOrigin="0.5,0.5"  
          BorderBrush="Black" 
          ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
          Grid.RowSpan="3">
             <ListBox.Resources>
-                <!-- 基本的なBorderスタイル -->
+                <!-- Borderスタイル -->
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="20"/>
                 </Style>
 
                 <!-- スクロールバーのThumbスタイル -->
                 <Style x:Key="ScrollBarThumbStyle" TargetType="{x:Type Thumb}">
+                    <Setter Property="MinHeight" Value="50"/>
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type Thumb}">
                                 <Border Background="#AAAAAA" 
                                 CornerRadius="4"
+                                MinHeight="50"
                                 Margin="2,4,2,4"/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+                <!-- スクロールバーのページボタンスタイル -->
+                <Style x:Key="ScrollBarPageButtonStyle" TargetType="{x:Type RepeatButton}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type RepeatButton}">
+                                <Border Background="Transparent"/>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
@@ -92,7 +107,15 @@
                             <ControlTemplate TargetType="{x:Type ScrollBar}">
                                 <Grid x:Name="GridRoot">
                                     <Track x:Name="PART_Track" 
-                                   IsDirectionReversed="True">
+                           IsDirectionReversed="True">
+                                        <Track.DecreaseRepeatButton>
+                                            <RepeatButton Command="ScrollBar.PageUpCommand" 
+                                        Style="{StaticResource ScrollBarPageButtonStyle}"/>
+                                        </Track.DecreaseRepeatButton>
+                                        <Track.IncreaseRepeatButton>
+                                            <RepeatButton Command="ScrollBar.PageDownCommand" 
+                                        Style="{StaticResource ScrollBarPageButtonStyle}"/>
+                                        </Track.IncreaseRepeatButton>
                                         <Track.Thumb>
                                             <Thumb Style="{StaticResource ScrollBarThumbStyle}"/>
                                         </Track.Thumb>
@@ -176,12 +199,15 @@
                         <ScrollViewer Style="{StaticResource FadingScrollViewerStyle}"
                             Padding="{TemplateBinding Padding}"
                             Focusable="False">
-                            <ItemsPresenter/>
+                            <Border Padding="{TemplateBinding Padding}">
+                                <ItemsPresenter/>
+                            </Border>
                         </ScrollViewer>
                     </Border>
                 </ControlTemplate>
             </ListBox.Template>
 
+            <!-- ItemContainerStyleとItemTemplateと呪いの呪文 -->
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="HorizontalContentAlignment" Value="Left"/>
