@@ -40,7 +40,7 @@
                 <Border CornerRadius="5" Style="{StaticResource BorderStyle}">
                     <TextBlock Text="{Binding Text}" Style="{StaticResource TextBlockStyle}" TextWrapping="Wrap"/>
                 </Border>
-                <Button Style="{x:Null}" BorderBrush="{x:Null}" Background="{x:Null}" Margin="0,0,0,5">
+                <Button Loaded="Button_Loaded" Style="{x:Null}" BorderBrush="{x:Null}" Background="{x:Null}" Margin="0,0,0,5">
                     <Image Source="Resource/start.png" Width="20" Height="20"/>
                 </Button>
             </StackPanel>
@@ -48,7 +48,7 @@
         <!--スピーカー側のデータテンプレートの定義(ボタン、テキストの順)-->
         <DataTemplate x:Key="SpeakerTemplate">
             <StackPanel Orientation="Horizontal">
-                <Button Style="{x:Null}" BorderBrush="{x:Null}" Background="{x:Null}" Margin="0,0,0,5">
+                <Button Loaded="Button_Loaded" Style="{x:Null}" BorderBrush="{x:Null}" Background="{x:Null}" Margin="0,0,0,5">
                     <Image Source="Resource/start.png" Width="20" Height="20"/>
                 </Button>
                 <Border CornerRadius="5" Style="{StaticResource BorderStyle}">

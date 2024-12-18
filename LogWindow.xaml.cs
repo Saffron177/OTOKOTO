@@ -112,7 +112,7 @@ namespace HottoMotto
                 foreach (var log in logs)
                 {
                     LogListBox.Items.Add(new ListBoxModel { Text = (log.TimeStamp + (log.IsSpeaker ? "(スピーカー)" : "(マイク)")), IsHighlighted = false , IsSpeaker = log.IsSpeaker});
-                    LogListBox.Items.Add(new ListBoxModel { Text = log.Text, IsHighlighted = true , IsSpeaker = log.IsSpeaker});
+                    LogListBox.Items.Add(new ListBoxModel { Text = log.Text, IsHighlighted = true , IsSpeaker = log.IsSpeaker, AudioPath = log.AudioPath });
                 }
             }
             catch (JsonException ex)
@@ -243,6 +243,22 @@ namespace HottoMotto
             {
                 System.Windows.MessageBox.Show("リストボックスにアイテムがありません。", "エラー", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
+        }
+
+        private void Button_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (sender is System.Windows.Controls.Button button)
+            {
+                ListBoxModel listBoxModel = button.DataContext as ListBoxModel;
+                button.Click += (s, args) => OnButtonClick(listBoxModel);
+            }
+        }
+
+        private void OnButtonClick(ListBoxModel log)
+        {
+            //System.Windows.MessageBox.Show($"{log.AudioPath}");
+            PlayAudio playAudio = new PlayAudio();
+            playAudio.play(log.AudioPath);
         }
     }
 }
