@@ -41,7 +41,7 @@ namespace HottoMotto
             finally
             {
                 // 再生終了時にリソースを解放
-                Cleanup();
+                //Cleanup();
             }
         }
         public async Task stop()
@@ -61,7 +61,7 @@ namespace HottoMotto
             finally
             {
                 // 再生終了時にリソースを解放
-                Cleanup();
+                //Cleanup();
             }
         }
 

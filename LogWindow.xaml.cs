@@ -264,10 +264,11 @@ namespace HottoMotto
             }
         }
 
+        private PlayAudio playAudio = new PlayAudio();
         //録音データを再生するボタンのクリックイベント
         private void OnButtonClick(System.Windows.Controls.Image image, ListBoxModel log)
         {
-            PlayAudio playAudio = new PlayAudio();
+            
             if (isAudioPlaying)
             {
                 //画像を変更
