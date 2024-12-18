@@ -6,6 +6,68 @@
         xmlns:local="clr-namespace:HottoMotto"
         mc:Ignorable="d"
         Title="LogWindow" Height="450" Width="800">
+
+    <Window.Resources>
+        <!--ListBoxのボーダーの設定-->
+        <Style x:Key="BorderStyle" TargetType="Border">
+            <!-- デフォルトの背景(透明) -->
+            <Setter Property="Background" Value="{x:Null}" />
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                    <!-- IsHighlightedがTrueのときに背景色をBlueに設定 -->
+                    <Setter Property="Background" Value="AliceBlue" />
+                    <Setter Property="Padding" Value="8"/>
+                    <Setter Property="Margin" Value="0,0,0,5"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <!--テキストのフォントサイズの設定-->
+        <Style x:Key="TextBlockStyle" TargetType="TextBlock">
+            <!-- デフォルトのフォントサイズ -->
+            <Setter Property="FontSize" Value="10" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                    <!-- IsHighlightedがTrueのときフォントサイズを変更 -->
+                    <Setter Property="FontSize" Value="12" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <!--マイク側のデータテンプレートの定義(テキスト、ボタンの順)-->
+        <DataTemplate x:Key="MicTemplate">
+            <StackPanel Orientation="Horizontal">
+                <Border CornerRadius="5" Style="{StaticResource BorderStyle}">
+                    <TextBlock Text="{Binding Text}" Style="{StaticResource TextBlockStyle}" TextWrapping="Wrap"/>
+                </Border>
+                <Button Style="{x:Null}" BorderBrush="{x:Null}" Background="{x:Null}" Margin="0,0,0,5">
+                    <Image Source="Resource/start.png" Width="20" Height="20"/>
+                </Button>
+            </StackPanel>
+        </DataTemplate>
+        <!--スピーカー側のデータテンプレートの定義(ボタン、テキストの順)-->
+        <DataTemplate x:Key="SpeakerTemplate">
+            <StackPanel Orientation="Horizontal">
+                <Button Style="{x:Null}" BorderBrush="{x:Null}" Background="{x:Null}" Margin="0,0,0,5">
+                    <Image Source="Resource/start.png" Width="20" Height="20"/>
+                </Button>
+                <Border CornerRadius="5" Style="{StaticResource BorderStyle}">
+                    <TextBlock Text="{Binding Text}" Style="{StaticResource TextBlockStyle}" TextWrapping="Wrap"/>
+                </Border>
+            </StackPanel>
+        </DataTemplate>
+        <!--日時のデータテンプレートの定義(テキストのみ)-->
+        <DataTemplate x:Key="DateTemplate">
+            <StackPanel Orientation="Horizontal">
+                <Border CornerRadius="5" Style="{StaticResource BorderStyle}">
+                    <TextBlock Text="{Binding Text}" Style="{StaticResource TextBlockStyle}" TextWrapping="Wrap"/>
+                </Border>
+            </StackPanel>
+        </DataTemplate>
+        <!--上記の3つのテンプレートをセレクターに設定-->
+        <local:MyTemplateSelector x:Key="MyTemplateSelector" MicTemplate="{StaticResource MicTemplate}" SpeakerTemplate="{StaticResource SpeakerTemplate}" DateTemplate="{StaticResource DateTemplate}"/>
+    </Window.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="230"/>
@@ -20,7 +82,7 @@
 
         <!--グリッド1(右側)-->
         <!--ログ表示用リストボックス-->
-        <ListBox x:Name="LogListBox" Margin="30,55,20,20" Padding="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Column="1">
+        <ListBox x:Name="LogListBox" Margin="30,55,20,20" Padding="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemTemplateSelector="{StaticResource MyTemplateSelector}" Grid.Column="1">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <!--IsSpeakerがTrueの場合は左寄せ-->
@@ -33,42 +95,7 @@
                     </Style.Triggers>
                 </Style>
             </ListBox.ItemContainerStyle>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Border CornerRadius="5">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <!-- 背景色のデフォルト（何も設定しない場合は透明になる） -->
-                                <Setter Property="Background" Value="{x:Null}" />
-                                <Setter Property="Padding" Value="0"/>
-                                <Setter Property="Margin" Value="0"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
-                                        <!-- IsHighlightedがTrueのときに背景色をBlueに設定 -->
-                                        <Setter Property="Background" Value="AliceBlue" />
-                                        <Setter Property="Padding" Value="8"/>
-                                        <Setter Property="Margin" Value="0,0,0,5"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <TextBlock Text="{Binding Text}" TextWrapping="Wrap">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <!-- デフォルトのフォントサイズ -->
-                                    <Setter Property="FontSize" Value="10" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
-                                            <!-- IsHighlightedがTrueのときフォントサイズを変更 -->
-                                            <Setter Property="FontSize" Value="12" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
+            <!--ここにあったItemTemplateはWindows.Resourceに移動しました(12/18)-->
         </ListBox>
         <!--ファイル名表示用ラベル-->
         <Label x:Name="file_Title" Grid.Column="1" Content="" HorizontalAlignment="Left" Margin="30,20,0,0" VerticalAlignment="Top"/>
