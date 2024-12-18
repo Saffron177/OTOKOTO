@@ -29,6 +29,8 @@ namespace HottoMotto
         //ファイル一覧を保持
         string[] txtFiles;
 
+        bool isAudioPlaying = false;
+
         public LogWindow()
         {
             InitializeComponent();
@@ -245,20 +247,42 @@ namespace HottoMotto
             }
         }
 
+        //ボタン読み込み時のイベント
         private void Button_Loaded(object sender, RoutedEventArgs e)
         {
+            //senderからボタンを取得
             if (sender is System.Windows.Controls.Button button)
             {
+                //ボタンが含まれるリストボックスのアイテムを取得
                 ListBoxModel listBoxModel = button.DataContext as ListBoxModel;
-                button.Click += (s, args) => OnButtonClick(listBoxModel);
+                //ボタンのタグからImageを取得
+                if (button.Tag is System.Windows.Controls.Image image)
+                {
+                    //クリックイベントを設定
+                    button.Click += (s, args) => OnButtonClick(image, listBoxModel);
+                }
             }
         }
 
-        private void OnButtonClick(ListBoxModel log)
+        //録音データを再生するボタンのクリックイベント
+        private void OnButtonClick(System.Windows.Controls.Image image, ListBoxModel log)
         {
-            //System.Windows.MessageBox.Show($"{log.AudioPath}");
-            PlayAudio playAudio = new PlayAudio();
-            playAudio.play(log.AudioPath);
+            if(isAudioPlaying)
+            {
+                //ここに再生を止める処理
+                //画像を変更
+                image.Source = new BitmapImage(new Uri("Resource/start.png", UriKind.Relative));
+                isAudioPlaying = false;
+            }
+            else
+            {
+                //画像を変更
+                image.Source = new BitmapImage(new Uri("Resource/stop.png", UriKind.Relative));
+                //音声を再生
+                PlayAudio playAudio = new PlayAudio();
+                playAudio.play(log.AudioPath);
+                isAudioPlaying = true;
+            }
         }
     }
 }
