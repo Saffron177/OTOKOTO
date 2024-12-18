@@ -18,6 +18,7 @@ namespace HottoMotto
         public DateTime TimeStamp { get; set; }
         public string Text { get; set; }
         public bool IsSpeaker { get; set; }
+        public string AudioPath {  get; set; }
     }
     
     /// <summary>
@@ -31,13 +32,14 @@ namespace HottoMotto
         /// <param name="text"></param>
         /// <param name="flag"></param>
         /// <returns></returns>
-        public string ToJson(DateTime timestamp, string text,bool is_speaker)
+        public string ToJson(DateTime timestamp, string text,bool is_speaker,string audiopath)
         {
             var log = new Conversation_Log_Data
             {
                 TimeStamp = timestamp,
                 Text = text,
-                IsSpeaker = is_speaker
+                IsSpeaker = is_speaker,
+                AudioPath = audiopath
             };
 
             string jsonstring = JsonSerializer.Serialize<Conversation_Log_Data>(log);

@@ -440,7 +440,7 @@ namespace HottoMotto
             //リアルタイムログをjson化
             foreach (Conversation_Log_Data log in sortedRealtimeLogs)
             {
-                json_list.Add(jsonUtil.ToJson(log.TimeStamp, log.Text, log.IsSpeaker));
+                json_list.Add(jsonUtil.ToJson(log.TimeStamp, log.Text, log.IsSpeaker,log.AudioPath));
             }
             //複数のjsonをリスト化
             string log_text = $"[{string.Join(",", json_list)}]";
@@ -494,23 +494,6 @@ namespace HottoMotto
                     mic_capture.StopRecording();
                 }
                 ButtonIcon.Source = new BitmapImage(new Uri("Resource/mic_off.png", UriKind.Relative));
-            }
-        }
-
-        private async Task PlayAudio(string path)
-        {
-            using (var reader = new AudioFileReader(path))
-            using (var waveOut = new WaveOut())
-            {
-                reader.Position = 0;
-                waveOut.Init(reader);
-                waveOut.Play();
-
-                // 再生の終了を待つ
-                while (waveOut.PlaybackState == PlaybackState.Playing)
-                {
-                    await Task.Delay(100); // 少し待機してループを制御
-                }
             }
         }
     }

@@ -102,6 +102,7 @@ namespace HottoMotto
                             TimeStamp = speakerDateTime,
                             Text = json_text.text,
                             IsSpeaker = is_speaker,
+                            AudioPath = audiopath,
                         });
                     }
                     //マイク音声の処理
@@ -126,6 +127,7 @@ namespace HottoMotto
                             TimeStamp = micDateTime,
                             Text = json_text.text,
                             IsSpeaker = is_speaker,
+                            AudioPath = audiopath,
                         });
                     }
                 });
