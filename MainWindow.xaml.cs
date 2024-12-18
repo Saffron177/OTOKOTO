@@ -222,6 +222,8 @@ namespace HottoMotto
         public string Text {  get; set; }       //ログのテキスト
         public bool IsHighlighted { get; set; } //背景ありか(日時かテキストか)
         public bool IsSpeaker {  get; set; }    //スピーカーかマイクか
+
+        public string AudioPath {  get; set; }
     }
 
     public class MyTemplateSelector : DataTemplateSelector
