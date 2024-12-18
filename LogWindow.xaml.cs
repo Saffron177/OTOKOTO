@@ -39,7 +39,7 @@ namespace HottoMotto
         //Logsファイルの中身を検索し、結果を出力する
         public void LogFileCheck()
         {
-            string relativePath = @"../../../../Logs"; // チェックしたいディレクトリのパス
+            string relativePath = "./Logs"; // チェックしたいディレクトリのパス
             string directoryPath = System.IO.Path.GetFullPath(relativePath); // 絶対パスに変換
 
             if (Directory.Exists(directoryPath))
@@ -86,7 +86,7 @@ namespace HottoMotto
         //ログファイルの内容をListBoxに表示
         private void Load_Log(string selectedFile)
         {
-            string filePath = "../../../../Logs/" + selectedFile;
+            string filePath = "./Logs/" + selectedFile;
 
             // ファイルが存在するかチェック
             if (!File.Exists(filePath))
