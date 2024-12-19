@@ -51,7 +51,7 @@ namespace HottoMotto
 
                     // 出力を表示（必要ならUIやログに表示）
                     Debug.WriteLine("exe:" + output.Replace(Environment.NewLine, ""));
-                    if (errorOutput != null)
+                    if (errorOutput != "")
                     {
                         Debug.WriteLine("exe error" + errorOutput);
                     }
