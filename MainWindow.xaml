@@ -41,7 +41,7 @@
             <Setter Property="Padding" Value="10"/>
         </Style>
 
-        <!-- ダークモード切り替えボタン用スタイル -->
+        <!-- ダークモード切り替えボタン用のスタイル -->
         <Style x:Key="ThemeToggleButton" TargetType="ToggleButton">
             <Setter Property="Template">
                 <Setter.Value>
@@ -124,7 +124,7 @@
         </Button>
 
 
-        <!-- ListBoxの部分を更新 -->
+        <!-- ListBoxの部分 -->
         <ListBox x:Name="RealtimeListBox" 
          Margin="26,52,5,12"
          Padding="5,10,0,10"
@@ -196,7 +196,75 @@
 
                 <!-- ScrollViewerのスタイル -->
                 <Style x:Key="FadingScrollViewerStyle" TargetType="{x:Type ScrollViewer}">
-                    <!-- 既存のスクロールビューアースタイルを維持 -->
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ScrollContentPresenter Grid.Column="0"/>
+                                    <Border x:Name="PART_ScrollBarBorder" 
+                            Grid.Column="1" 
+                            Width="8"
+                            Margin="0,1"
+                            Background="Transparent">
+                                        <ScrollBar x:Name="PART_VerticalScrollBar"
+                                 Value="{TemplateBinding VerticalOffset}"
+                                 Maximum="{TemplateBinding ScrollableHeight}"
+                                 ViewportSize="{TemplateBinding ViewportHeight}"
+                                 Background="{DynamicResource MaterialDesignDivider}"
+                                 Opacity="0">
+                                            <ScrollBar.Template>
+                                                <ControlTemplate TargetType="{x:Type ScrollBar}">
+                                                    <Grid>
+                                                        <Track x:Name="PART_Track" IsDirectionReversed="True">
+                                                            <Track.Thumb>
+                                                                <Thumb MinHeight="50">
+                                                                    <Thumb.Template>
+                                                                        <ControlTemplate TargetType="{x:Type Thumb}">
+                                                                            <Border Background="{DynamicResource MaterialDesignBody}"
+                                                                    CornerRadius="4"
+                                                                    Margin="2,0"/>
+                                                                        </ControlTemplate>
+                                                                    </Thumb.Template>
+                                                                </Thumb>
+                                                            </Track.Thumb>
+                                                        </Track>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </ScrollBar.Template>
+                                        </ScrollBar>
+                                    </Border>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <EventTrigger SourceName="PART_ScrollBarBorder" 
+                                RoutedEvent="MouseEnter">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation 
+                                    Storyboard.TargetName="PART_VerticalScrollBar"
+                                    Storyboard.TargetProperty="Opacity"
+                                    To="1" Duration="0:0:0.2"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                    <EventTrigger SourceName="PART_ScrollBarBorder" 
+                                RoutedEvent="MouseLeave">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation 
+                                    Storyboard.TargetName="PART_VerticalScrollBar"
+                                    Storyboard.TargetProperty="Opacity"
+                                    To="0" Duration="0:0:0.5"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
             </ListBox.Resources>
 
@@ -212,14 +280,12 @@
             <ListBox.Template>
                 <ControlTemplate TargetType="ListBox">
                     <Border BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="1"
-                    Background="{TemplateBinding Background}">
-                        <ScrollViewer Style="{StaticResource FadingScrollViewerStyle}"
-                            Padding="{TemplateBinding Padding}"
-                            Focusable="False">
-                            <Border Padding="{TemplateBinding Padding}">
-                                <ItemsPresenter/>
-                            </Border>
+                BorderThickness="1"
+                Background="{TemplateBinding Background}"
+                CornerRadius="4">
+                        <ScrollViewer Padding="{TemplateBinding Padding}"
+                         Style="{StaticResource FadingScrollViewerStyle}">
+                            <ItemsPresenter />
                         </ScrollViewer>
                     </Border>
                 </ControlTemplate>
@@ -365,14 +431,14 @@
             </ComboBox.ToolTip>
         </ComboBox>
 
-        <!-- おじいさんの動かない古時計 -->
+        <!-- おじいさんの動く古時計 -->
         <TextBlock x:Name="RecordingTimeLabel" 
            Text="録音時間" 
            Grid.Column="1"
            HorizontalAlignment="Left" 
            Margin="16,89,0,0" 
            VerticalAlignment="Top" 
-           Foreground="#424242"
+           Foreground="{DynamicResource MaterialDesignBodyLight}"
            FontSize="12"/>
 
         <TextBlock x:Name="RecordingTimeText" 
@@ -381,7 +447,7 @@
            HorizontalAlignment="Left" 
            Margin="14,110,0,0" 
            VerticalAlignment="Top" 
-           Foreground="Black"
+           Foreground="{DynamicResource MaterialDesignBody}"
            FontSize="16" 
            FontWeight="Medium"
            Text="00:00:00"/>
