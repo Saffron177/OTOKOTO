@@ -125,7 +125,6 @@
             <Image  Source="/Resource/search.png" Height="25" Width="25"/>
         </Border>
         <Button x:Name="Copy_Button" Grid.Column="1" Content="コピー" HorizontalAlignment="Right" Margin="0,71,40,0" VerticalAlignment="Top" Click="Copy_Button_Click" Width="65" Visibility="Hidden"/>
-        <Label x:Name="label1" Grid.Column="1" Content="Label" HorizontalAlignment="Left" Margin="323,20,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

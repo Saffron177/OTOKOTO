@@ -8,6 +8,7 @@ using Vosk;
 using System.Windows.Controls;
 using System.ComponentModel;
 using System.IO;
+using System.Windows.Threading;
 namespace HottoMotto
 {
     /// <summary>
@@ -37,6 +38,7 @@ namespace HottoMotto
             recognizer = new VoskRecognizer(model, 16000.0f);
             mic_recognizer = new VoskRecognizer(model, 16000.0f);
             SetupNotifyIcon();
+            SetupTimer();
 
             //音声ファイル保存先フォルダが存在しない場合は作成
             // フォルダが存在しない場合は作成
@@ -217,6 +219,44 @@ namespace HottoMotto
         private void ComboBox_AudioDevices_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
 
+        }
+
+        private int _secondsElapsed = 0; // 経過秒数を格納
+        // タイマメソッド
+        private void MyTimerMethod(object sender, EventArgs e)
+        {
+            _secondsElapsed++; // 秒数をインクリメント
+
+            // 時間・分・秒を計算
+            int hours = _secondsElapsed / 3600;
+            int minutes = (_secondsElapsed % 3600) / 60;
+            int seconds = _secondsElapsed % 60;
+
+            // フォーマットして表示
+            this.RecordingTimeText.Text = string.Format("{0:D2}:{1:D2}:{2:D2}", hours, minutes, seconds);
+        }
+        // タイマのインスタンス
+        private DispatcherTimer _timer;
+        // タイマを設定する
+        private void SetupTimer()
+        {
+            // タイマのインスタンスを生成
+            _timer = new DispatcherTimer(); // 優先度はDispatcherPriority.Background
+                                            // インターバルを設定
+            _timer.Interval = new TimeSpan(0, 0, 1);
+            // タイマメソッドを設定
+            _timer.Tick += new EventHandler(MyTimerMethod);
+            // タイマを開始
+            //_timer.Start();
+
+            // 画面が閉じられるときに、タイマを停止
+            this.Closing += new CancelEventHandler(StopTimer);
+        }
+
+        // タイマを停止
+        private void StopTimer(object sender, CancelEventArgs e)
+        {
+            _timer.Stop();
         }
     }
     public class ListBoxModel

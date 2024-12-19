@@ -326,6 +326,9 @@ namespace HottoMotto
                 menu_capture_click_button.Text = "録音開始";
                 menu_status.Text = "Welcome";
                 recFlag = false;
+
+                //タイマーを停止
+                _timer.Stop();
             }
             //開始処理
             else
@@ -347,6 +350,9 @@ namespace HottoMotto
                 menu_capture_click_button.Text = "録音停止";
                 menu_status.Text = "録音中...";
                 recFlag = true;
+
+                //タイマーを起動
+                _timer.Start();
             }
         }
 
