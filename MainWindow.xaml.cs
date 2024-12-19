@@ -10,6 +10,8 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows.Threading;
 using System.Windows.Media.Imaging;
+using MaterialDesignThemes.Wpf;
+using MaterialDesignThemes.Wpf.Themes;
 namespace HottoMotto
 {
     /// <summary>
@@ -28,6 +30,8 @@ namespace HottoMotto
         private Model model;
 
         bool isAudioPlaying = false;
+
+
 
         public MainWindow()
         {
@@ -50,7 +54,23 @@ namespace HottoMotto
                 Directory.CreateDirectory("Audio");
             }
         }
+           //マテリアルダークテーマ関連
+        private bool isDarkMode = false;
 
+        private void ThemeToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            isDarkMode = !isDarkMode;
+            var paletteHelper = new PaletteHelper();
+            var theme = paletteHelper.GetTheme();
+
+            theme.SetBaseTheme(isDarkMode ?
+                BaseTheme.Dark :
+                BaseTheme.Light);
+
+            paletteHelper.SetTheme(theme);
+
+            Debug.Print($"Theme changed to: {(isDarkMode ? "Dark" : "Light")}");
+        }
         public class JsonText
         {
             public string text { get; set; }
