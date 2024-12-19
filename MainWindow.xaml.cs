@@ -265,5 +265,8 @@ namespace HottoMotto
         public bool IsHighlighted { get; set; } //背景ありか(日時かテキストか)
         public bool IsSpeaker {  get; set; }    //スピーカーかマイクか
         public string AudioPath {  get; set; }
+
+        public System.Windows.Media.Brush Background { get; set; }
+        public bool IsSearch { get; set; }
     }
 }

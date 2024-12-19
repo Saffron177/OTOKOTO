@@ -121,7 +121,7 @@
         <!--ファイル名表示用ラベル-->
         <Label x:Name="file_Title" Grid.Column="1" Content="" HorizontalAlignment="Left" Margin="30,20,0,0" VerticalAlignment="Top"/>
         <!--ログ内容の検索用テキストボックス-->
-        <TextBox x:Name="log_Search_Textbox" Grid.Column="1" HorizontalAlignment="Right" Margin="0,20,20,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="25" Width="150" FontSize="15" Cursor="" KeyDown="Log_Search_Text" CaretBrush="Black" SelectionBrush="{x:Null}"/>
+        <TextBox x:Name="log_Search_Textbox" Grid.Column="1" HorizontalAlignment="Right" Margin="0,20,20,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="25" Width="150" FontSize="15" Cursor="" CaretBrush="Black" SelectionBrush="{x:Null}" TextChanged="Log_Search_Textbox_Textchanged"/>
         <Image HorizontalAlignment="Right" Height="25" Margin="0,20,170,0" VerticalAlignment="Top" Width="25" Source="/Resource/search.png" Grid.Column="1"/>
         <Border CornerRadius="5" Background="#343434" HorizontalAlignment="Right" Height="25" Margin="0,20,170,0" VerticalAlignment="Top" Width="25"  Grid.Column="1">
             <Image  Source="/Resource/search.png" Height="25" Width="25"/>
