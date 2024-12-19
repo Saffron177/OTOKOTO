@@ -15,7 +15,7 @@ namespace HottoMotto
         /// </summary>
         /// <param name="arg"></param>
         /// <returns></returns>
-        public async Task<string> removal(string arg)
+        static public async Task<string> removal(string arg)
         {
             try
             {
@@ -45,15 +45,18 @@ namespace HottoMotto
                     string output = await process.StandardOutput.ReadToEndAsync();
                     string errorOutput = await process.StandardError.ReadToEndAsync();
                     //プロセス終了を待機
-                    process.WaitForExit();
+                    await process.WaitForExitAsync();
                     // プロセス終了を待機
                     //await tcs.Task;
 
                     // 出力を表示（必要ならUIやログに表示）
-                    Debug.Print("exe:" + output);
-                    Debug.Print("exe error" + errorOutput);
+                    Debug.WriteLine("exe:" + output.Replace(Environment.NewLine, ""));
+                    if (errorOutput != null)
+                    {
+                        Debug.WriteLine("exe error" + errorOutput);
+                    }
 
-                    return output;
+                    return output.Replace(Environment.NewLine, "");
 
                     
                 }
