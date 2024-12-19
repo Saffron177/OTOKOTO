@@ -15,7 +15,7 @@ namespace HottoMotto
         /// </summary>
         /// <param name="arg"></param>
         /// <returns></returns>
-        public async Task<string> removal(string arg)
+        static public async Task<string> removal(string arg)
         {
             try
             {
@@ -50,10 +50,13 @@ namespace HottoMotto
                     //await tcs.Task;
 
                     // 出力を表示（必要ならUIやログに表示）
-                    Debug.Print("exe:" + output);
-                    Debug.Print("exe error" + errorOutput);
+                    Debug.WriteLine("exe:" + output.Replace(Environment.NewLine, ""));
+                    if (errorOutput != null)
+                    {
+                        Debug.WriteLine("exe error" + errorOutput);
+                    }
 
-                    return output;
+                    return output.Replace(Environment.NewLine, "");
 
                     
                 }
