@@ -45,7 +45,7 @@ namespace HottoMotto
                     string output = await process.StandardOutput.ReadToEndAsync();
                     string errorOutput = await process.StandardError.ReadToEndAsync();
                     //プロセス終了を待機
-                    process.WaitForExit();
+                    await process.WaitForExitAsync();
                     // プロセス終了を待機
                     //await tcs.Task;
 
