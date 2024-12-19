@@ -159,7 +159,6 @@ namespace HottoMotto
         {
             if (e.Key == Key.Enter)
             {
-                label1.Content = "検索!";
                 string searchText = search_Textbox.Text.ToLower();
 
                 foreach (var item in LogListBox.Items)
