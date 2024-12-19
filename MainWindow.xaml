@@ -352,7 +352,7 @@
                                     <Style.Triggers>
                                         <!-- IsHighlightedがTrueのときに背景色を設定 -->
                                         <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
-                                            <Setter Property="Background" Value="AliceBlue" />
+                                            <Setter Property="Background" Value="{DynamicResource MaterialDesignSelection}" />
                                             <Setter Property="Padding" Value="8"/>
                                             <Setter Property="Margin" Value="0,0,0,5"/>
                                         </DataTrigger>
@@ -363,8 +363,8 @@
                                     </Style.Triggers>
                                 </Style>
                             </Border.Style>
-                            <!--ログテキスト-->
-                            <TextBlock Text="{Binding Text}" TextWrapping="Wrap">
+                            <!-- ログテキスト -->
+                            <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Foreground="{DynamicResource MaterialDesignBody}">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
                                         <!-- デフォルトのフォントサイズ -->
