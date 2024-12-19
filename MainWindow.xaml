@@ -221,34 +221,81 @@
 
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Border CornerRadius="5">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="Background" Value="{x:Null}" />
-                                <Setter Property="Padding" Value="0"/>
-                                <Setter Property="Margin" Value="0"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
-                                        <Setter Property="Background" Value="AliceBlue" />
-                                        <Setter Property="Padding" Value="8"/>
-                                        <Setter Property="Margin" Value="0,0,0,5"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <TextBlock Text="{Binding Text}" TextWrapping="Wrap">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="FontSize" Value="10" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <!--ボタンの幅はそのまま-->
+                            <ColumnDefinition Width="Auto"/>
+                            <!--テキストの幅は親要素(ListBox)の幅に依存-->
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <!--再生ボタン-->
+                        <Button Click="AudioButtonClick" BorderBrush="{x:Null}" Background="{x:Null}" Margin="0,0,0,5">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <!--デフォルトは右側で非表示-->
+                                    <Setter Property="Grid.Column" Value="1"/>
+                                    <Setter Property="Visibility" Value="Collapsed"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
-                                            <Setter Property="FontSize" Value="12" />
+                                        <!--スピーカーの場合はボタンを左側にする-->
+                                        <DataTrigger Binding="{Binding IsSpeaker}" Value="True">
+                                            <Setter Property="Grid.Column" Value="0"/>
+                                        </DataTrigger>
+                                        <!--テキストの場合はボタンを表示する-->
+                                        <DataTrigger Binding="{Binding IsComit}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </Border>
+                            </Button.Style>
+                            <!--再生ボタンの画像-->
+                            <Image x:Name="AudioButtonImage" Source="Resource/start.png" Width="20" Height="20"/>
+                            <!--ButtonからImageを取得するためのタグ付け-->
+                            <!--DataTemplate内はx:Nameでの参照ができないため必要-->
+                            <Button.Tag>
+                                <Binding ElementName="AudioButtonImage" />
+                            </Button.Tag>
+                        </Button>
+                        <!--ボーダー(テキストの背景)-->
+                        <Border CornerRadius="5">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <!-- デフォルトの背景(透明) -->
+                                    <Setter Property="Background" Value="{x:Null}" />
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="Margin" Value="0"/>
+                                    <!--デフォルトの配置(左側)-->
+                                    <Setter Property="Grid.Column" Value="0"/>
+                                    <Style.Triggers>
+                                        <!-- IsHighlightedがTrueのときに背景色を設定 -->
+                                        <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                                            <Setter Property="Background" Value="AliceBlue" />
+                                            <Setter Property="Padding" Value="8"/>
+                                            <Setter Property="Margin" Value="0,0,0,5"/>
+                                        </DataTrigger>
+                                        <!--スピーカーの場合は右側に配置-->
+                                        <DataTrigger Binding="{Binding IsSpeaker}" Value="True">
+                                            <Setter Property="Grid.Column" Value="1"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <!--ログテキスト-->
+                            <TextBlock Text="{Binding Text}" TextWrapping="Wrap">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <!-- デフォルトのフォントサイズ -->
+                                        <Setter Property="FontSize" Value="10" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                                                <!-- IsHighlightedがTrueのときフォントサイズを変更 -->
+                                                <Setter Property="FontSize" Value="12" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Border>
+                    </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

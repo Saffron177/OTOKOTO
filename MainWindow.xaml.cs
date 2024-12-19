@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Threading;
+using System.Windows.Media.Imaging;
 namespace HottoMotto
 {
     /// <summary>
@@ -25,6 +26,8 @@ namespace HottoMotto
         private List<string> json_list = new List<string>();
 
         private Model model;
+
+        bool isAudioPlaying = false;
 
         public MainWindow()
         {
@@ -88,14 +91,14 @@ namespace HottoMotto
                         //出力中のテキストを上書きして確定する
                         if (speakerIndex != null)
                         {
-                            RealtimeListBox.Items[(int)speakerIndex] = new ListBoxModel { Text = json_text.text, IsHighlighted = true, IsSpeaker = is_speaker };
+                            RealtimeListBox.Items[(int)speakerIndex] = new ListBoxModel { Text = json_text.text, IsHighlighted = true, IsSpeaker = is_speaker, AudioPath = audiopath, IsComit = true };
                         }
                         //出力中のテキストがなければ行追加して出力する
                         else
                         {
                             speakerDateTime = DateTime.Now;
                             RealtimeListBox.Items.Add(new ListBoxModel { Text = speakerDateTime + " (スピーカー)", IsHighlighted = false, IsSpeaker = is_speaker });
-                            RealtimeListBox.Items.Add(new ListBoxModel { Text = json_text.text, IsHighlighted = true, IsSpeaker = is_speaker });
+                            RealtimeListBox.Items.Add(new ListBoxModel { Text = json_text.text, IsHighlighted = true, IsSpeaker = is_speaker, AudioPath = audiopath, IsComit = true });
                         }
                         //確定したテキストをjson化してリストに入れる
                         speakerIndex = null;
@@ -113,14 +116,14 @@ namespace HottoMotto
                         //出力中のテキストを上書きして確定する
                         if (micIndex != null)
                         {
-                            RealtimeListBox.Items[(int)micIndex] = new ListBoxModel { Text = json_text.text, IsHighlighted = true, IsSpeaker = is_speaker };
+                            RealtimeListBox.Items[(int)micIndex] = new ListBoxModel { Text = json_text.text, IsHighlighted = true, IsSpeaker = is_speaker, AudioPath = audiopath, IsComit = true };
                         }
                         //出力中のテキストがなければ行追加して出力する
                         else
                         {
                             micDateTime = DateTime.Now;
                             RealtimeListBox.Items.Add(new ListBoxModel { Text = micDateTime + " (マイク)", IsHighlighted = false, IsSpeaker = is_speaker });
-                            RealtimeListBox.Items.Add(new ListBoxModel { Text = json_text.text, IsHighlighted = true, IsSpeaker = is_speaker });
+                            RealtimeListBox.Items.Add(new ListBoxModel { Text = json_text.text, IsHighlighted = true, IsSpeaker = is_speaker, AudioPath = audiopath, IsComit = true });
                         }
                         //確定したテキストをjson化してリストに入れる
                         micIndex = null;
@@ -258,12 +261,62 @@ namespace HottoMotto
         {
             _timer.Stop();
         }
+
+        //音声メソッドのインスタンスを生成
+        private PlayAudio playAudio = new PlayAudio();
+
+        //再生ボタンのクリックイベント
+        private void AudioButtonClick(object sender, RoutedEventArgs e)
+        {
+            //senderからボタンを取得
+            if (sender is System.Windows.Controls.Button button)
+            {
+                //ボタンが含まれるリストボックスのアイテムを取得
+                ListBoxModel listBoxModel = button.DataContext as ListBoxModel;
+                //ボタンのタグからImageを取得
+                if (button.Tag is System.Windows.Controls.Image image && listBoxModel != null)
+                {
+                    AudioPlaying(image, listBoxModel);
+                }
+            }
+        }
+
+        //音声の再生・停止
+        private void AudioPlaying(System.Windows.Controls.Image image, ListBoxModel log)
+        {
+            if (isAudioPlaying)
+            {
+                //画像を変更
+                image.Source = new BitmapImage(new Uri("Resource/start.png", UriKind.Relative));
+                //音声を停止
+                playAudio.stop();
+                //フラグを変更
+                isAudioPlaying = false;
+            }
+            else
+            {
+                if (log.AudioPath != null)
+                {
+                    //画像を変更
+                    image.Source = new BitmapImage(new Uri("Resource/stop.png", UriKind.Relative));
+                    //音声を再生
+                    playAudio.play(log.AudioPath);
+                    //フラグを変更
+                    isAudioPlaying = true;
+                }
+                else
+                {
+                    Debug.Print("AudioPathがNullです");
+                }
+            }
+        }
     }
     public class ListBoxModel
     {
         public string Text {  get; set; }       //ログのテキスト
         public bool IsHighlighted { get; set; } //背景ありか(日時かテキストか)
         public bool IsSpeaker {  get; set; }    //スピーカーかマイクか
-        public string AudioPath {  get; set; }
+        public string AudioPath {  get; set; }  //音声ファイルのパス
+        public bool IsComit { get; set; }       //テキスト確定済みか(リアルタイムログで使用)
     }
 }
