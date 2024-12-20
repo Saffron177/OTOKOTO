@@ -304,31 +304,10 @@ namespace HottoMotto
                 string match = listBoxModel.Text.Substring(index, searchText.Length);
                 string afterMatch = listBoxModel.Text.Substring(index + searchText.Length);
 
-                // ItemTemplate内のTextBlockを取得
-                TextBlock textBlock = FindVisualChild<TextBlock>(listBoxItem);
-                if (textBlock != null)
-                {
-                    textBlock.Inlines.Clear(); // 古いインラインをクリア
+                listBoxModel.BeforText = beforeMatch;
+                listBoxModel.MatchText = match;
+                listBoxModel.AfterText = afterMatch;
 
-                    // マッチ前のテキスト
-                    textBlock.Inlines.Add(new Run(beforeMatch)
-                    {
-                        Background = System.Windows.Media.Brushes.AliceBlue
-                    });
-
-                    // マッチ部分（背景色を変更）
-                    textBlock.Inlines.Add(new Run(match)
-                    {
-                        Background = System.Windows.Media.Brushes.Yellow, // ハイライト背景
-                        Foreground = System.Windows.Media.Brushes.Red   // ハイライト文字色
-                    });
-
-                    // マッチ後のテキスト
-                    textBlock.Inlines.Add(new Run(afterMatch)
-                    {
-                        Background = System.Windows.Media.Brushes.AliceBlue
-                    });
-                }
                 //背景色をリセット
                 listBoxItem.Background = listBoxModel.Background;
 

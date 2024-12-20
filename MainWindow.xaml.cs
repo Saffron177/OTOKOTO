@@ -259,14 +259,92 @@ namespace HottoMotto
             _timer.Stop();
         }
     }
-    public class ListBoxModel
+    public class ListBoxModel : INotifyPropertyChanged
     {
         public string Text {  get; set; }       //ログのテキスト
-        public bool IsHighlighted { get; set; } //背景ありか(日時かテキストか)
-        public bool IsSpeaker {  get; set; }    //スピーカーかマイクか
+        //public bool IsHighlighted { get; set; } //背景ありか(日時かテキストか)
+        public bool IsSpeaker { get; set; }    //スピーカーかマイクか
         public string AudioPath {  get; set; }
 
-        public System.Windows.Media.Brush Background { get; set; }
-        public bool IsSearch { get; set; }
+        private string _beforText;
+        private string _matchText;
+        private string _afterText;
+        private bool _isHighlighted;
+        private bool _isSearch;
+
+        public System.Windows.Media.Brush Background { get; set; }　
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public string BeforText
+        {
+            get => _beforText;
+            set
+            {
+                if (_beforText != value)
+                {
+                    _beforText = value;
+                    OnPropertyChanged(nameof(BeforText));
+                }
+            }
+        }
+
+        public string MatchText
+        {
+            get => _matchText;
+            set
+            {
+                if (_matchText != value)
+                {
+                    _matchText = value;
+                    OnPropertyChanged(nameof(MatchText));
+                }
+            }
+        }
+
+        public string AfterText
+        {
+            get => _afterText;
+            set
+            {
+                if (_afterText != value)
+                {
+                    _afterText = value;
+                    OnPropertyChanged(nameof(AfterText));
+                }
+            }
+        }
+
+        public bool IsHighlighted
+        {
+            get => _isHighlighted;
+            set
+            {
+                if (_isHighlighted != value)
+                {
+                    _isHighlighted = value;
+                    OnPropertyChanged(nameof(IsHighlighted));
+                }
+            }
+        }
+
+        public bool IsSearch
+        {
+            get => _isSearch;
+            set
+            {
+                if (_isSearch != value)
+                {
+                    _isSearch = value;
+                    OnPropertyChanged(nameof(IsSearch));
+                }
+            }
+        }
+
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }
