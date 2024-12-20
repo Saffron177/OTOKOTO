@@ -326,7 +326,7 @@ namespace HottoMotto
 
                 //タスクトレイを変更
                 menu_capture_click_button.Text = "録音開始";
-                menu_status.Text = "Welcome";
+                menu_status.Text = "オトコト";
                 recFlag = false;
 
                 //タイマーを停止
