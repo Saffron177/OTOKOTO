@@ -352,7 +352,7 @@
                                     <Style.Triggers>
                                         <!-- IsHighlightedがTrueのときに背景色を設定 -->
                                         <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
-                                            <Setter Property="Background" Value="{DynamicResource MaterialDesignSelection}" />
+                                            <Setter Property="Background" Value="AliceBlue" />
                                             <Setter Property="Padding" Value="8"/>
                                             <Setter Property="Margin" Value="0,0,0,5"/>
                                         </DataTrigger>
