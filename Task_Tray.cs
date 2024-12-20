@@ -24,7 +24,7 @@ namespace HottoMotto
             {
                 Icon = new Icon("Resource/Icon.ico"), // アイコンファイルをプロジェクトに追加
                 Visible = true,
-                Text = "アプリケーション名"
+                Text = "オトコト"
             };
 
 
@@ -35,7 +35,7 @@ namespace HottoMotto
             };
             menu_status = new ToolStripLabel()
             {
-                Text = "Welcome",
+                Text = "オトコト",
                 Font = new Font("Yu Gothic UI", 12),
             };
 
