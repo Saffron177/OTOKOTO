@@ -214,7 +214,7 @@ namespace HottoMotto
         //ログ内のテキストを検索する
         private void Log_Search_Textbox_Textchanged(object sender, TextChangedEventArgs e)
         {
-            HighlightText();
+            //HighlightText();
         }
 
         //検索ボックスのテキストと一致するテキストを抽出して背景色を変更する
@@ -248,18 +248,20 @@ namespace HottoMotto
                             if (itemText.Contains(searchText.ToLower()) && !string.IsNullOrWhiteSpace(searchText))
                             {
                                 // ハイライトの適用
-                                HighlightTextBlock(listBoxItem, listBoxModel, searchText);
-                                listBoxModel.IsSearch = true;
+                                int index = listBoxModel.Text.IndexOf(searchText, StringComparison.OrdinalIgnoreCase);
+                                string beforeMatch = listBoxModel.Text.Substring(0, index);
+                                string match = listBoxModel.Text.Substring(index, searchText.Length);
+                                string afterMatch = listBoxModel.Text.Substring(index + searchText.Length);
+
+                                listBoxModel.BeforeText = beforeMatch;
+                                listBoxModel.MatchText = match;
+                                listBoxModel.AfterText = afterMatch;
                             }
                             else
                             {
-                                listBoxModel.IsSearch = false;
-                                TextBlock textBlock = FindVisualChild<TextBlock>(listBoxItem);
-                                if (textBlock != null)
-                                {
-                                    textBlock.Inlines.Clear();
-                                    textBlock.Inlines.Add(new Run(listBoxModel?.Text ?? string.Empty)); // 元のテキストを追加
-                                }
+                                listBoxModel.BeforeText = listBoxModel.Text;
+                                listBoxModel.MatchText = string.Empty;
+                                listBoxModel.AfterText = string.Empty;
                             }
                         }
                         else
@@ -281,6 +283,23 @@ namespace HottoMotto
                     }
                 }
             }
+            else
+            {
+                // 検索テキストが空の時は、元のテキストを表示に戻す
+                foreach (var item in LogListBox.Items)
+                {
+                    ListBoxItem listBoxItem = LogListBox.ItemContainerGenerator.ContainerFromItem(item) as ListBoxItem;
+                    if (listBoxItem != null)
+                    {
+                        ListBoxModel listBoxModel = listBoxItem.Content as ListBoxModel;
+
+                        // 元のテキストを戻す
+                        listBoxModel.BeforeText = listBoxModel.Text;
+                        listBoxModel.MatchText = string.Empty;
+                        listBoxModel.AfterText = string.Empty;
+                    }
+                }
+            }
         }
 
         //一致したテキストが含まれるアイテムを再配置
@@ -294,7 +313,7 @@ namespace HottoMotto
                 string match = listBoxModel.Text.Substring(index, searchText.Length);
                 string afterMatch = listBoxModel.Text.Substring(index + searchText.Length);
 
-                listBoxModel.BeforText = beforeMatch;
+                listBoxModel.BeforeText = beforeMatch;
                 listBoxModel.MatchText = match;
                 listBoxModel.AfterText = afterMatch;
 
@@ -335,6 +354,11 @@ namespace HottoMotto
             }
             return null;
 
+        }
+
+        private void Search_Key_Down(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            HighlightText();
         }
     }
 }

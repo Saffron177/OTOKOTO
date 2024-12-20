@@ -331,7 +331,7 @@ namespace HottoMotto
         public string Text {  get; set; }       //ログのテキスト
 
 
-        private string _beforText;
+        private string _beforeText;
         private string _matchText;
         private string _afterText;
         private bool _isHighlighted;
@@ -341,15 +341,15 @@ namespace HottoMotto
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string BeforText
+        public string BeforeText
         {
-            get => _beforText;
+            get => _beforeText;
             set
             {
-                if (_beforText != value)
+                if (_beforeText != value)
                 {
-                    _beforText = value;
-                    OnPropertyChanged(nameof(BeforText));
+                    _beforeText = value;
+                    OnPropertyChanged(nameof(BeforeText));
                 }
             }
         }
