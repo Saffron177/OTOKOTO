@@ -14,7 +14,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-            <!-- カスタムカラーの定義 -->
+            <!-- リストボックスのカスタムカラーの定義 -->
             <SolidColorBrush x:Key="BackgroundBrush" Color="#FFFFFF"/>
             <SolidColorBrush x:Key="ForegroundBrush" Color="#000000"/>
             <SolidColorBrush x:Key="ListBoxBackgroundBrush" Color="#F5F5F5"/>
@@ -27,6 +27,20 @@
             <SolidColorBrush x:Key="ListBoxBackgroundBrushDark" Color="#1E1E1E"/>
             <SolidColorBrush x:Key="ListBoxItemBackgroundBrushDark" Color="#2D2D2D"/>
             <SolidColorBrush x:Key="ListBoxHighlightBrushDark" Color="#3A3A3A"/>
+
+            <!-- ComboBox用のデフォカラー -->
+            <SolidColorBrush x:Key="ComboBoxForegroundBrush" Color="#000000"/>
+            <SolidColorBrush x:Key="ComboBoxBackgroundBrush" Color="#FFFFFF"/>
+            <SolidColorBrush x:Key="ComboBoxBorderBrush" Color="#E0E0E0"/>
+            <SolidColorBrush x:Key="ComboBoxItemForegroundBrush" Color="#000000"/>
+            <SolidColorBrush x:Key="ComboBoxUnderlineBrush" Color="#673AB7"/>
+
+            <!-- ComboBoxのダークモード用 -->
+            <SolidColorBrush x:Key="ComboBoxForegroundBrushDark" Color="#FFFFFF"/>
+            <SolidColorBrush x:Key="ComboBoxBackgroundBrushDark" Color="#1E1E1E"/>
+            <SolidColorBrush x:Key="ComboBoxBorderBrushDark" Color="#333333"/>
+            <SolidColorBrush x:Key="ComboBoxItemForegroundBrushDark" Color="#FFFFFF"/>
+            <SolidColorBrush x:Key="ComboBoxUnderlineBrushDark" Color="#9C27B0"/>
 
 
             <!-- 切り替えアイコン用カラー -->

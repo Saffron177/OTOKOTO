@@ -9,6 +9,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Interop;
 using System.Xml;
 using System.Formats.Asn1;
+using NAudio.Lame;
 
 namespace HottoMotto
 {
@@ -163,7 +164,8 @@ namespace HottoMotto
                                 S_writer.Flush();
                                 S_writer.Dispose();
                                 var result = recognizer.Result();
-                                UpdateTextBox(result, true, S_outputPath);
+                                UpdateTextBox(result, true, ConvertWavToMp3(S_outputPath));
+                                //UpdateTextBox(result, true, S_outputPath);
                                 Debug.Print("Audio" + result);
 
                                 //次の音声ファイルの準備
@@ -204,7 +206,7 @@ namespace HottoMotto
                     S_writer.Flush();
                     S_writer.Dispose();
                     var finalResult = recognizer.FinalResult();
-                    UpdateTextBox(finalResult, true,S_outputPath);
+                    UpdateTextBox(finalResult, true, ConvertWavToMp3(S_outputPath));
                 };
 
                 //マイク録音の処理--マイクが接続されているときのみ
@@ -230,7 +232,7 @@ namespace HottoMotto
                             M_writer.Dispose();
                             var result = mic_recognizer.Result();
                             
-                            UpdateTextBox(result, false,M_outputPath);
+                            UpdateTextBox(result, false, ConvertWavToMp3(M_outputPath));
                             Debug.Print(result);
                             M_outputPath = System.IO.Path.Combine($"./Audio/M_{DateTime.Now:yyMMddHHmmss}.wav");
                             M_writer = new WaveFileWriter(M_outputPath, mic_capture.WaveFormat);
@@ -250,7 +252,7 @@ namespace HottoMotto
                         M_writer.Dispose();
                         M_writer = null;
                         var finalResult = mic_recognizer.FinalResult();
-                        UpdateTextBox(finalResult, false,M_outputPath);
+                        UpdateTextBox(finalResult, false,ConvertWavToMp3(M_outputPath));
                         Button_Mute.IsEnabled = true;
 
                     };
@@ -324,7 +326,7 @@ namespace HottoMotto
 
                 //タスクトレイを変更
                 menu_capture_click_button.Text = "録音開始";
-                menu_status.Text = "Welcome";
+                menu_status.Text = "オトコト";
                 recFlag = false;
 
                 //タイマーを停止
@@ -506,6 +508,37 @@ namespace HottoMotto
                 }
                 ButtonIcon.Source = new BitmapImage(new Uri("Resource/mic_off.png", UriKind.Relative));
             }
+        }
+
+        //mp3に変換して元のwavは削除する関数
+        public static string ConvertWavToMp3(string wavFilePath)
+        {
+            // WAVファイルの存在確認
+            if (!File.Exists(wavFilePath))
+            {
+                throw new FileNotFoundException("WAV file not found.", wavFilePath);
+            }
+
+            // 拡張子を除いたファイル名を取得
+            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(wavFilePath);
+
+            // MP3ファイルのパスを生成
+            string mp3FilePath = Path.Combine(Path.GetDirectoryName(wavFilePath), fileNameWithoutExtension + ".mp3");
+
+            // WAVファイルを開く
+            using (var reader = new AudioFileReader(wavFilePath))
+            {
+                // LameMP3FileWriterを使ってMP3に変換
+                using (var writer = new LameMP3FileWriter(mp3FilePath, reader.WaveFormat, LAMEPreset.STANDARD))
+                {
+                    reader.CopyTo(writer);
+                }
+            }
+            // WAVファイルを削除
+            File.Delete(wavFilePath);
+
+            // 変換されたMP3ファイルのパスを返す
+            return mp3FilePath;
         }
     }
 }

@@ -48,7 +48,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <!--再生ボタン-->
-                        <Button Click="AudioButtonClick" BorderBrush="{x:Null}" Background="{x:Null}" Margin="0,0,0,5">
+                        <Button Click="AudioButtonClick" BorderBrush="{x:Null}" Background="{x:Null}" Width="25" Height="25" Margin="0,0,0,5">
                             <Button.Style>
                                 <Style TargetType="Button">
                                     <!--デフォルトは右側で非表示-->
@@ -67,7 +67,7 @@
                                 </Style>
                             </Button.Style>
                             <!--再生ボタンの画像-->
-                            <Image x:Name="AudioButtonImage" Source="Resource/start.png" Width="20" Height="20"/>
+                            <Image x:Name="AudioButtonImage" Source="Resource/start.png" Width="Auto" Height="Auto"/>
                             <!--ButtonからImageを取得するためのタグ付け-->
                             <!--DataTemplate内はx:Nameでの参照ができないため必要-->
                             <Button.Tag>
@@ -122,7 +122,9 @@
         <Border CornerRadius="5" Background="#343434" HorizontalAlignment="Right" Height="25" Margin="0,20,170,0" VerticalAlignment="Top" Width="25"  Grid.Column="1">
             <Image  Source="/Resource/search.png" Height="25" Width="25"/>
         </Border>
-        <Button x:Name="Copy_Button" Grid.Column="1" Content="コピー" HorizontalAlignment="Right" Margin="0,71,40,0" VerticalAlignment="Top" Click="Copy_Button_Click" Width="65" Visibility="Hidden"/>
+        <Button x:Name="Copy_Button" Grid.Column="1" HorizontalAlignment="Right" Margin="0,20,200,0" VerticalAlignment="Top" Click="Copy_Button_Click" Width="25" Height="25" Style="{x:Null}" BorderBrush="{x:Null}" Background="{x:Null}" Visibility="Hidden">
+            <Image Source="/Resource/copy.png" Height="Auto" Width="Auto"/>
+        </Button>
 
     </Grid>
 </Window>

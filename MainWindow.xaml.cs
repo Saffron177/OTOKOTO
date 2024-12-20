@@ -12,6 +12,7 @@ using System.Windows.Threading;
 using System.Windows.Media.Imaging;
 using MaterialDesignThemes.Wpf;
 using MaterialDesignThemes.Wpf.Themes;
+using System.Windows.Media;
 namespace HottoMotto
 {
     /// <summary>
@@ -66,6 +67,26 @@ namespace HottoMotto
                 BaseTheme.Light);
 
             paletteHelper.SetTheme(theme);
+
+            // ComboBoxのカラー更新
+            var resources = System.Windows.Application.Current.Resources;
+            if (isDarkMode)
+            {
+                resources["ComboBoxForegroundBrush"] = resources["ComboBoxForegroundBrushDark"];
+                resources["ComboBoxBackgroundBrush"] = resources["ComboBoxBackgroundBrushDark"];
+                resources["ComboBoxBorderBrush"] = resources["ComboBoxBorderBrushDark"];
+                resources["ComboBoxItemForegroundBrush"] = resources["ComboBoxItemForegroundBrushDark"];
+                resources["ComboBoxUnderlineBrush"] = resources["ComboBoxUnderlineBrushDark"];
+            }
+            else
+            {
+                resources["ComboBoxForegroundBrush"] = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
+                resources["ComboBoxBackgroundBrush"] = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));
+                resources["ComboBoxBorderBrush"] = new SolidColorBrush(System.Windows.Media.Color.FromRgb(224, 224, 224));
+                resources["ComboBoxItemForegroundBrush"] = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
+                resources["ComboBoxUnderlineBrush"] = new SolidColorBrush(System.Windows.Media.Color.FromRgb(103, 58, 183));
+            }
+
 
             Debug.Print($"Theme changed to: {(isDarkMode ? "Dark" : "Light")}");
         }
