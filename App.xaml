@@ -27,6 +27,13 @@
             <SolidColorBrush x:Key="ListBoxBackgroundBrushDark" Color="#1E1E1E"/>
             <SolidColorBrush x:Key="ListBoxItemBackgroundBrushDark" Color="#2D2D2D"/>
             <SolidColorBrush x:Key="ListBoxHighlightBrushDark" Color="#3A3A3A"/>
+
+
+            <!-- 切り替えアイコン用カラー -->
+            <SolidColorBrush x:Key="IconBrushLight" Color="#666666"/>
+            <!-- 灰色 -->
+            <SolidColorBrush x:Key="IconBrushDark" Color="#6C6C6C"/>
+            <!-- gray -->
         </ResourceDictionary>
     </Application.Resources>
 </Application>

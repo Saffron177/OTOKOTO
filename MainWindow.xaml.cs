@@ -320,6 +320,11 @@ namespace HottoMotto
                 PlayAudio.play(log.AudioPath, image);   //playメソッドの冒頭で再生中の音声を止めている
             }
         }
+
+        private void ThemeToggleButton_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
     public class ListBoxModel
     {
