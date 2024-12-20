@@ -12,6 +12,7 @@ using System.Windows.Threading;
 using System.Windows.Media.Imaging;
 using MaterialDesignThemes.Wpf;
 using MaterialDesignThemes.Wpf.Themes;
+using System.Windows.Media;
 namespace HottoMotto
 {
     /// <summary>
@@ -66,6 +67,26 @@ namespace HottoMotto
                 BaseTheme.Light);
 
             paletteHelper.SetTheme(theme);
+
+            // ComboBoxのカラー更新
+            var resources = System.Windows.Application.Current.Resources;
+            if (isDarkMode)
+            {
+                resources["ComboBoxForegroundBrush"] = resources["ComboBoxForegroundBrushDark"];
+                resources["ComboBoxBackgroundBrush"] = resources["ComboBoxBackgroundBrushDark"];
+                resources["ComboBoxBorderBrush"] = resources["ComboBoxBorderBrushDark"];
+                resources["ComboBoxItemForegroundBrush"] = resources["ComboBoxItemForegroundBrushDark"];
+                resources["ComboBoxUnderlineBrush"] = resources["ComboBoxUnderlineBrushDark"];
+            }
+            else
+            {
+                resources["ComboBoxForegroundBrush"] = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
+                resources["ComboBoxBackgroundBrush"] = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));
+                resources["ComboBoxBorderBrush"] = new SolidColorBrush(System.Windows.Media.Color.FromRgb(224, 224, 224));
+                resources["ComboBoxItemForegroundBrush"] = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
+                resources["ComboBoxUnderlineBrush"] = new SolidColorBrush(System.Windows.Media.Color.FromRgb(103, 58, 183));
+            }
+
 
             Debug.Print($"Theme changed to: {(isDarkMode ? "Dark" : "Light")}");
         }
@@ -326,10 +347,92 @@ namespace HottoMotto
 
         }
     }
-    public class ListBoxModel
+    public class ListBoxModel : INotifyPropertyChanged
     {
         public string Text {  get; set; }       //ログのテキスト
-        public bool IsHighlighted { get; set; } //背景ありか(日時かテキストか)
+
+
+        private string _beforText;
+        private string _matchText;
+        private string _afterText;
+        private bool _isHighlighted;
+        private bool _isSearch;
+
+        public System.Windows.Media.Brush Background { get; set; }　
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public string BeforText
+        {
+            get => _beforText;
+            set
+            {
+                if (_beforText != value)
+                {
+                    _beforText = value;
+                    OnPropertyChanged(nameof(BeforText));
+                }
+            }
+        }
+
+        public string MatchText
+        {
+            get => _matchText;
+            set
+            {
+                if (_matchText != value)
+                {
+                    _matchText = value;
+                    OnPropertyChanged(nameof(MatchText));
+                }
+            }
+        }
+
+        public string AfterText
+        {
+            get => _afterText;
+            set
+            {
+                if (_afterText != value)
+                {
+                    _afterText = value;
+                    OnPropertyChanged(nameof(AfterText));
+                }
+            }
+        }
+
+        public bool IsHighlighted
+        {
+            get => _isHighlighted;
+            set
+            {
+                if (_isHighlighted != value)
+                {
+                    _isHighlighted = value;
+                    OnPropertyChanged(nameof(IsHighlighted));
+                }
+            }
+        }
+
+        public bool IsSearch
+        {
+            get => _isSearch;
+            set
+            {
+                if (_isSearch != value)
+                {
+                    _isSearch = value;
+                    OnPropertyChanged(nameof(IsSearch));
+                }
+            }
+        }
+
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        //public bool IsHighlighted { get; set; } //背景ありか(日時かテキストか)
         public bool IsSpeaker {  get; set; }    //スピーカーかマイクか
         public string AudioPath {  get; set; }  //音声ファイルのパス
         public bool IsComit { get; set; }       //テキスト確定済みか(リアルタイムログで使用)
