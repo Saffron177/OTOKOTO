@@ -330,6 +330,11 @@ namespace HottoMotto
                 }
             }
         }
+
+        private void ThemeToggleButton_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
     public class ListBoxModel
     {
