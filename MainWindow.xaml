@@ -47,19 +47,21 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
                         <Border Background="Transparent" 
-                                Padding="8" 
-                                CornerRadius="25">
+                        Padding="8" 
+                        CornerRadius="25">
                             <Grid>
                                 <materialDesign:PackIcon x:Name="Icon"
-                                                       Kind="WeatherSunny"
-                                                       Width="24"
-                                                       Height="24"
-                                                       Foreground="{DynamicResource MaterialDesignBody}"/>
+                       Kind="WeatherSunny"
+                       Width="24"
+                       Height="24"
+                       Foreground="{DynamicResource IconBrushLight}"/>
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="Icon" Property="Kind" Value="WeatherNight"/>
+                                <Setter TargetName="Icon" Property="Foreground" Value="{DynamicResource SecondaryHueMidBrush}"/>
+                                <Setter TargetName="Icon" Property="Foreground" Value="{DynamicResource IconBrushDark}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -89,7 +91,7 @@
                       Grid.Column="2"
                       HorizontalAlignment="Right"
                       VerticalAlignment="Top"
-                      Margin="0,24,0,0"/>
+                      Margin="0,24,0,0" Checked="ThemeToggleButton_Checked"/>
         <!-- ダークモード -->
         <Button x:Name="Button_Save" 
         Margin="0,30,30,0" 
