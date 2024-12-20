@@ -14,7 +14,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using System.IO;
 using System.Diagnostics;
 using System.Windows.Controls.Primitives;
 using System.Collections.ObjectModel;
@@ -28,8 +27,6 @@ namespace HottoMotto
     {
         //ファイル一覧を保持
         string[] txtFiles;
-
-        bool isAudioPlaying = false;
 
         public LogWindow()
         {
@@ -154,79 +151,6 @@ namespace HottoMotto
             }
         }
 
-        //ログ内のテキストを検索する
-        private async void Log_Search_Text(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                string searchText = search_Textbox.Text.ToLower();
-
-                foreach (var item in LogListBox.Items)
-                {
-                    ListBoxItem listBoxItem = null;
-
-                    // アイテムコンテナが生成されるのを待つ
-                    while(listBoxItem == null)
-                    {
-                        await System.Threading.Tasks.Task.Delay(10); // 少し待機
-                        listBoxItem = LogListBox.ItemContainerGenerator.ContainerFromItem(item) as ListBoxItem;
-                    }
-                    // アイテムコンテナが生成されたかを確認
-                    if (LogListBox.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
-                    {
-
-                        listBoxItem = LogListBox.ItemContainerGenerator.ContainerFromItem(item) as ListBoxItem;
-                        if (listBoxItem != null)
-                        {
-                            string itemText = item.ToString().ToLower();
-                            if (itemText.Contains(searchText) && !string.IsNullOrWhiteSpace(searchText))
-                            {
-                                // ハイライトの適用
-                                HighlightText(listBoxItem, itemText, searchText);
-                            }
-                            else
-                            {
-                                // 元の色に戻す
-                                listBoxItem.Background = System.Windows.Media.Brushes.Transparent;
-                                listBoxItem.Content = item;
-                            }
-                        }
-                        else
-                        {
-                            System.Windows.MessageBox.Show("エラー");
-                        }
-                    }
-                    else
-                    {
-                        // アイテムコンテナが生成されるのを待つ
-                        LogListBox.ItemContainerGenerator.StatusChanged += (s, args) =>
-                        {
-                            if (LogListBox.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
-                            {
-                                // 再度ハイライト処理を呼び出す
-                                Log_Search_Text(sender, e);
-                            }
-                        };
-                    }
-                }
-            }
-        }
-
-
-        private void HighlightText(ListBoxItem listBoxItem, string itemText, string searchText)
-        {
-            int matchIndex = itemText.IndexOf(searchText);
-            string beforeMatch = listBoxItem.Content.ToString().Substring(0, matchIndex);
-            string match = listBoxItem.Content.ToString().Substring(matchIndex, searchText.Length);
-            string afterMatch = listBoxItem.Content.ToString().Substring(matchIndex + searchText.Length);
-            listBoxItem.Background = System.Windows.Media.Brushes.Transparent;
-            // 背景色を透明にしてカスタム描画を行う
-            TextBlock textBlock = new TextBlock();
-            textBlock.Inlines.Add(new Run(beforeMatch));
-            textBlock.Inlines.Add(new Run(match) { Background = System.Windows.Media.Brushes.Yellow });
-            textBlock.Inlines.Add(new Run(afterMatch));
-            listBoxItem.Content = textBlock;
-        }
 
         //コピーボタンのクリック処理
         private void Copy_Button_Click(object sender, RoutedEventArgs e)
@@ -246,8 +170,8 @@ namespace HottoMotto
             }
         }
 
-        //ボタン読み込み時のイベント
-        private void Button_Loaded(object sender, RoutedEventArgs e)
+        //再生ボタンのクリックイベント
+        private void AudioButtonClick(object sender, RoutedEventArgs e)
         {
             //senderからボタンを取得
             if (sender is System.Windows.Controls.Button button)
@@ -257,42 +181,160 @@ namespace HottoMotto
                 //ボタンのタグからImageを取得
                 if (button.Tag is System.Windows.Controls.Image image && listBoxModel != null)
                 {
-                    //クリックイベントを設定
-                    button.Click += (s, args) => OnButtonClick(image, listBoxModel);
+                    AudioPlaying(image, listBoxModel);
                 }
             }
         }
 
-        private PlayAudio playAudio = new PlayAudio();
-        //録音データを再生するボタンのクリックイベント
-        private void OnButtonClick(System.Windows.Controls.Image image, ListBoxModel log)
+        //PlayAudio.playingImageには再生中の音声のボタンの画像が入っている
+        //nullの場合は再生中ではない
+        private void AudioPlaying(System.Windows.Controls.Image image, ListBoxModel log)
         {
-            
-            if (isAudioPlaying)
+            //再生中の音声がない場合、再生する
+            if(PlayAudio.playingImage == null)
             {
-                //画像を変更
-                image.Source = new BitmapImage(new Uri("Resource/start.png", UriKind.Relative));
-                //音声を停止
-                playAudio.stop();
-                //フラグを変更
-                isAudioPlaying = false;
+                PlayAudio.ChangeToStopImage(image);
+                PlayAudio.play(log.AudioPath, image);
+            }
+            //再生中の音声がクリックした音声と同じ場合、再生を止める
+            else if(PlayAudio.playingImage == image)
+            {
+                PlayAudio.ChangeToStartImage();
+                PlayAudio.stop();
+            }
+            //再生中の音声がクリックした音声と違う場合、再生中の音声を止め、選択した音声を再生する
+            else
+            {
+                PlayAudio.ChangeToStartImage();
+                PlayAudio.ChangeToStopImage(image);
+                PlayAudio.play(log.AudioPath, image);   //playメソッドの冒頭で再生中の音声を止めている
+            }
+        }
+
+        //ログ内のテキストを検索する
+        private void Log_Search_Textbox_Textchanged(object sender, TextChangedEventArgs e)
+        {
+            HighlightText();
+        }
+
+        //検索ボックスのテキストと一致するテキストを抽出して背景色を変更する
+        private async void HighlightText()
+        {
+            // TextBoxのテキストを取得
+            string searchText = log_Search_Textbox.Text;
+
+            // 検索テキストが空でないことを確認
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                foreach (var item in LogListBox.Items)
+                {
+                    ListBoxItem listBoxItem = null;
+
+                    // アイテムコンテナが生成されるのを待つ
+                    while (listBoxItem == null)
+                    {
+                        await System.Threading.Tasks.Task.Delay(10); // 少し待機
+                        listBoxItem = LogListBox.ItemContainerGenerator.ContainerFromItem(item) as ListBoxItem;
+                    }
+
+                    // アイテムコンテナが生成されたかを確認
+                    if (LogListBox.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
+                    {
+                        listBoxItem = LogListBox.ItemContainerGenerator.ContainerFromItem(item) as ListBoxItem;
+                        if (listBoxItem != null)
+                        {
+                            ListBoxModel listBoxModel = listBoxItem.Content as ListBoxModel;
+                            string itemText = listBoxModel?.Text.ToLower();
+                            if (itemText.Contains(searchText.ToLower()) && !string.IsNullOrWhiteSpace(searchText))
+                            {
+                                // ハイライトの適用
+                                HighlightTextBlock(listBoxItem, listBoxModel, searchText);
+                                listBoxModel.IsSearch = true;
+                            }
+                            else
+                            {
+                                listBoxModel.IsSearch = false;
+                                TextBlock textBlock = FindVisualChild<TextBlock>(listBoxItem);
+                                if (textBlock != null)
+                                {
+                                    textBlock.Inlines.Clear();
+                                    textBlock.Inlines.Add(new Run(listBoxModel?.Text ?? string.Empty)); // 元のテキストを追加
+                                }
+                            }
+                        }
+                        else
+                        {
+                            System.Windows.MessageBox.Show("エラー");
+                        }
+                    }
+                    else
+                    {
+                        // アイテムコンテナが生成されるのを待つ
+                        LogListBox.ItemContainerGenerator.StatusChanged += (s, args) =>
+                        {
+                            if (LogListBox.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
+                            {
+                                // 再度ハイライト処理を呼び出す
+                                HighlightText();
+                            }
+                        };
+                    }
+                }
+            }
+        }
+
+        //一致したテキストが含まれるアイテムを再配置
+        private void HighlightTextBlock(ListBoxItem listBoxItem, ListBoxModel listBoxModel, string searchText)
+        {
+            // テキストを分割し、検索テキストをハイライト
+            int index = listBoxModel.Text.IndexOf(searchText, StringComparison.OrdinalIgnoreCase);
+            if (index >= 0)
+            {
+                string beforeMatch = listBoxModel.Text.Substring(0, index);
+                string match = listBoxModel.Text.Substring(index, searchText.Length);
+                string afterMatch = listBoxModel.Text.Substring(index + searchText.Length);
+
+                listBoxModel.BeforText = beforeMatch;
+                listBoxModel.MatchText = match;
+                listBoxModel.AfterText = afterMatch;
+
+                //背景色をリセット
+                listBoxItem.Background = listBoxModel.Background;
+
+                // ハイライト適用
+                listBoxModel.IsHighlighted = true;
             }
             else
             {
-                if (log.AudioPath != null)
+                // ハイライト対象でない場合は元のテキストを表示
+                TextBlock textBlock = FindVisualChild<TextBlock>(listBoxItem);
+                if (textBlock != null)
                 {
-                    //画像を変更
-                    image.Source = new BitmapImage(new Uri("Resource/stop.png", UriKind.Relative));
-                    //音声を再生
-                    playAudio.play(log.AudioPath);
-                    //フラグを変更
-                    isAudioPlaying = true;
+                    textBlock.Inlines.Clear();
+                    textBlock.Inlines.Add(new Run(listBoxModel.Text));
+                }
+            }
+        }
+
+
+        // 子要素を検索するためのユーティリティメソッド
+        private T FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(parent, i);
+                if (child != null && child is T)
+                {
+                    return (T)child;
                 }
                 else
                 {
-                    Debug.Print("AudioPathがNullです");
+                    T childItem = FindVisualChild<T>(child);
+                    if (childItem != null) return childItem;
                 }
             }
+            return null;
+
         }
     }
 }

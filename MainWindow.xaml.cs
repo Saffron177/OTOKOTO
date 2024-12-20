@@ -30,8 +30,6 @@ namespace HottoMotto
 
         private Model model;
 
-        bool isAudioPlaying = false;
-
 
 
         public MainWindow()
@@ -303,9 +301,6 @@ namespace HottoMotto
             _timer.Stop();
         }
 
-        //音声メソッドのインスタンスを生成
-        private PlayAudio playAudio = new PlayAudio();
-
         //再生ボタンのクリックイベント
         private void AudioButtonClick(object sender, RoutedEventArgs e)
         {
@@ -322,33 +317,28 @@ namespace HottoMotto
             }
         }
 
-        //音声の再生・停止
+        //PlayAudio.playingImageには再生中の音声のボタンの画像が入っている
+        //nullの場合は再生中ではない
         private void AudioPlaying(System.Windows.Controls.Image image, ListBoxModel log)
         {
-            if (isAudioPlaying)
+            //再生中の音声がない場合、再生する
+            if (PlayAudio.playingImage == null)
             {
-                //画像を変更
-                image.Source = new BitmapImage(new Uri("Resource/start.png", UriKind.Relative));
-                //音声を停止
-                playAudio.stop();
-                //フラグを変更
-                isAudioPlaying = false;
+                PlayAudio.ChangeToStopImage(image);
+                PlayAudio.play(log.AudioPath, image);
             }
+            //再生中の音声がクリックした音声と同じ場合、再生を止める
+            else if (PlayAudio.playingImage == image)
+            {
+                PlayAudio.ChangeToStartImage();
+                PlayAudio.stop();
+            }
+            //再生中の音声がクリックした音声と違う場合、再生中の音声を止め、選択した音声を再生する
             else
             {
-                if (log.AudioPath != null)
-                {
-                    //画像を変更
-                    image.Source = new BitmapImage(new Uri("Resource/stop.png", UriKind.Relative));
-                    //音声を再生
-                    playAudio.play(log.AudioPath);
-                    //フラグを変更
-                    isAudioPlaying = true;
-                }
-                else
-                {
-                    Debug.Print("AudioPathがNullです");
-                }
+                PlayAudio.ChangeToStartImage();
+                PlayAudio.ChangeToStopImage(image);
+                PlayAudio.play(log.AudioPath, image);   //playメソッドの冒頭で再生中の音声を止めている
             }
         }
 
@@ -357,10 +347,92 @@ namespace HottoMotto
 
         }
     }
-    public class ListBoxModel
+    public class ListBoxModel : INotifyPropertyChanged
     {
         public string Text {  get; set; }       //ログのテキスト
-        public bool IsHighlighted { get; set; } //背景ありか(日時かテキストか)
+
+
+        private string _beforText;
+        private string _matchText;
+        private string _afterText;
+        private bool _isHighlighted;
+        private bool _isSearch;
+
+        public System.Windows.Media.Brush Background { get; set; }　
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public string BeforText
+        {
+            get => _beforText;
+            set
+            {
+                if (_beforText != value)
+                {
+                    _beforText = value;
+                    OnPropertyChanged(nameof(BeforText));
+                }
+            }
+        }
+
+        public string MatchText
+        {
+            get => _matchText;
+            set
+            {
+                if (_matchText != value)
+                {
+                    _matchText = value;
+                    OnPropertyChanged(nameof(MatchText));
+                }
+            }
+        }
+
+        public string AfterText
+        {
+            get => _afterText;
+            set
+            {
+                if (_afterText != value)
+                {
+                    _afterText = value;
+                    OnPropertyChanged(nameof(AfterText));
+                }
+            }
+        }
+
+        public bool IsHighlighted
+        {
+            get => _isHighlighted;
+            set
+            {
+                if (_isHighlighted != value)
+                {
+                    _isHighlighted = value;
+                    OnPropertyChanged(nameof(IsHighlighted));
+                }
+            }
+        }
+
+        public bool IsSearch
+        {
+            get => _isSearch;
+            set
+            {
+                if (_isSearch != value)
+                {
+                    _isSearch = value;
+                    OnPropertyChanged(nameof(IsSearch));
+                }
+            }
+        }
+
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        //public bool IsHighlighted { get; set; } //背景ありか(日時かテキストか)
         public bool IsSpeaker {  get; set; }    //スピーカーかマイクか
         public string AudioPath {  get; set; }  //音声ファイルのパス
         public bool IsComit { get; set; }       //テキスト確定済みか(リアルタイムログで使用)
