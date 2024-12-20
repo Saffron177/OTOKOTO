@@ -389,7 +389,7 @@ namespace HottoMotto
         }
 
         //ファイルの保存関数
-        private void File_Output()
+        private async void File_Output()
         {
             //保存時のダイアログのクラス
             SaveFileDialog sfd = new SaveFileDialog();
@@ -444,9 +444,14 @@ namespace HottoMotto
             List<Conversation_Log_Data> sortedRealtimeLogs = realtimeLogs.OrderBy(log => log.TimeStamp).ToList();
             JsonUtil jsonUtil = new JsonUtil();
             //リアルタイムログをjson化
+            //並列処理でフィラー除去を実行
+            await Parallel.ForEachAsync(sortedRealtimeLogs, async (log, CancellationToken) =>
+            {
+                log.Text = await Filler_Removal.removal(log.Text);
+            });
             foreach (Conversation_Log_Data log in sortedRealtimeLogs)
             {
-                json_list.Add(jsonUtil.ToJson(log.TimeStamp, log.Text, log.IsSpeaker,log.AudioPath));
+                json_list.Add(jsonUtil.ToJson(log.TimeStamp,log.Text, log.IsSpeaker,log.AudioPath));
             }
             //複数のjsonをリスト化
             string log_text = $"[{string.Join(",", json_list)}]";

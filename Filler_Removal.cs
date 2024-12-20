@@ -15,14 +15,14 @@ namespace HottoMotto
         /// </summary>
         /// <param name="arg"></param>
         /// <returns></returns>
-        public async Task<string> removal(string arg)
+        static public async Task<string> removal(string arg)
         {
             try
             {
                 // プロセスの設定
                 var processStartInfo = new ProcessStartInfo
                 {
-                    FileName = "Filler_removal.exe",    //実行するexe
+                    FileName = ".\\Filler_removal.dist\\Filler_removal.exe",    //実行するexe
                     Arguments = arg,                    //引数
                     RedirectStandardOutput = true, // 標準出力をリダイレクト
                     RedirectStandardError = true, // 標準エラー出力をリダイレクト
@@ -45,15 +45,18 @@ namespace HottoMotto
                     string output = await process.StandardOutput.ReadToEndAsync();
                     string errorOutput = await process.StandardError.ReadToEndAsync();
                     //プロセス終了を待機
-                    process.WaitForExit();
+                    await process.WaitForExitAsync();
                     // プロセス終了を待機
                     //await tcs.Task;
 
                     // 出力を表示（必要ならUIやログに表示）
-                    Debug.Print("exe:" + output);
-                    Debug.Print("exe error" + errorOutput);
+                    Debug.WriteLine("exe:" + output.Replace(Environment.NewLine, ""));
+                    if (errorOutput != "")
+                    {
+                        Debug.WriteLine("exe error" + errorOutput);
+                    }
 
-                    return output;
+                    return output.Replace(Environment.NewLine, "");
 
                     
                 }

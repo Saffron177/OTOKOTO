@@ -28,8 +28,6 @@ namespace HottoMotto
         //ファイル一覧を保持
         string[] txtFiles;
 
-        bool isAudioPlaying = false;
-
         public LogWindow()
         {
             InitializeComponent();
@@ -172,8 +170,8 @@ namespace HottoMotto
             }
         }
 
-        //ボタン読み込み時のイベント
-        private void Button_Loaded(object sender, RoutedEventArgs e)
+        //再生ボタンのクリックイベント
+        private void AudioButtonClick(object sender, RoutedEventArgs e)
         {
             //senderからボタンを取得
             if (sender is System.Windows.Controls.Button button)
@@ -183,41 +181,33 @@ namespace HottoMotto
                 //ボタンのタグからImageを取得
                 if (button.Tag is System.Windows.Controls.Image image && listBoxModel != null)
                 {
-                    //クリックイベントを設定
-                    button.Click += (s, args) => OnButtonClick(image, listBoxModel);
+                    AudioPlaying(image, listBoxModel);
                 }
             }
         }
 
-        private PlayAudio playAudio = new PlayAudio();
-        //録音データを再生するボタンのクリックイベント
-        private void OnButtonClick(System.Windows.Controls.Image image, ListBoxModel log)
+        //PlayAudio.playingImageには再生中の音声のボタンの画像が入っている
+        //nullの場合は再生中ではない
+        private void AudioPlaying(System.Windows.Controls.Image image, ListBoxModel log)
         {
-            
-            if (isAudioPlaying)
+            //再生中の音声がない場合、再生する
+            if(PlayAudio.playingImage == null)
             {
-                //画像を変更
-                image.Source = new BitmapImage(new Uri("Resource/start.png", UriKind.Relative));
-                //音声を停止
-                playAudio.stop();
-                //フラグを変更
-                isAudioPlaying = false;
+                PlayAudio.ChangeToStopImage(image);
+                PlayAudio.play(log.AudioPath, image);
             }
+            //再生中の音声がクリックした音声と同じ場合、再生を止める
+            else if(PlayAudio.playingImage == image)
+            {
+                PlayAudio.ChangeToStartImage();
+                PlayAudio.stop();
+            }
+            //再生中の音声がクリックした音声と違う場合、再生中の音声を止め、選択した音声を再生する
             else
             {
-                if (log.AudioPath != null)
-                {
-                    //画像を変更
-                    image.Source = new BitmapImage(new Uri("Resource/stop.png", UriKind.Relative));
-                    //音声を再生
-                    playAudio.play(log.AudioPath);
-                    //フラグを変更
-                    isAudioPlaying = true;
-                }
-                else
-                {
-                    Debug.Print("AudioPathがNullです");
-                }
+                PlayAudio.ChangeToStartImage();
+                PlayAudio.ChangeToStopImage(image);
+                PlayAudio.play(log.AudioPath, image);   //playメソッドの冒頭で再生中の音声を止めている
             }
         }
 

@@ -6,11 +6,34 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml"/>
+                <!-- MaterialDesignのテーマ設定 -->
+                <materialDesign:BundledTheme BaseTheme="Light" 
+                                           PrimaryColor="DeepPurple" 
+                                           SecondaryColor="Purple"/>
 
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <!-- カスタムカラーの定義 -->
+            <SolidColorBrush x:Key="BackgroundBrush" Color="#FFFFFF"/>
+            <SolidColorBrush x:Key="ForegroundBrush" Color="#000000"/>
+            <SolidColorBrush x:Key="ListBoxBackgroundBrush" Color="#F5F5F5"/>
+            <SolidColorBrush x:Key="ListBoxItemBackgroundBrush" Color="#FFFFFF"/>
+            <SolidColorBrush x:Key="ListBoxHighlightBrush" Color="AliceBlue"/>
+
+            <!-- ダークモード用のカラー -->
+            <SolidColorBrush x:Key="BackgroundBrushDark" Color="#121212"/>
+            <SolidColorBrush x:Key="ForegroundBrushDark" Color="#FFFFFF"/>
+            <SolidColorBrush x:Key="ListBoxBackgroundBrushDark" Color="#1E1E1E"/>
+            <SolidColorBrush x:Key="ListBoxItemBackgroundBrushDark" Color="#2D2D2D"/>
+            <SolidColorBrush x:Key="ListBoxHighlightBrushDark" Color="#3A3A3A"/>
+
+
+            <!-- 切り替えアイコン用カラー -->
+            <SolidColorBrush x:Key="IconBrushLight" Color="#666666"/>
+            <!-- 灰色 -->
+            <SolidColorBrush x:Key="IconBrushDark" Color="#6C6C6C"/>
+            <!-- gray -->
         </ResourceDictionary>
     </Application.Resources>
 </Application>

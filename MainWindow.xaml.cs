@@ -9,6 +9,9 @@ using System.Windows.Controls;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Threading;
+using System.Windows.Media.Imaging;
+using MaterialDesignThemes.Wpf;
+using MaterialDesignThemes.Wpf.Themes;
 namespace HottoMotto
 {
     /// <summary>
@@ -25,6 +28,8 @@ namespace HottoMotto
         private List<string> json_list = new List<string>();
 
         private Model model;
+
+
 
         public MainWindow()
         {
@@ -47,7 +52,23 @@ namespace HottoMotto
                 Directory.CreateDirectory("Audio");
             }
         }
+           //マテリアルダークテーマ関連
+        private bool isDarkMode = false;
 
+        private void ThemeToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            isDarkMode = !isDarkMode;
+            var paletteHelper = new PaletteHelper();
+            var theme = paletteHelper.GetTheme();
+
+            theme.SetBaseTheme(isDarkMode ?
+                BaseTheme.Dark :
+                BaseTheme.Light);
+
+            paletteHelper.SetTheme(theme);
+
+            Debug.Print($"Theme changed to: {(isDarkMode ? "Dark" : "Light")}");
+        }
         public class JsonText
         {
             public string text { get; set; }
@@ -88,14 +109,14 @@ namespace HottoMotto
                         //出力中のテキストを上書きして確定する
                         if (speakerIndex != null)
                         {
-                            RealtimeListBox.Items[(int)speakerIndex] = new ListBoxModel { Text = json_text.text, IsHighlighted = true, IsSpeaker = is_speaker };
+                            RealtimeListBox.Items[(int)speakerIndex] = new ListBoxModel { Text = json_text.text, IsHighlighted = true, IsSpeaker = is_speaker, AudioPath = audiopath, IsComit = true };
                         }
                         //出力中のテキストがなければ行追加して出力する
                         else
                         {
                             speakerDateTime = DateTime.Now;
                             RealtimeListBox.Items.Add(new ListBoxModel { Text = speakerDateTime + " (スピーカー)", IsHighlighted = false, IsSpeaker = is_speaker });
-                            RealtimeListBox.Items.Add(new ListBoxModel { Text = json_text.text, IsHighlighted = true, IsSpeaker = is_speaker });
+                            RealtimeListBox.Items.Add(new ListBoxModel { Text = json_text.text, IsHighlighted = true, IsSpeaker = is_speaker, AudioPath = audiopath, IsComit = true });
                         }
                         //確定したテキストをjson化してリストに入れる
                         speakerIndex = null;
@@ -113,14 +134,14 @@ namespace HottoMotto
                         //出力中のテキストを上書きして確定する
                         if (micIndex != null)
                         {
-                            RealtimeListBox.Items[(int)micIndex] = new ListBoxModel { Text = json_text.text, IsHighlighted = true, IsSpeaker = is_speaker };
+                            RealtimeListBox.Items[(int)micIndex] = new ListBoxModel { Text = json_text.text, IsHighlighted = true, IsSpeaker = is_speaker, AudioPath = audiopath, IsComit = true };
                         }
                         //出力中のテキストがなければ行追加して出力する
                         else
                         {
                             micDateTime = DateTime.Now;
                             RealtimeListBox.Items.Add(new ListBoxModel { Text = micDateTime + " (マイク)", IsHighlighted = false, IsSpeaker = is_speaker });
-                            RealtimeListBox.Items.Add(new ListBoxModel { Text = json_text.text, IsHighlighted = true, IsSpeaker = is_speaker });
+                            RealtimeListBox.Items.Add(new ListBoxModel { Text = json_text.text, IsHighlighted = true, IsSpeaker = is_speaker, AudioPath = audiopath, IsComit = true });
                         }
                         //確定したテキストをjson化してリストに入れる
                         micIndex = null;
@@ -258,13 +279,57 @@ namespace HottoMotto
         {
             _timer.Stop();
         }
+
+        //再生ボタンのクリックイベント
+        private void AudioButtonClick(object sender, RoutedEventArgs e)
+        {
+            //senderからボタンを取得
+            if (sender is System.Windows.Controls.Button button)
+            {
+                //ボタンが含まれるリストボックスのアイテムを取得
+                ListBoxModel listBoxModel = button.DataContext as ListBoxModel;
+                //ボタンのタグからImageを取得
+                if (button.Tag is System.Windows.Controls.Image image && listBoxModel != null)
+                {
+                    AudioPlaying(image, listBoxModel);
+                }
+            }
+        }
+
+        //PlayAudio.playingImageには再生中の音声のボタンの画像が入っている
+        //nullの場合は再生中ではない
+        private void AudioPlaying(System.Windows.Controls.Image image, ListBoxModel log)
+        {
+            //再生中の音声がない場合、再生する
+            if (PlayAudio.playingImage == null)
+            {
+                PlayAudio.ChangeToStopImage(image);
+                PlayAudio.play(log.AudioPath, image);
+            }
+            //再生中の音声がクリックした音声と同じ場合、再生を止める
+            else if (PlayAudio.playingImage == image)
+            {
+                PlayAudio.ChangeToStartImage();
+                PlayAudio.stop();
+            }
+            //再生中の音声がクリックした音声と違う場合、再生中の音声を止め、選択した音声を再生する
+            else
+            {
+                PlayAudio.ChangeToStartImage();
+                PlayAudio.ChangeToStopImage(image);
+                PlayAudio.play(log.AudioPath, image);   //playメソッドの冒頭で再生中の音声を止めている
+            }
+        }
+
+        private void ThemeToggleButton_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
     public class ListBoxModel : INotifyPropertyChanged
     {
         public string Text {  get; set; }       //ログのテキスト
-        //public bool IsHighlighted { get; set; } //背景ありか(日時かテキストか)
-        public bool IsSpeaker { get; set; }    //スピーカーかマイクか
-        public string AudioPath {  get; set; }
+
 
         private string _beforText;
         private string _matchText;
@@ -346,5 +411,9 @@ namespace HottoMotto
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        //public bool IsHighlighted { get; set; } //背景ありか(日時かテキストか)
+        public bool IsSpeaker {  get; set; }    //スピーカーかマイクか
+        public string AudioPath {  get; set; }  //音声ファイルのパス
+        public bool IsComit { get; set; }       //テキスト確定済みか(リアルタイムログで使用)
     }
 }

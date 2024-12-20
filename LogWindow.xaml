@@ -48,7 +48,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <!--再生ボタン-->
-                        <Button Loaded="Button_Loaded" BorderBrush="{x:Null}" Background="{x:Null}" Margin="0,0,0,5">
+                        <Button Click="AudioButtonClick" BorderBrush="{x:Null}" Background="{x:Null}" Margin="0,0,0,5">
                             <Button.Style>
                                 <Style TargetType="Button">
                                     <!--デフォルトは右側で非表示-->

@@ -7,7 +7,9 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:HottoMotto"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" MinWidth="800" MinHeight="450">
+        Title="MainWindow" Height="450" Width="800" MinWidth="800" MinHeight="450"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}">
 
     <Window.Resources>
         <Style x:Key="CActionButtons" TargetType="Button">
@@ -23,8 +25,8 @@
                                 <!--カーソルを手の形に変更-->
                                 <Setter Property="Cursor" Value="Hand"/>
                                 <!--背景を青に変更-->
-                                <Setter Property="Background" Value="#FFEEEEEE"/>
-                                <Setter Property="BorderBrush" Value="#FF77AAFF"/>
+                                <Setter Property="Background" Value="{DynamicResource MaterialDesignDivider}"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource PrimaryHueMidBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -32,15 +34,44 @@
             </Setter>
             <Setter Property="Width" Value="50"/>
             <Setter Property="Height" Value="50"/>
-            <Setter Property="Background" Value="#FFFFFFFF"/>
+            <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="Foreground" Value="#FF000000"/>
+            <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Padding" Value="10"/>
+        </Style>
+
+        <!-- ダークモード切り替えボタン用のスタイル -->
+        <Style x:Key="ThemeToggleButton" TargetType="ToggleButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Background="Transparent" 
+                        Padding="8" 
+                        CornerRadius="25">
+                            <Grid>
+                                <materialDesign:PackIcon x:Name="Icon"
+                       Kind="WeatherSunny"
+                       Width="24"
+                       Height="24"
+                       Foreground="{DynamicResource IconBrushLight}"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Icon" Property="Kind" Value="WeatherNight"/>
+                                <Setter TargetName="Icon" Property="Foreground" Value="{DynamicResource SecondaryHueMidBrush}"/>
+                                <Setter TargetName="Icon" Property="Foreground" Value="{DynamicResource IconBrushDark}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Window.Resources>
 
     <Grid>
+        <!-- Grid.RowDefinitions と Grid.ColumnDefinitions -->
         <Grid.RowDefinitions>
             <RowDefinition Height="117*"/>
             <RowDefinition Height="30*"/>
@@ -52,18 +83,57 @@
             <ColumnDefinition Width="27*"/>
             <ColumnDefinition Width="17*"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="Button_Save" Margin="0,30,30,0" Click="Button_Save_Click" Style="{x:Null}" BorderBrush="{x:Null}" Background="{x:Null}" Height="29" VerticalAlignment="Top" Grid.Column="2" Width="29" HorizontalAlignment="Right">
+
+        <!-- ダークモード切り替えボタン追加 -->
+        <ToggleButton x:Name="ThemeToggleButton"
+                      Style="{StaticResource ThemeToggleButton}"
+                      Click="ThemeToggleButton_Click"
+                      Grid.Column="2"
+                      HorizontalAlignment="Right"
+                      VerticalAlignment="Top"
+                      Margin="0,24,0,0" Checked="ThemeToggleButton_Checked"/>
+        <!-- ダークモード -->
+        <Button x:Name="Button_Save" 
+        Margin="0,30,30,0" 
+        Click="Button_Save_Click" 
+        Style="{x:Null}" 
+        BorderBrush="{x:Null}" 
+        Background="{x:Null}" 
+        Height="29" 
+        VerticalAlignment="Top" 
+        Grid.Column="2" 
+        Width="29" 
+        HorizontalAlignment="Right">
             <StackPanel Orientation="Horizontal">
                 <Image Source="Resource/hozon.png" Width="23" Height="23" RenderTransformOrigin="0.5,0.5"/>
             </StackPanel>
         </Button>
 
+        <Button Margin="0,30,64,0" 
+        VerticalAlignment="Top" 
+        Click="Button_Log_Click" 
+        Style="{x:Null}" 
+        Height="29" 
+        BorderBrush="{x:Null}" 
+        Background="{x:Null}" 
+        Grid.Column="1" 
+        Grid.ColumnSpan="2" 
+        Width="29" 
+        HorizontalAlignment="Right">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="Resource/log.png" Width="23" Height="23" RenderTransformOrigin="0.5,0.5"/>
+            </StackPanel>
+        </Button>
+
+
+        <!-- ListBoxの部分 -->
         <ListBox x:Name="RealtimeListBox" 
          Margin="26,52,5,12"
          Padding="5,10,0,10"
          Style="{x:Null}" 
          RenderTransformOrigin="0.5,0.5"  
-         BorderBrush="Black" 
+         BorderBrush="{DynamicResource MaterialDesignDivider}" 
+         Background="{DynamicResource MaterialDesignPaper}"
          ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
          Grid.RowSpan="3">
             <ListBox.Resources>
@@ -78,7 +148,7 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type Thumb}">
-                                <Border Background="#AAAAAA" 
+                                <Border Background="{DynamicResource MaterialDesignScrollBarBackground}" 
                                 CornerRadius="4"
                                 MinHeight="50"
                                 Margin="2,4,2,4"/>
@@ -131,50 +201,68 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type ScrollViewer}">
-                                <Grid Margin="1">
+                                <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <ScrollContentPresenter Grid.Column="0" Margin="0,0,2,0"/>
-                                    <Border x:Name="ScrollBarBorder" 
-                                    Grid.Column="1" 
-                                    Background="Transparent" 
-                                    CornerRadius="4" 
-                                    Width="16"
-                                    Margin="0,2,2,2">
+                                    <ScrollContentPresenter Grid.Column="0"/>
+                                    <Border x:Name="PART_ScrollBarBorder" 
+                            Grid.Column="1" 
+                            Width="8"
+                            Margin="0,1"
+                            Background="Transparent">
                                         <ScrollBar x:Name="PART_VerticalScrollBar"
-                                         Value="{TemplateBinding VerticalOffset}"
-                                         Maximum="{TemplateBinding ScrollableHeight}"
-                                         ViewportSize="{TemplateBinding ViewportHeight}"
-                                         Style="{StaticResource FadingScrollBarStyle}"
-                                         Opacity="0"/>
+                                 Value="{TemplateBinding VerticalOffset}"
+                                 Maximum="{TemplateBinding ScrollableHeight}"
+                                 ViewportSize="{TemplateBinding ViewportHeight}"
+                                 Background="{DynamicResource MaterialDesignDivider}"
+                                 Opacity="0">
+                                            <ScrollBar.Template>
+                                                <ControlTemplate TargetType="{x:Type ScrollBar}">
+                                                    <Grid>
+                                                        <Track x:Name="PART_Track" IsDirectionReversed="True">
+                                                            <Track.Thumb>
+                                                                <Thumb MinHeight="50">
+                                                                    <Thumb.Template>
+                                                                        <ControlTemplate TargetType="{x:Type Thumb}">
+                                                                            <Border Background="{DynamicResource MaterialDesignBody}"
+                                                                    CornerRadius="4"
+                                                                    Margin="2,0"/>
+                                                                        </ControlTemplate>
+                                                                    </Thumb.Template>
+                                                                </Thumb>
+                                                            </Track.Thumb>
+                                                        </Track>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </ScrollBar.Template>
+                                        </ScrollBar>
                                     </Border>
                                 </Grid>
                                 <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True" 
-                                     SourceName="ScrollBarBorder">
-                                        <Trigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation 
-                                                Storyboard.TargetName="PART_VerticalScrollBar"
-                                                Storyboard.TargetProperty="Opacity"
-                                                To="1" Duration="0:0:0.2"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.EnterActions>
-                                        <Trigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation 
-                                                Storyboard.TargetName="PART_VerticalScrollBar"
-                                                Storyboard.TargetProperty="Opacity"
-                                                To="0" Duration="0:0:0.8"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.ExitActions>
-                                    </Trigger>
+                                    <EventTrigger SourceName="PART_ScrollBarBorder" 
+                                RoutedEvent="MouseEnter">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation 
+                                    Storyboard.TargetName="PART_VerticalScrollBar"
+                                    Storyboard.TargetProperty="Opacity"
+                                    To="1" Duration="0:0:0.2"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                    <EventTrigger SourceName="PART_ScrollBarBorder" 
+                                RoutedEvent="MouseLeave">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation 
+                                    Storyboard.TargetName="PART_VerticalScrollBar"
+                                    Storyboard.TargetProperty="Opacity"
+                                    To="0" Duration="0:0:0.5"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Setter.Value>
@@ -194,14 +282,12 @@
             <ListBox.Template>
                 <ControlTemplate TargetType="ListBox">
                     <Border BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="1"
-                    Background="{TemplateBinding Background}">
-                        <ScrollViewer Style="{StaticResource FadingScrollViewerStyle}"
-                            Padding="{TemplateBinding Padding}"
-                            Focusable="False">
-                            <Border Padding="{TemplateBinding Padding}">
-                                <ItemsPresenter/>
-                            </Border>
+                BorderThickness="1"
+                Background="{TemplateBinding Background}"
+                CornerRadius="4">
+                        <ScrollViewer Padding="{TemplateBinding Padding}"
+                         Style="{StaticResource FadingScrollViewerStyle}">
+                            <ItemsPresenter />
                         </ScrollViewer>
                     </Border>
                 </ControlTemplate>
@@ -221,34 +307,81 @@
 
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Border CornerRadius="5">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="Background" Value="{x:Null}" />
-                                <Setter Property="Padding" Value="0"/>
-                                <Setter Property="Margin" Value="0"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
-                                        <Setter Property="Background" Value="AliceBlue" />
-                                        <Setter Property="Padding" Value="8"/>
-                                        <Setter Property="Margin" Value="0,0,0,5"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <TextBlock Text="{Binding Text}" TextWrapping="Wrap">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="FontSize" Value="10" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <!--ボタンの幅はそのまま-->
+                            <ColumnDefinition Width="Auto"/>
+                            <!--テキストの幅は親要素(ListBox)の幅に依存-->
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <!--再生ボタン-->
+                        <Button Click="AudioButtonClick" BorderBrush="{x:Null}" Background="{x:Null}" Margin="0,0,0,5">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <!--デフォルトは右側で非表示-->
+                                    <Setter Property="Grid.Column" Value="1"/>
+                                    <Setter Property="Visibility" Value="Collapsed"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
-                                            <Setter Property="FontSize" Value="12" />
+                                        <!--スピーカーの場合はボタンを左側にする-->
+                                        <DataTrigger Binding="{Binding IsSpeaker}" Value="True">
+                                            <Setter Property="Grid.Column" Value="0"/>
+                                        </DataTrigger>
+                                        <!--テキストの場合はボタンを表示する-->
+                                        <DataTrigger Binding="{Binding IsComit}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </Border>
+                            </Button.Style>
+                            <!--再生ボタンの画像-->
+                            <Image x:Name="AudioButtonImage" Source="Resource/start.png" Width="20" Height="20"/>
+                            <!--ButtonからImageを取得するためのタグ付け-->
+                            <!--DataTemplate内はx:Nameでの参照ができないため必要-->
+                            <Button.Tag>
+                                <Binding ElementName="AudioButtonImage" />
+                            </Button.Tag>
+                        </Button>
+                        <!--ボーダー(テキストの背景)-->
+                        <Border CornerRadius="5">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <!-- デフォルトの背景(透明) -->
+                                    <Setter Property="Background" Value="{x:Null}" />
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="Margin" Value="0"/>
+                                    <!--デフォルトの配置(左側)-->
+                                    <Setter Property="Grid.Column" Value="0"/>
+                                    <Style.Triggers>
+                                        <!-- IsHighlightedがTrueのときに背景色を設定 -->
+                                        <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                                            <Setter Property="Background" Value="AliceBlue" />
+                                            <Setter Property="Padding" Value="8"/>
+                                            <Setter Property="Margin" Value="0,0,0,5"/>
+                                        </DataTrigger>
+                                        <!--スピーカーの場合は右側に配置-->
+                                        <DataTrigger Binding="{Binding IsSpeaker}" Value="True">
+                                            <Setter Property="Grid.Column" Value="1"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <!-- ログテキスト -->
+                            <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Foreground="{DynamicResource MaterialDesignBody}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <!-- デフォルトのフォントサイズ -->
+                                        <Setter Property="FontSize" Value="10" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                                                <!-- IsHighlightedがTrueのときフォントサイズを変更 -->
+                                                <Setter Property="FontSize" Value="12" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Border>
+                    </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
@@ -300,14 +433,14 @@
             </ComboBox.ToolTip>
         </ComboBox>
 
-        <!-- おじいさんの動かない古時計 -->
+        <!-- おじいさんの動く古時計 -->
         <TextBlock x:Name="RecordingTimeLabel" 
            Text="録音時間" 
            Grid.Column="1"
            HorizontalAlignment="Left" 
            Margin="16,89,0,0" 
            VerticalAlignment="Top" 
-           Foreground="#424242"
+           Foreground="{DynamicResource MaterialDesignBodyLight}"
            FontSize="12"/>
 
         <TextBlock x:Name="RecordingTimeText" 
@@ -316,7 +449,7 @@
            HorizontalAlignment="Left" 
            Margin="14,110,0,0" 
            VerticalAlignment="Top" 
-           Foreground="Black"
+           Foreground="{DynamicResource MaterialDesignBody}"
            FontSize="16" 
            FontWeight="Medium"
            Text="00:00:00"/>
