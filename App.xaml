@@ -30,7 +30,7 @@
 
 
             <!-- 切り替えアイコン用カラー -->
-            <SolidColorBrush x:Key="IconBrushLight" Color="#6F6F6F"/>
+            <SolidColorBrush x:Key="IconBrushLight" Color="#666666"/>
             <!-- 灰色 -->
             <SolidColorBrush x:Key="IconBrushDark" Color="#6C6C6C"/>
             <!-- gray -->
