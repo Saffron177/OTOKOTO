@@ -22,7 +22,7 @@ namespace HottoMotto
                 // プロセスの設定
                 var processStartInfo = new ProcessStartInfo
                 {
-                    FileName = "Filler_removal.exe",    //実行するexe
+                    FileName = ".\\Filler_removal.dist\\Filler_removal.exe",    //実行するexe
                     Arguments = arg,                    //引数
                     RedirectStandardOutput = true, // 標準出力をリダイレクト
                     RedirectStandardError = true, // 標準エラー出力をリダイレクト
