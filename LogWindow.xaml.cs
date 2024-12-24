@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using System.Diagnostics;
 using System.Windows.Controls.Primitives;
 using System.Collections.ObjectModel;
+using NAudio.Wave;
 
 namespace HottoMotto
 {
@@ -256,12 +257,16 @@ namespace HottoMotto
                                 listBoxModel.BeforeText = beforeMatch;
                                 listBoxModel.MatchText = match;
                                 listBoxModel.AfterText = afterMatch;
+                                listBoxModel.IsSearch = true;
+                                listBoxModel.Memory = listBoxModel.Text;
+                                listBoxModel.Text = string.Empty;
                             }
                             else
                             {
                                 listBoxModel.BeforeText = listBoxModel.Text;
                                 listBoxModel.MatchText = string.Empty;
                                 listBoxModel.AfterText = string.Empty;
+                                listBoxModel.IsSearch = false;
                             }
                         }
                         else

@@ -350,6 +350,7 @@ namespace HottoMotto
     public class ListBoxModel : INotifyPropertyChanged
     {
         public string Text {  get; set; }       //ログのテキスト
+        public string Memory {  get; set; }
 
 
         private string _beforeText;
