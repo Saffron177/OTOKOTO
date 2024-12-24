@@ -99,7 +99,7 @@ namespace HottoMotto
             string jsonText = File.ReadAllText(filePath);
             //ファイル名を表示
             file_Title.Content = System.IO.Path.GetFileName(filePath);
-            //Copy_Button.Content = "コピー";
+            Copy_Button.ToolTip = "コピー";
             Copy_Button.Visibility = Visibility.Visible;
 
             try
@@ -163,7 +163,7 @@ namespace HottoMotto
 
                 // クリップボードにコピー
                 System.Windows.Clipboard.SetText(allItemsText);
-                //Copy_Button.Content = "コピーしました";
+                Copy_Button.ToolTip = "コピーしました";
             }
             else
             {
@@ -191,8 +191,14 @@ namespace HottoMotto
         //nullの場合は再生中ではない
         private void AudioPlaying(System.Windows.Controls.Image image, ListBoxModel log)
         {
+            //ファイルが存在しない場合
+            if (!File.Exists(log.AudioPath))
+            {
+                System.Windows.MessageBox.Show("音声ファイルが存在しません");
+                return;
+            }
             //再生中の音声がない場合、再生する
-            if(PlayAudio.playingImage == null)
+            if (PlayAudio.playingImage == null)
             {
                 PlayAudio.ChangeToStopImage(image);
                 PlayAudio.play(log.AudioPath, image);

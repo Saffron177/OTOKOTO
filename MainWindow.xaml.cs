@@ -321,6 +321,12 @@ namespace HottoMotto
         //nullの場合は再生中ではない
         private void AudioPlaying(System.Windows.Controls.Image image, ListBoxModel log)
         {
+            //ファイルが存在しない場合
+            if (!File.Exists(log.AudioPath))
+            {
+                System.Windows.MessageBox.Show("音声ファイルが存在しません");
+                return;
+            }
             //再生中の音声がない場合、再生する
             if (PlayAudio.playingImage == null)
             {
