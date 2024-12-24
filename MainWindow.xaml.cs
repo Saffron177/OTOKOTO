@@ -364,6 +364,8 @@ namespace HottoMotto
         private string _afterText;
         private bool _isHighlighted;
         private bool _isSearch;
+        private bool _matchingid;
+        private int _matchTextId;  // MatchTextに対応する番号
 
         public System.Windows.Media.Brush Background { get; set; }　
 
@@ -421,6 +423,19 @@ namespace HottoMotto
             }
         }
 
+        public bool MatchingID
+        {
+            get => _matchingid;
+            set
+            {
+                if (_matchingid != value)
+                {
+                    _matchingid = value;
+                    OnPropertyChanged(nameof(MatchingID));
+                }
+            }
+        }
+
         public bool IsSearch
         {
             get => _isSearch;
@@ -434,6 +449,19 @@ namespace HottoMotto
             }
         }
 
+
+        public int MatchTextId
+        {
+            get => _matchTextId;
+            set
+            {
+                if (_matchTextId != value)
+                {
+                    _matchTextId = value;
+                    OnPropertyChanged(nameof(MatchTextId));
+                }
+            }
+        }
 
         protected void OnPropertyChanged(string propertyName)
         {

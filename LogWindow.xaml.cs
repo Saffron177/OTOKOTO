@@ -233,6 +233,7 @@ namespace HottoMotto
             // 検索テキストが空でないことを確認
             if (!string.IsNullOrEmpty(searchText))
             {
+                int matchCounter = 0;  // 番号のカウンター
                 foreach (var item in LogListBox.Items)
                 {
                     ListBoxItem listBoxItem = null;
@@ -252,6 +253,7 @@ namespace HottoMotto
                         {
                             ListBoxModel listBoxModel = listBoxItem.Content as ListBoxModel;
                             string itemText = listBoxModel?.Memory.ToLower();
+                            //検索文字と一致したら
                             if (itemText.Contains(searchText.ToLower()) && !string.IsNullOrWhiteSpace(searchText))
                             {
                                 // ハイライトの適用
@@ -263,6 +265,8 @@ namespace HottoMotto
                                 listBoxModel.BeforeText = beforeMatch;
                                 listBoxModel.MatchText = match;
                                 listBoxModel.AfterText = afterMatch;
+                                listBoxModel.MatchTextId = matchCounter;
+                                matchCounter++;
                                 listBoxModel.IsSearch = true;
                             }
                             else
@@ -270,6 +274,7 @@ namespace HottoMotto
                                 listBoxModel.BeforeText = listBoxModel.Memory;
                                 listBoxModel.MatchText = string.Empty;
                                 listBoxModel.AfterText = string.Empty;
+                                listBoxModel.MatchTextId = 0;  // 番号をリセット
                                 listBoxModel.IsSearch = false;
                             }
                         }
@@ -306,6 +311,8 @@ namespace HottoMotto
                         listBoxModel.BeforeText = listBoxModel.Memory;
                         listBoxModel.MatchText = string.Empty;
                         listBoxModel.AfterText = string.Empty;
+                        listBoxModel.MatchTextId = 0;  // 番号をリセット
+                        listBoxModel.IsSearch = false;
                     }
                 }
             }
