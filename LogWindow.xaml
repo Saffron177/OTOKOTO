@@ -99,7 +99,7 @@
                                 </Style>
                             </Border.Style>
                             <!--ログテキスト-->
-                            <TextBlock Text="{Binding Text}" TextWrapping="Wrap">
+                            <TextBlock  TextWrapping="Wrap">
                                 <TextBlock.Inlines>
                                     <!-- 通常テキスト部分 -->
                                     <Run Text="{Binding BeforeText}" />

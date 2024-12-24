@@ -111,8 +111,8 @@ namespace HottoMotto
                 // リストボックスにデータを追加
                 foreach (var log in logs)
                 {
-                    LogListBox.Items.Add(new ListBoxModel { Text = (log.TimeStamp + (log.IsSpeaker ? "(スピーカー)" : "(マイク)")), IsHighlighted = false , IsSpeaker = log.IsSpeaker});
-                    LogListBox.Items.Add(new ListBoxModel { Text = log.Text, IsHighlighted = true , IsSpeaker = log.IsSpeaker, AudioPath = log.AudioPath });
+                    LogListBox.Items.Add(new ListBoxModel { BeforeText = (log.TimeStamp + (log.IsSpeaker ? "(スピーカー)" : "(マイク)")), IsHighlighted = false , IsSpeaker = log.IsSpeaker, Memory = (log.TimeStamp + (log.IsSpeaker ? "(スピーカー)" : "(マイク)"))} );
+                    LogListBox.Items.Add(new ListBoxModel { BeforeText = log.Text, IsHighlighted = true , IsSpeaker = log.IsSpeaker, AudioPath = log.AudioPath ,Memory = log.Text});
                 }
             }
             catch (JsonException ex)
@@ -251,25 +251,23 @@ namespace HottoMotto
                         if (listBoxItem != null)
                         {
                             ListBoxModel listBoxModel = listBoxItem.Content as ListBoxModel;
-                            string itemText = listBoxModel?.Text.ToLower();
+                            string itemText = listBoxModel?.Memory.ToLower();
                             if (itemText.Contains(searchText.ToLower()) && !string.IsNullOrWhiteSpace(searchText))
                             {
                                 // ハイライトの適用
-                                int index = listBoxModel.Text.IndexOf(searchText, StringComparison.OrdinalIgnoreCase);
-                                string beforeMatch = listBoxModel.Text.Substring(0, index);
-                                string match = listBoxModel.Text.Substring(index, searchText.Length);
-                                string afterMatch = listBoxModel.Text.Substring(index + searchText.Length);
+                                int index = listBoxModel.Memory.IndexOf(searchText, StringComparison.OrdinalIgnoreCase);
+                                string beforeMatch = listBoxModel.Memory.Substring(0, index);
+                                string match = listBoxModel.Memory.Substring(index, searchText.Length);
+                                string afterMatch = listBoxModel.Memory.Substring(index + searchText.Length);
 
                                 listBoxModel.BeforeText = beforeMatch;
                                 listBoxModel.MatchText = match;
                                 listBoxModel.AfterText = afterMatch;
                                 listBoxModel.IsSearch = true;
-                                listBoxModel.Memory = listBoxModel.Text;
-                                listBoxModel.Text = string.Empty;
                             }
                             else
                             {
-                                listBoxModel.BeforeText = listBoxModel.Text;
+                                listBoxModel.BeforeText = listBoxModel.Memory;
                                 listBoxModel.MatchText = string.Empty;
                                 listBoxModel.AfterText = string.Empty;
                                 listBoxModel.IsSearch = false;
@@ -305,47 +303,13 @@ namespace HottoMotto
                         ListBoxModel listBoxModel = listBoxItem.Content as ListBoxModel;
 
                         // 元のテキストを戻す
-                        listBoxModel.BeforeText = listBoxModel.Text;
+                        listBoxModel.BeforeText = listBoxModel.Memory;
                         listBoxModel.MatchText = string.Empty;
                         listBoxModel.AfterText = string.Empty;
                     }
                 }
             }
         }
-
-        //一致したテキストが含まれるアイテムを再配置
-        private void HighlightTextBlock(ListBoxItem listBoxItem, ListBoxModel listBoxModel, string searchText)
-        {
-            // テキストを分割し、検索テキストをハイライト
-            int index = listBoxModel.Text.IndexOf(searchText, StringComparison.OrdinalIgnoreCase);
-            if (index >= 0)
-            {
-                string beforeMatch = listBoxModel.Text.Substring(0, index);
-                string match = listBoxModel.Text.Substring(index, searchText.Length);
-                string afterMatch = listBoxModel.Text.Substring(index + searchText.Length);
-
-                listBoxModel.BeforeText = beforeMatch;
-                listBoxModel.MatchText = match;
-                listBoxModel.AfterText = afterMatch;
-
-                //背景色をリセット
-                listBoxItem.Background = listBoxModel.Background;
-
-                // ハイライト適用
-                listBoxModel.IsHighlighted = true;
-            }
-            else
-            {
-                // ハイライト対象でない場合は元のテキストを表示
-                TextBlock textBlock = FindVisualChild<TextBlock>(listBoxItem);
-                if (textBlock != null)
-                {
-                    textBlock.Inlines.Clear();
-                    textBlock.Inlines.Add(new Run(listBoxModel.Text));
-                }
-            }
-        }
-
 
         // 子要素を検索するためのユーティリティメソッド
         private T FindVisualChild<T>(DependencyObject parent) where T : DependencyObject

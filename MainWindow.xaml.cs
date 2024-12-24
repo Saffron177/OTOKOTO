@@ -371,7 +371,7 @@ namespace HottoMotto
 
         public string BeforeText
         {
-            get => _beforeText;
+            get => _beforeText?.Trim();
             set
             {
                 if (_beforeText != value)
@@ -384,7 +384,7 @@ namespace HottoMotto
 
         public string MatchText
         {
-            get => _matchText;
+            get => _matchText?.Trim();
             set
             {
                 if (_matchText != value)
@@ -397,7 +397,7 @@ namespace HottoMotto
 
         public string AfterText
         {
-            get => _afterText;
+            get => _afterText?.Trim();
             set
             {
                 if (_afterText != value)
