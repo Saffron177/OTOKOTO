@@ -18,6 +18,7 @@ using System.Diagnostics;
 using System.Windows.Controls.Primitives;
 using System.Collections.ObjectModel;
 using NAudio.Wave;
+using System.ComponentModel;
 
 namespace HottoMotto
 {
@@ -28,12 +29,21 @@ namespace HottoMotto
     {
         //ファイル一覧を保持
         string[] txtFiles;
+        //検索中かどうかを判定
+        bool search_enabled = false;
+        int matchCounter = -1;  // マッチ数カウンター
+
 
         public LogWindow()
         {
             InitializeComponent();
             LogFileCheck();
             logList.MouseDoubleClick += LogList_DoubleClick;
+            // ビューモデルを設定
+            this.DataContext = new MatchModel
+            {
+                Match_Label = ""
+            };
         }
 
         //Logsファイルの中身を検索し、結果を出力する
@@ -111,8 +121,8 @@ namespace HottoMotto
                 // リストボックスにデータを追加
                 foreach (var log in logs)
                 {
-                    LogListBox.Items.Add(new ListBoxModel { BeforeText = (log.TimeStamp + (log.IsSpeaker ? "(スピーカー)" : "(マイク)")), IsHighlighted = false , IsSpeaker = log.IsSpeaker, Memory = (log.TimeStamp + (log.IsSpeaker ? "(スピーカー)" : "(マイク)"))} );
-                    LogListBox.Items.Add(new ListBoxModel { BeforeText = log.Text, IsHighlighted = true , IsSpeaker = log.IsSpeaker, AudioPath = log.AudioPath ,Memory = log.Text});
+                    LogListBox.Items.Add(new ListBoxModel { BeforeText = (log.TimeStamp + (log.IsSpeaker ? "(スピーカー)" : "(マイク)")), IsHighlighted = false, IsSpeaker = log.IsSpeaker, Memory = (log.TimeStamp + (log.IsSpeaker ? "(スピーカー)" : "(マイク)")) });
+                    LogListBox.Items.Add(new ListBoxModel { BeforeText = log.Text, IsHighlighted = true, IsSpeaker = log.IsSpeaker, AudioPath = log.AudioPath, Memory = log.Text });
                 }
             }
             catch (JsonException ex)
@@ -136,7 +146,6 @@ namespace HottoMotto
 
         }
 
-
         // ListBoxの内容を更新するメソッド
         private void UpdateListBox(string[] filteredFiles)
         {
@@ -151,7 +160,6 @@ namespace HottoMotto
                 logList.Items.Add(System.IO.Path.GetFileName(file));
             }
         }
-
 
         //コピーボタンのクリック処理
         private void Copy_Button_Click(object sender, RoutedEventArgs e)
@@ -204,7 +212,7 @@ namespace HottoMotto
                 PlayAudio.play(log.AudioPath, image);
             }
             //再生中の音声がクリックした音声と同じ場合、再生を止める
-            else if(PlayAudio.playingImage == image)
+            else if (PlayAudio.playingImage == image)
             {
                 PlayAudio.ChangeToStartImage();
                 PlayAudio.stop();
@@ -221,7 +229,8 @@ namespace HottoMotto
         //ログ内のテキストを検索する
         private void Log_Search_Textbox_Textchanged(object sender, TextChangedEventArgs e)
         {
-            //HighlightText();
+            HighlightText();
+            matchCounter = -1;
         }
 
         //検索ボックスのテキストと一致するテキストを抽出して背景色を変更する
@@ -233,7 +242,6 @@ namespace HottoMotto
             // 検索テキストが空でないことを確認
             if (!string.IsNullOrEmpty(searchText))
             {
-                int matchCounter = 0;  // 番号のカウンター
                 foreach (var item in LogListBox.Items)
                 {
                     ListBoxItem listBoxItem = null;
@@ -257,26 +265,28 @@ namespace HottoMotto
                             if (itemText.Contains(searchText.ToLower()) && !string.IsNullOrWhiteSpace(searchText))
                             {
                                 // ハイライトの適用
-                                int index = listBoxModel.Memory.IndexOf(searchText, StringComparison.OrdinalIgnoreCase);
-                                string beforeMatch = listBoxModel.Memory.Substring(0, index);
-                                string match = listBoxModel.Memory.Substring(index, searchText.Length);
-                                string afterMatch = listBoxModel.Memory.Substring(index + searchText.Length);
+                                int index = listBoxModel.Memory.IndexOf(searchText, StringComparison.OrdinalIgnoreCase); //マッチ部分のインデックスを取得
+                                string beforeMatch = listBoxModel.Memory.Substring(0, index); //マッチ部分より前の部分を保持
+                                string match = listBoxModel.Memory.Substring(index, searchText.Length); //マッチ部分を保持
+                                string afterMatch = listBoxModel.Memory.Substring(index + searchText.Length); //マッチ部分より後の部分を保持
 
+                                //バインディングテキストに内容を反映
                                 listBoxModel.BeforeText = beforeMatch;
                                 listBoxModel.MatchText = match;
                                 listBoxModel.AfterText = afterMatch;
-                                listBoxModel.MatchTextId = matchCounter;
-                                matchCounter++;
-                                listBoxModel.IsSearch = true;
                             }
                             else
                             {
+                                //マッチしなかった場合はそのまま適応
                                 listBoxModel.BeforeText = listBoxModel.Memory;
                                 listBoxModel.MatchText = string.Empty;
                                 listBoxModel.AfterText = string.Empty;
-                                listBoxModel.MatchTextId = 0;  // 番号をリセット
-                                listBoxModel.IsSearch = false;
                             }
+
+                            //処理後にマッチ数を表示
+                            search_enabled = true;
+                            Search_Enabled(search_enabled);
+
                         }
                         else
                         {
@@ -311,8 +321,9 @@ namespace HottoMotto
                         listBoxModel.BeforeText = listBoxModel.Memory;
                         listBoxModel.MatchText = string.Empty;
                         listBoxModel.AfterText = string.Empty;
-                        listBoxModel.MatchTextId = 0;  // 番号をリセット
-                        listBoxModel.IsSearch = false;
+                        //マッチ数も非表示に
+                        search_enabled = false;
+                        Search_Enabled(search_enabled);
                     }
                 }
             }
@@ -338,9 +349,46 @@ namespace HottoMotto
 
         }
 
-        private void Search_Key_Down(object sender, System.Windows.Input.KeyEventArgs e)
+        //マッチ数を表示するラベルを管理する関数
+        private void Search_Enabled(bool search_enable)
         {
-            HighlightText();
+            if (search_enable)
+            {
+                var matchModel = (MatchModel)this.DataContext;
+                matchModel.Match_Label = matchCounter.ToString() + "件見つかりました";
+                SearchId.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                SearchId.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        // 読み込まれないとマッチ数が増えないので読み込まれるたびにラベルが変わるようにクラスで管理してます
+        public class MatchModel : INotifyPropertyChanged
+        {
+            private string _match_label;
+
+            public string Match_Label
+            {
+                get => _match_label;
+                set
+                {
+                    if (_match_label != value)
+                    {
+                        _match_label = value;
+                        OnPropertyChanged(nameof(Match_Label));
+                    }
+                }
+            }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            protected void OnPropertyChanged(string propertyName)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
+
 }

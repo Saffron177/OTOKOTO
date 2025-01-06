@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:HottoMotto"
         mc:Ignorable="d"
         Title="LogWindow" Height="450" Width="800">
+    
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -102,9 +103,9 @@
                             <TextBlock  TextWrapping="Wrap">
                                 <TextBlock.Inlines>
                                     <!-- 通常テキスト部分 -->
-                                    <Run Text="{Binding BeforeText}" />
+                                    <Run Text="{Binding BeforeText}"/>
                                     <!-- ハイライト部分 -->
-                                    <Run Text="{Binding MatchText}" Background="Yellow" />
+                                    <Run Text="{Binding MatchText}" Background="Yellow"/>
                                     <!-- 通常テキスト部分（マッチ後） -->
                                     <Run Text="{Binding AfterText}" />
                                 </TextBlock.Inlines>
@@ -117,14 +118,16 @@
         <!--ファイル名表示用ラベル-->
         <Label x:Name="file_Title" Grid.Column="1" Content="" HorizontalAlignment="Left" Margin="30,20,0,0" VerticalAlignment="Top"/>
         <!--ログ内容の検索用テキストボックス-->
-        <TextBox x:Name="log_Search_Textbox" Grid.Column="1" HorizontalAlignment="Right" Margin="0,20,20,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="25" Width="150" FontSize="15" Cursor="" CaretBrush="Black" SelectionBrush="{x:Null}" TextChanged="Log_Search_Textbox_Textchanged" KeyDown="Search_Key_Down"/>
-        <Image HorizontalAlignment="Right" Height="25" Margin="0,20,170,0" VerticalAlignment="Top" Width="25" Source="/Resource/search.png" Grid.Column="1"/>
-        <Border CornerRadius="5" Background="#343434" HorizontalAlignment="Right" Height="25" Margin="0,20,170,0" VerticalAlignment="Top" Width="25"  Grid.Column="1">
+        <TextBox x:Name="log_Search_Textbox" Grid.Column="1" HorizontalAlignment="Right" Margin="0,20,50,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="25" Width="150" FontSize="15" Cursor="" CaretBrush="Black" SelectionBrush="{x:Null}" TextChanged="Log_Search_Textbox_Textchanged"/>
+        <Border CornerRadius="5" Background="#343434" HorizontalAlignment="Right" Height="25" Margin="0,20,200,0" VerticalAlignment="Top" Width="25"  Grid.Column="1">
             <Image  Source="/Resource/search.png" Height="25" Width="25"/>
         </Border>
-        <Button x:Name="Copy_Button" Grid.Column="1" HorizontalAlignment="Right" Margin="0,20,200,0" VerticalAlignment="Top" Click="Copy_Button_Click" Width="25" Height="25" Style="{x:Null}" BorderBrush="{x:Null}" Background="{x:Null}" Visibility="Hidden" ToolTip="コピー" ToolTipService.Placement="Top" ToolTipService.InitialShowDelay="0">
+        <!--コピーボタン-->
+        <Button x:Name="Copy_Button" Grid.Column="1" HorizontalAlignment="Right" Margin="0,20,230,0" VerticalAlignment="Top" Click="Copy_Button_Click" Width="25" Height="25" Style="{x:Null}" BorderBrush="{x:Null}" Background="{x:Null}" Visibility="Hidden" ToolTip="コピー" ToolTipService.Placement="Top" ToolTipService.InitialShowDelay="0">
             <Image Source="/Resource/copy.png" Height="Auto" Width="Auto"/>
         </Button>
+        <!--マッチ数を表示するラベル-->
+        <Label x:Name="SearchId" Grid.Column="1" Content="{Binding Match_Label}" HorizontalAlignment="Right" Margin="0,2,50,0" VerticalAlignment="Top" RenderTransformOrigin="0.525,0.164" Width="150" FontSize="10" Padding="0,6,0,4" Height="25" Grid.IsSharedSizeScope="True" Visibility="Collapsed" FlowDirection="RightToLeft"/>
 
     </Grid>
 </Window>
