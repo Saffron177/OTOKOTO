@@ -187,7 +187,7 @@ namespace HottoMotto
             if (LogListBox.Items.Count > 0)
             {
                 // すべてのアイテムを文字列として結合
-                string allItemsText = string.Join("\n", LogListBox.Items.Cast<ListBoxModel>().Select(item => item.Text));
+                string allItemsText = string.Join("\n", LogListBox.Items.Cast<ListBoxModel>().Select(item => item.Memory));
 
                 // クリップボードにコピー
                 System.Windows.Clipboard.SetText(allItemsText);
