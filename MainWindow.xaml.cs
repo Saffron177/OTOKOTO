@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using MaterialDesignThemes.Wpf;
 using MaterialDesignThemes.Wpf.Themes;
 using System.Windows.Media;
+using System.Windows.Documents;
 namespace HottoMotto
 {
     /// <summary>
@@ -53,7 +54,7 @@ namespace HottoMotto
                 Directory.CreateDirectory("Audio");
             }
         }
-           //マテリアルダークテーマ関連
+        //マテリアルダークテーマ関連
         private bool isDarkMode = false;
 
         private void ThemeToggleButton_Click(object sender, RoutedEventArgs e)
@@ -93,7 +94,7 @@ namespace HottoMotto
         public class JsonText
         {
             public string text { get; set; }
-            public string partial {  get; set; }
+            public string partial { get; set; }
         }
 
         //スピーカーログの日付
@@ -105,7 +106,7 @@ namespace HottoMotto
         //マイクログの出力先の行番号(出力中でない場合はnull)
         private int? micIndex = null;
 
-        private void UpdateTextBox(string text, bool is_speaker,string audiopath)
+        private void UpdateTextBox(string text, bool is_speaker, string audiopath)
         {
             Debug.Print("UpdateTextBox");
             //"text"のみのjsonで送られてくるためパースする
@@ -114,7 +115,7 @@ namespace HottoMotto
             Debug.Print("json_text:" + json_text.text);
 
             //nullか空でない場合に書き起こす
-            if(json_text.text != null && json_text.text != "")
+            if (json_text.text != null && json_text.text != "")
             {
                 DateTime dateTime = DateTime.Now;
 
@@ -176,7 +177,8 @@ namespace HottoMotto
                     }
                 });
                 }
-                catch (Exception ex){
+                catch (Exception ex)
+                {
                     Debug.Print(ex.ToString());
                 }
             }
@@ -198,7 +200,7 @@ namespace HottoMotto
                     if (is_speaker)
                     {
                         //出力中のテキストがなければ行を追加して出力開始
-                        if(speakerIndex == null)
+                        if (speakerIndex == null)
                         {
                             speakerDateTime = DateTime.Now;
                             RealtimeListBox.Items.Add(new ListBoxModel { Text = speakerDateTime + " (スピーカー)", IsHighlighted = false, IsSpeaker = is_speaker });
@@ -236,7 +238,7 @@ namespace HottoMotto
             }
         }
 
-           
+
 
 
 
@@ -355,15 +357,15 @@ namespace HottoMotto
     }
     public class ListBoxModel : INotifyPropertyChanged
     {
-        public string Text {  get; set; }       //ログのテキスト
-        public string Memory {  get; set; }
+        public string Text { get; set; }       //ログのテキスト
+        public string Memory { get; set; }
 
 
         private string _beforeText;
         private string _matchText;
         private string _afterText;
         private bool _isHighlighted;
-        public System.Windows.Media.Brush Background { get; set; }　
+        public System.Windows.Media.Brush Background { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -420,14 +422,26 @@ namespace HottoMotto
             }
         }
 
+        private List<Inline> _textInlines; 
+        public List<Inline> TextInlines
+        {
+            get => _textInlines; set
+            {
+                if (_textInlines != value)
+                {
+                    _textInlines = value; OnPropertyChanged(nameof(TextInlines));
+                }
+            }
+        }
+
 
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         //public bool IsHighlighted { get; set; } //背景ありか(日時かテキストか)
-        public bool IsSpeaker {  get; set; }    //スピーカーかマイクか
-        public string AudioPath {  get; set; }  //音声ファイルのパス
+        public bool IsSpeaker { get; set; }    //スピーカーかマイクか
+        public string AudioPath { get; set; }  //音声ファイルのパス
         public bool IsComit { get; set; }       //テキスト確定済みか(リアルタイムログで使用)
     }
 }

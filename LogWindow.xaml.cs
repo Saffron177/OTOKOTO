@@ -121,8 +121,30 @@ namespace HottoMotto
                 // リストボックスにデータを追加
                 foreach (var log in logs)
                 {
-                    LogListBox.Items.Add(new ListBoxModel { BeforeText = (log.TimeStamp + (log.IsSpeaker ? "(スピーカー)" : "(マイク)")), IsHighlighted = false, IsSpeaker = log.IsSpeaker, Memory = (log.TimeStamp + (log.IsSpeaker ? "(スピーカー)" : "(マイク)")) });
-                    LogListBox.Items.Add(new ListBoxModel { BeforeText = log.Text, IsHighlighted = true, IsSpeaker = log.IsSpeaker, AudioPath = log.AudioPath, Memory = log.Text });
+                    //LogListBox.Items.Add(new ListBoxModel { BeforeText = (log.TimeStamp + (log.IsSpeaker ? "(スピーカー)" : "(マイク)")), IsHighlighted = false, IsSpeaker = log.IsSpeaker, Memory = (log.TimeStamp + (log.IsSpeaker ? "(スピーカー)" : "(マイク)")) });
+                    //LogListBox.Items.Add(new ListBoxModel { BeforeText = log.Text, IsHighlighted = true, IsSpeaker = log.IsSpeaker, AudioPath = log.AudioPath, Memory = log.Text });
+                    LogListBox.Items.Add(new ListBoxModel
+                    {
+                        Memory = (log.TimeStamp + (log.IsSpeaker ? "(スピーカー)" : "(マイク)")),
+                        IsHighlighted = false,
+                        IsSpeaker = log.IsSpeaker,
+                        TextInlines = new List<Inline>
+                        {
+                            new Run { Text = (log.TimeStamp + (log.IsSpeaker ? "(スピーカー)" : "(マイク)"))}
+                        }
+                    });
+                    LogListBox.Items.Add(new ListBoxModel
+                    {
+                        Memory = log.Text,
+                        IsHighlighted = true,
+                        IsSpeaker = log.IsSpeaker,
+                        AudioPath = log.AudioPath,
+                        TextInlines = new List<Inline>
+                        {
+                            new Run { Text = log.Text}
+                        }
+                    });
+
                 }
             }
             catch (JsonException ex)
@@ -233,98 +255,87 @@ namespace HottoMotto
             matchCounter = -1;
         }
 
-        //検索ボックスのテキストと一致するテキストを抽出して背景色を変更する
+        //検索ボックスのテキストと一致するテキストを抽出する
         private async void HighlightText()
         {
-            // TextBoxのテキストを取得
             string searchText = log_Search_Textbox.Text;
-
-            // 検索テキストが空でないことを確認
-            if (!string.IsNullOrEmpty(searchText))
+            foreach (var item in LogListBox.Items)
             {
-                foreach (var item in LogListBox.Items)
+                ListBoxItem listBoxItem = null;
+                while (listBoxItem == null)
                 {
-                    ListBoxItem listBoxItem = null;
-
-                    // アイテムコンテナが生成されるのを待つ
-                    while (listBoxItem == null)
-                    {
-                        await System.Threading.Tasks.Task.Delay(10); // 少し待機
-                        listBoxItem = LogListBox.ItemContainerGenerator.ContainerFromItem(item) as ListBoxItem;
-                    }
-
-                    // アイテムコンテナが生成されたかを確認
-                    if (LogListBox.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
-                    {
-                        listBoxItem = LogListBox.ItemContainerGenerator.ContainerFromItem(item) as ListBoxItem;
-                        if (listBoxItem != null)
-                        {
-                            ListBoxModel listBoxModel = listBoxItem.Content as ListBoxModel;
-                            string itemText = listBoxModel?.Memory.ToLower();
-                            //検索文字と一致したら
-                            if (itemText.Contains(searchText.ToLower()) && !string.IsNullOrWhiteSpace(searchText))
-                            {
-                                // ハイライトの適用
-                                int index = listBoxModel.Memory.IndexOf(searchText, StringComparison.OrdinalIgnoreCase); //マッチ部分のインデックスを取得
-                                string beforeMatch = listBoxModel.Memory.Substring(0, index); //マッチ部分より前の部分を保持
-                                string match = listBoxModel.Memory.Substring(index, searchText.Length); //マッチ部分を保持
-                                string afterMatch = listBoxModel.Memory.Substring(index + searchText.Length); //マッチ部分より後の部分を保持
-
-                                //バインディングテキストに内容を反映
-                                listBoxModel.BeforeText = beforeMatch;
-                                listBoxModel.MatchText = match;
-                                listBoxModel.AfterText = afterMatch;
-                            }
-                            else
-                            {
-                                //マッチしなかった場合はそのまま適応
-                                listBoxModel.BeforeText = listBoxModel.Memory;
-                                listBoxModel.MatchText = string.Empty;
-                                listBoxModel.AfterText = string.Empty;
-                            }
-
-                            //処理後にマッチ数を表示
-                            search_enabled = true;
-                            Search_Enabled(search_enabled);
-
-                        }
-                        else
-                        {
-                            System.Windows.MessageBox.Show("エラー");
-                        }
-                    }
-                    else
-                    {
-                        // アイテムコンテナが生成されるのを待つ
-                        LogListBox.ItemContainerGenerator.StatusChanged += (s, args) =>
-                        {
-                            if (LogListBox.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
-                            {
-                                // 再度ハイライト処理を呼び出す
-                                HighlightText();
-                            }
-                        };
-                    }
+                    await System.Threading.Tasks.Task.Delay(10);
+                    listBoxItem = LogListBox.ItemContainerGenerator.ContainerFromItem(item) as ListBoxItem;
                 }
-            }
-            else
-            {
-                // 検索テキストが空の時は、元のテキストを表示に戻す
-                foreach (var item in LogListBox.Items)
+
+                if (LogListBox.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
                 {
-                    ListBoxItem listBoxItem = LogListBox.ItemContainerGenerator.ContainerFromItem(item) as ListBoxItem;
+                    listBoxItem = LogListBox.ItemContainerGenerator.ContainerFromItem(item) as ListBoxItem;
                     if (listBoxItem != null)
                     {
                         ListBoxModel listBoxModel = listBoxItem.Content as ListBoxModel;
+                        var inlines = new List<Inline>();
 
-                        // 元のテキストを戻す
-                        listBoxModel.BeforeText = listBoxModel.Memory;
-                        listBoxModel.MatchText = string.Empty;
-                        listBoxModel.AfterText = string.Empty;
-                        //マッチ数も非表示に
-                        search_enabled = false;
+                        if (!string.IsNullOrEmpty(searchText))
+                        {
+                            string itemText = listBoxModel.Memory.ToLower();
+                            int startIndex = 0;
+                            int lastIndex = 0;
+
+                            while ((startIndex = itemText.IndexOf(searchText.ToLower(), lastIndex)) != -1)
+                            {
+                                // マッチ部分の前のテキストを追加
+                                inlines.Add(new Run
+                                {
+                                    Text = listBoxModel.Memory.Substring(lastIndex, startIndex - lastIndex)
+                                });
+
+                                // マッチ部分のテキストをハイライトして追加
+                                inlines.Add(new Run
+                                {
+                                    Text = listBoxModel.Memory.Substring(startIndex, searchText.Length),
+                                    Background = System.Windows.Media.Brushes.Yellow
+                                });
+
+                                // 次の検索開始位置を更新
+                                lastIndex = startIndex + searchText.Length;
+                            }
+
+                            // 最後のマッチ部分後のテキストを追加
+                            inlines.Add(new Run
+                            {
+                                Text = listBoxModel.Memory.Substring(lastIndex)
+                            });
+
+                            // テキストの変更を通知するためのプロパティを更新
+                            listBoxModel.TextInlines = inlines;
+                        }
+                        else
+                        {
+                            // 検索テキストがない場合は元のテキストをそのまま表示
+                            listBoxModel.TextInlines = new List<Inline>
+                    {
+                        new Run { Text = listBoxModel.Memory }
+                    };
+                        }
+
+                        search_enabled = true;
                         Search_Enabled(search_enabled);
                     }
+                    else
+                    {
+                        System.Windows.MessageBox.Show("エラー");
+                    }
+                }
+                else
+                {
+                    LogListBox.ItemContainerGenerator.StatusChanged += (s, args) =>
+                    {
+                        if (LogListBox.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
+                        {
+                            HighlightText();
+                        }
+                    };
                 }
             }
         }
@@ -346,7 +357,6 @@ namespace HottoMotto
                 }
             }
             return null;
-
         }
 
         //マッチ数を表示するラベルを管理する関数
