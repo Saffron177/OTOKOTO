@@ -31,7 +31,7 @@ namespace HottoMotto
         string[] txtFiles;
         //検索中かどうかを判定
         bool search_enabled = false;
-        int matchCounter = -1;  // マッチ数カウンター
+        int matchCounter = -1;  // マッチ数カウンター(なんでか忘れたけど初期値は0じゃなくて-1です)
 
 
         public LogWindow()
@@ -121,8 +121,6 @@ namespace HottoMotto
                 // リストボックスにデータを追加
                 foreach (var log in logs)
                 {
-                    //LogListBox.Items.Add(new ListBoxModel { BeforeText = (log.TimeStamp + (log.IsSpeaker ? "(スピーカー)" : "(マイク)")), IsHighlighted = false, IsSpeaker = log.IsSpeaker, Memory = (log.TimeStamp + (log.IsSpeaker ? "(スピーカー)" : "(マイク)")) });
-                    //LogListBox.Items.Add(new ListBoxModel { BeforeText = log.Text, IsHighlighted = true, IsSpeaker = log.IsSpeaker, AudioPath = log.AudioPath, Memory = log.Text });
                     LogListBox.Items.Add(new ListBoxModel
                     {
                         Memory = (log.TimeStamp + (log.IsSpeaker ? "(スピーカー)" : "(マイク)")),
@@ -252,13 +250,14 @@ namespace HottoMotto
         private void Log_Search_Textbox_Textchanged(object sender, TextChangedEventArgs e)
         {
             HighlightText();
-            matchCounter = -1;
         }
 
         //検索ボックスのテキストと一致するテキストを抽出する
         private async void HighlightText()
         {
             string searchText = log_Search_Textbox.Text;
+            // マッチカウンターを初期化
+            matchCounter = -1;
             foreach (var item in LogListBox.Items)
             {
                 ListBoxItem listBoxItem = null;
@@ -296,9 +295,10 @@ namespace HottoMotto
                                     Text = listBoxModel.Memory.Substring(startIndex, searchText.Length),
                                     Background = System.Windows.Media.Brushes.Yellow
                                 });
-
+                                matchCounter++;
                                 // 次の検索開始位置を更新
                                 lastIndex = startIndex + searchText.Length;
+
                             }
 
                             // 最後のマッチ部分後のテキストを追加
@@ -309,18 +309,20 @@ namespace HottoMotto
 
                             // テキストの変更を通知するためのプロパティを更新
                             listBoxModel.TextInlines = inlines;
+                            //マッチ数表示
+                            //search_enabled = true;
+                            //Search_Enabled(search_enabled);
+
                         }
                         else
                         {
                             // 検索テキストがない場合は元のテキストをそのまま表示
                             listBoxModel.TextInlines = new List<Inline>
-                    {
-                        new Run { Text = listBoxModel.Memory }
-                    };
+                            {
+                                new Run { Text = listBoxModel.Memory }
+                            };
                         }
 
-                        search_enabled = true;
-                        Search_Enabled(search_enabled);
                     }
                     else
                     {
@@ -398,6 +400,16 @@ namespace HottoMotto
             {
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+
+        //ログサーチボックスのkeydownイベント
+        private void log_Search_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                //HighlightText();
+            }
+
         }
     }
 
