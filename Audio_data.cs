@@ -447,14 +447,22 @@ namespace HottoMotto
             JsonUtil jsonUtil = new JsonUtil();
             //リアルタイムログをjson化
             //並列処理でフィラー除去を実行
-            await Parallel.ForEachAsync(sortedRealtimeLogs, async (log, CancellationToken) =>
+            Filler_Removal.Initialize();
+            try
             {
-                log.Text = await Filler_Removal.removal(log.Text);
-            });
-            foreach (Conversation_Log_Data log in sortedRealtimeLogs)
-            {
-                json_list.Add(jsonUtil.ToJson(log.TimeStamp,log.Text, log.IsSpeaker,log.AudioPath));
+                foreach (Conversation_Log_Data log in sortedRealtimeLogs)
+                {
+                    Debug.Print("対象のテキスト：" + log.Text);
+                    json_list.Add(jsonUtil.ToJson(log.TimeStamp, await Filler_Removal.Removal(log.Text), log.IsSpeaker, log.AudioPath));
+                }
             }
+            finally
+            {
+                Debug.Print("Pythonプロセスの終了");
+                // Pythonプロセスの終了
+                Filler_Removal.Terminate();
+            }
+            
             //複数のjsonをリスト化
             string log_text = $"[{string.Join(",", json_list)}]";
 

@@ -2,25 +2,26 @@
 import sys
 import spacy.util
 import os
-# コマンドライン引数から transcribed_text を受け取る
-if len(sys.argv) > 1:
-    transcribed_text = sys.argv[1]
-else:
-    transcribed_text = ""
-
-
+# モデルを事前にロード
 nlp = spacy.load('ja_ginza')
 
-# モデルのパスを取得
-#model_package_path = spacy.util.get_package_path("ja_ginza")
-#print(f"ロードされたモデルのパッケージパス: {model_package_path}")
+# 無限ループで入力を処理
+while True:
+    # 標準入力からテキストを受け取る
+    line = sys.stdin.readline().strip()
+    if not line:
+        break  # 入力が空の場合は終了
 
+    transcribed_text = line
 
-doc = nlp(transcribed_text)
-# フィラーの削除
-result = ''
-for sent in doc.sents:
-  for token in sent:
-    if token.tag_ != "感動詞-フィラー":
-      result += str(token.text)
-print(result)
+    # フィラーの削除
+    doc = nlp(transcribed_text)
+    result = ''
+    for sent in doc.sents:
+        for token in sent:
+            if token.tag_ != "感動詞-フィラー":
+                result += str(token.text)
+
+    # 結果を標準出力に出力
+    print(result)
+    sys.stdout.flush()
