@@ -73,7 +73,8 @@
     <Grid>
         <!-- Grid.RowDefinitions と Grid.ColumnDefinitions -->
         <Grid.RowDefinitions>
-            <RowDefinition Height="117*"/>
+            <RowDefinition Height="32*"/>
+            <RowDefinition Height="85*"/>
             <RowDefinition Height="30*"/>
             <RowDefinition Height="35*"/>
             <RowDefinition Height="35*"/>
@@ -135,7 +136,7 @@
          BorderBrush="{DynamicResource MaterialDesignDivider}" 
          Background="{DynamicResource MaterialDesignPaper}"
          ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-         Grid.RowSpan="3">
+         Grid.RowSpan="4">
             <ListBox.Resources>
                 <!-- Borderスタイル -->
                 <Style TargetType="{x:Type Border}">
@@ -399,7 +400,7 @@
           materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource ComboBoxUnderlineBrush}"
           VerticalAlignment="Stretch" 
           Grid.Column="1" 
-          Grid.Row="3" 
+          Grid.Row="4" 
           Grid.ColumnSpan="2">
             <ComboBox.Resources>
                 <Style TargetType="ComboBoxItem" BasedOn="{StaticResource MaterialDesignComboBoxItemStyle}">
@@ -433,7 +434,7 @@
           materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource ComboBoxUnderlineBrush}"
           VerticalAlignment="Stretch" 
           Grid.Column="1" 
-          Grid.Row="2" 
+          Grid.Row="3" 
           Grid.ColumnSpan="2">
             <ComboBox.Resources>
                 <Style TargetType="ComboBoxItem" BasedOn="{StaticResource MaterialDesignComboBoxItemStyle}">
@@ -462,35 +463,34 @@
            Text="録音時間" 
            Grid.Column="1"
            HorizontalAlignment="Left" 
-           Margin="16,89,0,0" 
+           Margin="16,25,0,0" 
            VerticalAlignment="Top" 
            Foreground="{DynamicResource MaterialDesignBodyLight}"
-           FontSize="12"/>
+           FontSize="12" Grid.Row="1"/>
 
         <TextBlock x:Name="RecordingTimeText" 
            Grid.Column="1"
-           Grid.ColumnSpan="2"
            HorizontalAlignment="Left" 
-           Margin="14,110,0,0" 
+           Margin="14,46,0,0" 
            VerticalAlignment="Top" 
            Foreground="{DynamicResource MaterialDesignBody}"
            FontSize="16" 
            FontWeight="Medium"
-           Text="00:00:00"/>
+           Text="00:00:00" Grid.Row="1"/>
 
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="80" Height="54" Grid.Column="1" Grid.Row="1">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="80" Height="54" Grid.Column="1" Grid.Row="2" Margin="0,3,0,3">
             <Image x:Name="RecImage" Source="Resource/rec.png"  Visibility="Hidden" Width="30" Height="30" RenderTransformOrigin="0.5,0.5"/>
             <Label x:Name="Label_status" Margin="0" Width="80" Height="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
         </StackPanel>
 
-        <Button x:Name="Button_Capture" Click="Button_Capture_Click" Style="{StaticResource CActionButtons}" BorderBrush="{x:Null}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" Margin="0,0,5,0">
+        <Button x:Name="Button_Capture" Click="Button_Capture_Click" Style="{StaticResource CActionButtons}" BorderBrush="{x:Null}" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="80,5,0,5">
             <StackPanel Orientation="Horizontal">
                 <Image x:Name="CaptureButtonImage" Source="Resource/start.png" Width="48" Height="48"/>
             </StackPanel>
         </Button>
 
 
-        <Button x:Name="Button_Mute" Margin="11,5,30,5" Click="Button_Mute_Click" Style="{StaticResource CActionButtons}" Width="NaN" Grid.Column="2" Grid.Row="1" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="{x:Null}">
+        <Button x:Name="Button_Mute" Margin="11,5,30,5" Click="Button_Mute_Click" Style="{StaticResource CActionButtons}" Width="NaN" Grid.Column="2" Grid.Row="2" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="{x:Null}">
             <StackPanel Orientation="Horizontal">
                 <Image x:Name="ButtonIcon" Source="Resource/mic.png" Width="42" Height="30"/>
                 <TextBlock x:Name="ButtonText"  VerticalAlignment="Center" Margin="5,0,0,0"/>
@@ -501,6 +501,9 @@
                 <Image Source="Resource/log.png" Width="23" Height="23" RenderTransformOrigin="0.5,0.5"/>
             </StackPanel>
         </Button>
-
+        <ProgressBar
+            IsIndeterminate="True"
+            Style="{StaticResource MaterialDesignCircularProgressBar}" x:Name="progressRing" Visibility="Hidden"/>
     </Grid>
+
 </Window>

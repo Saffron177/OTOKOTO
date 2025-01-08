@@ -10,6 +10,7 @@ using System.Windows.Interop;
 using System.Xml;
 using System.Formats.Asn1;
 using NAudio.Lame;
+using MahApps.Metro.Controls;
 
 namespace HottoMotto
 {
@@ -447,6 +448,7 @@ namespace HottoMotto
             JsonUtil jsonUtil = new JsonUtil();
             //リアルタイムログをjson化
             //並列処理でフィラー除去を実行
+            progressRing.Visibility = Visibility.Visible;
             Filler_Removal.Initialize();
             try
             {
@@ -479,6 +481,7 @@ namespace HottoMotto
 
             //一時保存したログを消去
             json_list.Clear();
+            progressRing.Visibility = Visibility.Hidden;
         }
 
 
