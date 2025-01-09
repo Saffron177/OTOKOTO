@@ -59,12 +59,12 @@ namespace HottoMotto
         private bool isDarkMode = false;
 
 
-        // 起動音を再生するメソッド
+        //(ここからネタ枠)
         private void PlayStartupSound()
         {
             try
             {
-                string startupSoundPath = "Resource/Windows-XP-Startup.wav";  // 起動音のパス
+                string startupSoundPath = "Resource/Windows-XP-Startup.wav";  // 音データのパス
                 if (File.Exists(startupSoundPath))
                 {
                     System.Media.SoundPlayer player = new System.Media.SoundPlayer(startupSoundPath);
@@ -80,6 +80,7 @@ namespace HottoMotto
                 Debug.Print($"起動音の再生でエラーが発生: {ex.Message}");
             }
         }
+        //ここまでネタ枠
 
         private void ThemeToggleButton_Click(object sender, RoutedEventArgs e)
         {
