@@ -32,6 +32,49 @@ namespace HottoMotto
         private Model model;
 
 
+        private async void InitializeModelAsync()
+        {
+            try
+            {
+                // LoadingWindow表示
+                var loadingWindow = new LoadingWindow();
+                loadingWindow.Show();
+
+                // モデルダウンロードと解凍
+                await ModelManager.DownloadAndExtractModel(loadingWindow);
+
+                string modelPath = "Models/vosk-model-ja-0.22";
+                Debug.Print("モデルパス: " + modelPath);
+
+                // モデルとレコグナイザーの初期化
+                model = new Model(modelPath);
+                recognizer = new VoskRecognizer(model, 16000.0f);
+                mic_recognizer = new VoskRecognizer(model, 16000.0f);
+
+                // 音声ファイル保存先フォルダが存在しない場合は作成
+                if (!Directory.Exists("Audio"))
+                {
+                    Directory.CreateDirectory("Audio");
+                }
+
+                // LoadingWindow閉じる
+                loadingWindow.Close();
+            }
+            catch (Exception ex)
+            {
+                Debug.Print($"モデルの初期化でエラーが発生: {ex.Message}");
+                System.Windows.MessageBox.Show(
+                    $"音声認識モデルの初期化に失敗しました。\n{ex.Message}",
+                    "エラー",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+
+                // エラー時は強制終了
+                System.Windows.Application.Current.Shutdown();
+            }
+        }
+
 
         public MainWindow()
         {
@@ -39,6 +82,7 @@ namespace HottoMotto
             LoadAudioDevices();
             LoadMicDevices();
             PlayStartupSound();
+            InitializeModelAsync();
             // モデルをロード（解凍したモデルのパスを指定）
             string modelPath = "Models/vosk-model-ja-0.22";
             Console.WriteLine("モデルパス: " + modelPath);
