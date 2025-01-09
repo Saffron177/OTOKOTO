@@ -27,6 +27,7 @@
 		<Folder Include="Logs\" />
 		<Folder Include="Models\" />
 		<Folder Include="Resource\" />
+		<Folder Include="Filler_removal.dist\" />
 	</ItemGroup>
 
 	<ItemGroup>
