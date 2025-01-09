@@ -38,6 +38,7 @@ namespace HottoMotto
             InitializeComponent();
             LoadAudioDevices();
             LoadMicDevices();
+            PlayStartupSound();
             // モデルをロード（解凍したモデルのパスを指定）
             string modelPath = "Models/vosk-model-ja-0.22";
             Console.WriteLine("モデルパス: " + modelPath);
@@ -56,6 +57,29 @@ namespace HottoMotto
         }
         //マテリアルダークテーマ関連
         private bool isDarkMode = false;
+
+
+        // 起動音を再生するメソッド
+        private void PlayStartupSound()
+        {
+            try
+            {
+                string startupSoundPath = "Resource/Windows-XP-Startup.wav";  // 起動音のパス
+                if (File.Exists(startupSoundPath))
+                {
+                    System.Media.SoundPlayer player = new System.Media.SoundPlayer(startupSoundPath);
+                    player.Play();
+                }
+                else
+                {
+                    Debug.Print("起動音ファイルが見つかりません: " + startupSoundPath);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.Print($"起動音の再生でエラーが発生: {ex.Message}");
+            }
+        }
 
         private void ThemeToggleButton_Click(object sender, RoutedEventArgs e)
         {
