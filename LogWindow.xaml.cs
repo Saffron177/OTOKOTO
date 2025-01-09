@@ -257,20 +257,20 @@ namespace HottoMotto
             if (PlayAudio.playingImage == null)
             {
                 PlayAudio.ChangeToStopImage(image);
-                PlayAudio.play(log.AudioPath, image);
+                PlayAudio.play(log.AudioPath, image, false);
             }
             //再生中の音声がクリックした音声と同じ場合、再生を止める
             else if (PlayAudio.playingImage == image)
             {
                 PlayAudio.ChangeToStartImage();
-                PlayAudio.stop();
+                PlayAudio.stop(false);
             }
             //再生中の音声がクリックした音声と違う場合、再生中の音声を止め、選択した音声を再生する
             else
             {
                 PlayAudio.ChangeToStartImage();
                 PlayAudio.ChangeToStopImage(image);
-                PlayAudio.play(log.AudioPath, image);   //playメソッドの冒頭で再生中の音声を止めている
+                PlayAudio.play(log.AudioPath, image, false);   //playメソッドの冒頭で再生中の音声を止めている
             }
         }
 

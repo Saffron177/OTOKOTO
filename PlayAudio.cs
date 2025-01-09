@@ -18,9 +18,9 @@ namespace HottoMotto
         public static System.Windows.Controls.Image? playingImage;
 
         private static bool isPlaying = false;
-        public static async Task play(string path, System.Windows.Controls.Image image)
+        public static async Task play(string path, System.Windows.Controls.Image image, bool isMainWindow)
         {
-            stop();
+            stop(isMainWindow);
             try
             {
                 reader = new AudioFileReader(path);
@@ -31,11 +31,14 @@ namespace HottoMotto
                 waveOut.Play();
                 isPlaying = true;
 
-                // 再生バーを設定
-                LogWindow.seekBar.Maximum = reader.TotalTime.TotalSeconds;
-                LogWindow.totalTime.Text = reader.TotalTime.ToString(@"mm\:ss");
-                //タイマー開始
-                LogWindow.timer.Start();
+                if (!isMainWindow)
+                {
+                    // 再生バーを設定
+                    LogWindow.seekBar.Maximum = reader.TotalTime.TotalSeconds;
+                    LogWindow.totalTime.Text = reader.TotalTime.ToString(@"mm\:ss");
+                    //タイマー開始
+                    LogWindow.timer.Start();
+                }
 
                 // 再生の終了を待つ
                 while (waveOut.PlaybackState == PlaybackState.Playing)
@@ -59,19 +62,23 @@ namespace HottoMotto
                 //Cleanup();
             }
         }
-        public static async Task stop()
+        public static async Task stop(bool isMainWindow)
         {
             try
             {
                 if (isPlaying && waveOut != null)
                 {
                     waveOut.Stop();
-                    LogWindow.timer.Stop();
-
-                    // 再生位置をリセット
                     reader.Position = 0;
-                    LogWindow.seekBar.Value = 0;
-                    LogWindow.currentTime.Text = "00:00";
+
+                    if (!isMainWindow)
+                    {
+                        //タイマー停止
+                        LogWindow.timer.Stop();
+                        // 再生バーをリセット
+                        LogWindow.seekBar.Value = 0;
+                        LogWindow.currentTime.Text = "00:00";
+                    }
                 }
                 isPlaying = false;
             }
