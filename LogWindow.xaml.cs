@@ -19,6 +19,7 @@ using System.Windows.Controls.Primitives;
 using System.Collections.ObjectModel;
 using NAudio.Wave;
 using System.ComponentModel;
+using System.Windows.Threading;
 
 namespace HottoMotto
 {
@@ -32,7 +33,10 @@ namespace HottoMotto
         //検索中かどうかを判定
         bool search_enabled = false;
         int matchCounter = -1;  // マッチ数カウンター(なんでか忘れたけど初期値は0じゃなくて-1です)
-
+        public static DispatcherTimer timer; // 再生バー更新用タイマー
+        public static Slider seekBar;
+        public static TextBlock totalTime;
+        public static TextBlock currentTime;
 
         public LogWindow()
         {
@@ -44,6 +48,15 @@ namespace HottoMotto
             {
                 Match_Label = ""
             };
+            // タイマーの設定
+            timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(100) // 100msごとに更新
+            };
+            timer.Tick += Timer_Tick;
+            seekBar = SeekBar;
+            totalTime = TotalTime;
+            currentTime = CurrentTime;
         }
 
         //Logsファイルの中身を検索し、結果を出力する
@@ -90,6 +103,13 @@ namespace HottoMotto
 
                 //ログファイルの読み取りを実行
                 Load_Log(selectedFile);
+
+                InitSoundData();
+
+                if(SoundData.Visibility != Visibility.Visible)
+                {
+                    SoundData.Visibility = Visibility.Visible;
+                }
             }
         }
 
@@ -215,6 +235,14 @@ namespace HottoMotto
             }
         }
 
+        private void InitSoundData()
+        {
+            TotalTime.Text = "00:00";
+            CurrentTime.Text = "00:00";
+            SeekBar.Value = 0;
+            timer.Stop();
+        }
+
         //PlayAudio.playingImageには再生中の音声のボタンの画像が入っている
         //nullの場合は再生中ではない
         private void AudioPlaying(System.Windows.Controls.Image image, ListBoxModel log)
@@ -243,6 +271,25 @@ namespace HottoMotto
                 PlayAudio.ChangeToStartImage();
                 PlayAudio.ChangeToStopImage(image);
                 PlayAudio.play(log.AudioPath, image);   //playメソッドの冒頭で再生中の音声を止めている
+            }
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            if (PlayAudio.reader != null)
+            {
+                // 再生位置の更新
+                SeekBar.Value = PlayAudio.reader.CurrentTime.TotalSeconds;
+                CurrentTime.Text = PlayAudio.reader.CurrentTime.ToString(@"mm\:ss");
+            }
+        }
+
+        private void SeekBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            // ユーザーがシークバーを動かしたときに再生位置を変更
+            if (PlayAudio.reader != null && SeekBar.IsMouseCaptureWithin)
+            {
+                PlayAudio.reader.CurrentTime = TimeSpan.FromSeconds(SeekBar.Value);
             }
         }
 

@@ -12,7 +12,7 @@ namespace HottoMotto
 {
     internal class PlayAudio
     {
-        private static AudioFileReader reader;
+        public static AudioFileReader reader;
         private static WaveOut waveOut;
 
         public static System.Windows.Controls.Image? playingImage;
@@ -30,6 +30,12 @@ namespace HottoMotto
                 waveOut.Init(reader);
                 waveOut.Play();
                 isPlaying = true;
+
+                // 再生バーを設定
+                LogWindow.seekBar.Maximum = reader.TotalTime.TotalSeconds;
+                LogWindow.totalTime.Text = reader.TotalTime.ToString(@"mm\:ss");
+                //タイマー開始
+                LogWindow.timer.Start();
 
                 // 再生の終了を待つ
                 while (waveOut.PlaybackState == PlaybackState.Playing)
@@ -60,6 +66,12 @@ namespace HottoMotto
                 if (isPlaying && waveOut != null)
                 {
                     waveOut.Stop();
+                    LogWindow.timer.Stop();
+
+                    // 再生位置をリセット
+                    reader.Position = 0;
+                    LogWindow.seekBar.Value = 0;
+                    LogWindow.currentTime.Text = "00:00";
                 }
                 isPlaying = false;
             }
@@ -74,7 +86,7 @@ namespace HottoMotto
             }
         }
 
-        private void Cleanup()
+        public static void Cleanup()
         {
             waveOut?.Dispose();
             reader?.Dispose();
