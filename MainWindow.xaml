@@ -478,12 +478,12 @@
            FontWeight="Medium"
            Text="00:00:00" Grid.Row="1"/>
 
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="80" Height="54" Grid.Column="1" Grid.Row="2" Margin="0,3,0,3">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="80" Height="54" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center">
             <Image x:Name="RecImage" Source="Resource/rec.png"  Visibility="Hidden" Width="30" Height="30" RenderTransformOrigin="0.5,0.5"/>
             <Label x:Name="Label_status" Margin="0" Width="80" Height="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
         </StackPanel>
 
-        <Button x:Name="Button_Capture" Click="Button_Capture_Click" Style="{StaticResource CActionButtons}" BorderBrush="{x:Null}" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="80,5,0,5">
+        <Button x:Name="Button_Capture" Click="Button_Capture_Click" Style="{StaticResource CActionButtons}" BorderBrush="{x:Null}" Grid.Column="1" Grid.Row="2" Margin="80,0,0,0" VerticalAlignment="Center">
             <StackPanel Orientation="Horizontal">
                 <Image x:Name="CaptureButtonImage" Source="Resource/start.png" Width="48" Height="48"/>
             </StackPanel>
@@ -503,7 +503,7 @@
         </Button>
         <ProgressBar
             IsIndeterminate="True"
-            Style="{StaticResource MaterialDesignCircularProgressBar}" x:Name="progressRing" Visibility="Hidden"/>
+            Style="{StaticResource MaterialDesignCircularProgressBar}" x:Name="progressRing" Grid.Column="1" Margin="0,33,17,0" HorizontalAlignment="Right" Width="20" Height="20" VerticalAlignment="Top" RenderTransformOrigin="1.35,0.552" Visibility="Hidden"/>
     </Grid>
 
 </Window>
