@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HottoMotto"
         mc:Ignorable="d"
-        Title="LogWindow" Height="450" Width="800">
+        Title="オトコト" Height="450" Width="800" MinWidth="800" MinHeight="450">
     
 
     <Grid>
@@ -25,7 +25,7 @@
 
         <!--グリッド1(右側)-->
         <!--ログ表示用リストボックス-->
-        <ListBox x:Name="LogListBox" Margin="30,55,20,80" Padding="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Column="1">
+        <ListBox x:Name="LogListBox" VirtualizingStackPanel.IsVirtualizing="False" Margin="30,55,20,80" Padding="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Column="1">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="HorizontalContentAlignment" Value="Left"/>
@@ -42,11 +42,12 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <Button Click="AudioButtonClick" BorderBrush="{x:Null}" Background="{x:Null}" Width="25" Height="25" Margin="0,0,0,5">
                             <Button.Style>
                                 <Style TargetType="Button">
-                                    <Setter Property="Grid.Column" Value="1"/>
+                                    <Setter Property="Grid.Column" Value="2"/>
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsSpeaker}" Value="True">
@@ -63,40 +64,36 @@
                                 <Binding ElementName="AudioButtonImage" />
                             </Button.Tag>
                         </Button>
-                        <Border CornerRadius="5">
+                        <Border CornerRadius="5" Grid.Column="1">
                             <Border.Style>
                                 <Style TargetType="Border">
                                     <Setter Property="Background" Value="{x:Null}" />
                                     <Setter Property="Padding" Value="0"/>
                                     <Setter Property="Margin" Value="0"/>
-                                    <Setter Property="Grid.Column" Value="0"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
                                             <Setter Property="Background" Value="AliceBlue" />
                                             <Setter Property="Padding" Value="8"/>
                                             <Setter Property="Margin" Value="0,0,0,5"/>
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding IsSpeaker}" Value="True">
-                                            <Setter Property="Grid.Column" Value="1"/>
-                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </Border.Style>
-                            <TextBlock TextWrapping="Wrap">
-                                <TextBlock.Inlines>
-                                    <ItemsControl ItemsSource="{Binding TextInlines}">
-                                        <ItemsControl.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <StackPanel Orientation="Horizontal"/>
-                                            </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <ContentPresenter Content="{Binding}"/>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                </TextBlock.Inlines></TextBlock>
+                            <TextBlock Text="{Binding Text}" TextWrapping="Wrap">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <!-- デフォルトのフォントサイズ -->
+                                        <Setter Property="FontSize" Value="10" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                                                <!-- IsHighlightedがTrueのときフォントサイズを変更 -->
+                                                <Setter Property="FontSize" Value="12" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                                <TextBlock.Inlines/>
+                            </TextBlock>
                         </Border>
                     </Grid>
                 </DataTemplate>
@@ -126,6 +123,5 @@
                 </StackPanel>
             </StackPanel>
         </Border>
-        
     </Grid>
 </Window>

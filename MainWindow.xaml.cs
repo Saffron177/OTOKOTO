@@ -397,7 +397,7 @@ namespace HottoMotto
             //_timer.Start();
 
             // 画面が閉じられるときに、タイマを停止
-            this.Closing += new CancelEventHandler(StopTimer);
+            //this.Closing += new CancelEventHandler(StopTimer);
         }
 
         // タイマを停止
@@ -525,6 +525,7 @@ namespace HottoMotto
             }
         }
 
+        /*
         private List<Inline> _textInlines; 
         public List<Inline> TextInlines
         {
@@ -536,7 +537,7 @@ namespace HottoMotto
                 }
             }
         }
-
+        */
 
         protected void OnPropertyChanged(string propertyName)
         {
@@ -546,5 +547,8 @@ namespace HottoMotto
         public bool IsSpeaker { get; set; }    //スピーカーかマイクか
         public string AudioPath { get; set; }  //音声ファイルのパス
         public bool IsComit { get; set; }       //テキスト確定済みか(リアルタイムログで使用)
+
+        public GridLength FirstColumnWidth = GridLength.Auto;
+        public GridLength SecondColumnWidth = new GridLength(1, GridUnitType.Star);
     }
 }

@@ -22,7 +22,7 @@ namespace HottoMotto
         {
             notifyIcon = new NotifyIcon
             {
-                Icon = new Icon("Resource/Icon.ico"), // アイコンファイルをプロジェクトに追加
+                Icon = new Icon("Resource/otocoto.ico"), // アイコンファイルをプロジェクトに追加
                 Visible = true,
                 Text = "オトコト"
             };
