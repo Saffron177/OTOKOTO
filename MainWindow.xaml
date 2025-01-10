@@ -1,4 +1,5 @@
 ﻿<Window x:Class="HottoMotto.MainWindow"
+        x:Name="Main_Window"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -353,13 +354,29 @@
                                     <!--デフォルトの配置(左側)-->
                                     <Setter Property="Grid.Column" Value="0"/>
                                     <Style.Triggers>
-                                        <!-- IsHighlightedがTrueのときに背景色を設定 -->
-                                        <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
-                                            <Setter Property="Background" Value="AliceBlue" />
+                                        <!-- IsHighlightedがTrueかつIsDarkModeがTrueの場合 -->
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding IsHighlighted}" Value="True"/>
+                                                <Condition Binding="{Binding ElementName=Main_Window, Path=IsDarkModeFlag}" Value="True"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Background" Value="DarkBlue"/>
                                             <Setter Property="Padding" Value="8"/>
                                             <Setter Property="Margin" Value="0,0,0,5"/>
-                                        </DataTrigger>
-                                        <!--スピーカーの場合は右側に配置-->
+                                        </MultiDataTrigger>
+
+                                        <!-- IsHighlightedがTrueかつIsDarkModeがFalseの場合 -->
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding IsHighlighted}" Value="True"/>
+                                                <Condition Binding="{Binding ElementName=Main_Window, Path=IsDarkModeFlag}" Value="False"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Background" Value="AliceBlue"/>
+                                            <Setter Property="Padding" Value="8"/>
+                                            <Setter Property="Margin" Value="0,0,0,5"/>
+                                        </MultiDataTrigger>
+
+                                        <!-- スピーカーの場合は右側に配置 -->
                                         <DataTrigger Binding="{Binding IsSpeaker}" Value="True">
                                             <Setter Property="Grid.Column" Value="1"/>
                                         </DataTrigger>

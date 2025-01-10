@@ -136,6 +136,13 @@ namespace HottoMotto
         //マテリアルダークテーマ関連
         private bool isDarkMode = false;
 
+        public static readonly DependencyProperty IsDarkModeFlagProperty = DependencyProperty.Register("IsDarkModeFlag", typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+
+        public bool IsDarkModeFlag
+        {
+            get => (bool)GetValue(IsDarkModeFlagProperty);
+            set => SetValue(IsDarkModeFlagProperty, value);
+        }
 
         //(ここからネタ枠)
         private void PlayStartupSound()
@@ -163,6 +170,8 @@ namespace HottoMotto
         private void ThemeToggleButton_Click(object sender, RoutedEventArgs e)
         {
             isDarkMode = !isDarkMode;
+            IsDarkModeFlag = isDarkMode;
+
             var paletteHelper = new PaletteHelper();
             var theme = paletteHelper.GetTheme();
 
