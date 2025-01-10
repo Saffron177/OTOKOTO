@@ -9,11 +9,8 @@
 		<Platforms>AnyCPU;x64</Platforms>
 		<UseWindowsForms>true</UseWindowsForms>
 		<ApplicationIcon>Resource\otocoto.ico</ApplicationIcon>
+		<AssemblyName>OTOCOTO</AssemblyName>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<None Remove="Filler_removal.exe" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="MaterialDesignColors" Version="3.1.0" />
@@ -38,11 +35,6 @@
 
 	<ItemGroup>
 		<Content Include="Models\**\*">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="Filler_removal.exe">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
