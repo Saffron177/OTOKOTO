@@ -136,12 +136,17 @@ namespace HottoMotto
         //マテリアルダークテーマ関連
         private bool isDarkMode = false;
 
-        public static readonly DependencyProperty IsDarkModeFlagProperty = DependencyProperty.Register("IsDarkModeFlag", typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+        public static readonly DependencyProperty IsDarkModeFlagProperty = 
+            DependencyProperty.Register(
+                "IsDarkModeFlag",               // プロパティ名
+                typeof(bool),                   // プロパティの型（bool型）
+                typeof(MainWindow),             // プロパティが定義されるクラス（MainWindow）
+                new PropertyMetadata(false));   // プロパティの初期値（false）
 
         public bool IsDarkModeFlag
         {
-            get => (bool)GetValue(IsDarkModeFlagProperty);
-            set => SetValue(IsDarkModeFlagProperty, value);
+            get => (bool)GetValue(IsDarkModeFlagProperty);  // GetValue で依存関係プロパティの値を取得
+            set => SetValue(IsDarkModeFlagProperty, value); // SetValue で依存関係プロパティの値を設定
         }
 
         //(ここからネタ枠)
