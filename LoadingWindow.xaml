@@ -17,7 +17,7 @@
 
     <Grid>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-            <!-- コメントアウト：なんかエラー出るから -->
+            <!-- コメントアウトなんかエラー出るから -->
             <!--<TextBlock Text="モデルファイルをダウンロード中..."-->
             <TextBlock Text="Downloading model files..."
                      FontSize="16"

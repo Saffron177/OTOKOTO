@@ -32,18 +32,32 @@ namespace HottoMotto
         private Model model;
 
 
-        private async void InitializeModelAsync()
+        private async Task InitializeModelAsync(LoadingWindow loadingWindow)  // 引数を追加
         {
+            Debug.Print("=== InitializeModelAsync started ===");
+
             try
             {
-                // LoadingWindow表示
-                var loadingWindow = new LoadingWindow();
-                loadingWindow.Show();
-
-                // モデルダウンロードと解凍
-                await ModelManager.DownloadAndExtractModel(loadingWindow);
-
                 string modelPath = "Models/vosk-model-ja-0.22";
+                string modelFile = Path.Combine(modelPath, "am/final.mdl");
+
+                Debug.Print($"Current Directory: {Directory.GetCurrentDirectory()}");
+                Debug.Print($"Model Path (Full): {Path.GetFullPath(modelPath)}");
+                Debug.Print($"Model File (Full): {Path.GetFullPath(modelFile)}");
+                Debug.Print($"Model directory exists: {Directory.Exists(modelPath)}");
+                Debug.Print($"Model file exists: {File.Exists(modelFile)}");
+
+                if (!Directory.Exists(modelPath) || !File.Exists(modelFile))
+                {
+                    await ModelManager.DownloadAndExtractModel(loadingWindow);
+
+                    // モデルファイルの存在を再確認
+                    if (!File.Exists(modelFile))
+                    {
+                        throw new FileNotFoundException("モデルファイルが見つかりません。", modelFile);
+                    }
+                }
+
                 Debug.Print("モデルパス: " + modelPath);
 
                 // モデルとレコグナイザーの初期化
@@ -51,27 +65,15 @@ namespace HottoMotto
                 recognizer = new VoskRecognizer(model, 16000.0f);
                 mic_recognizer = new VoskRecognizer(model, 16000.0f);
 
-                // 音声ファイル保存先フォルダが存在しない場合は作成
                 if (!Directory.Exists("Audio"))
                 {
                     Directory.CreateDirectory("Audio");
                 }
-
-                // LoadingWindow閉じる
-                loadingWindow.Close();
             }
             catch (Exception ex)
             {
                 Debug.Print($"モデルの初期化でエラーが発生: {ex.Message}");
-                System.Windows.MessageBox.Show(
-                    $"音声認識モデルの初期化に失敗しました。\n{ex.Message}",
-                    "エラー",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error
-                );
-
-                // エラー時は強制終了
-                System.Windows.Application.Current.Shutdown();
+                throw;
             }
         }
 
@@ -79,26 +81,58 @@ namespace HottoMotto
         public MainWindow()
         {
             InitializeComponent();
-            LoadAudioDevices();
-            LoadMicDevices();
-            PlayStartupSound();
-            InitializeModelAsync();
-            // モデルをロード（解凍したモデルのパスを指定）
-            string modelPath = "Models/vosk-model-ja-0.22";
-            Console.WriteLine("モデルパス: " + modelPath);
-            model = new Model(modelPath);
-            recognizer = new VoskRecognizer(model, 16000.0f);
-            mic_recognizer = new VoskRecognizer(model, 16000.0f);
-            SetupNotifyIcon();
-            SetupTimer();
+            this.Loaded += MainWindow_Loaded;
+        }
 
-            //音声ファイル保存先フォルダが存在しない場合は作成
-            // フォルダが存在しない場合は作成
-            if (!Directory.Exists("Audio"))
+        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
             {
-                Directory.CreateDirectory("Audio");
+                string modelPath = "Models/vosk-model-ja-0.22";
+                string modelFile = Path.Combine(modelPath, "am/final.mdl");
+
+                //ダウンロードが必要な場合のみLoadingWindowを表示
+                if (!Directory.Exists(modelPath) || !File.Exists(modelFile))
+                {
+                    LoadingWindow loadingWindow = new LoadingWindow();
+                    loadingWindow.Show();
+
+                    try
+                    {
+                        await InitializeModelAsync(loadingWindow);
+                    }
+                    finally
+                    {
+                        loadingWindow.Close();
+                    }
+                }
+                else
+                {
+                    // モデル既に存在する場合は直接初期化
+                    await InitializeModelAsync(null);
+                }
+
+                //初期化処理
+                LoadAudioDevices();
+                LoadMicDevices();
+                PlayStartupSound();
+                SetupNotifyIcon();
+                SetupTimer();
+            }
+            catch (Exception ex)
+            {
+                Debug.Print($"初期化エラー: {ex.Message}");
+                System.Windows.MessageBox.Show(
+                    $"アプリケーションの初期化に失敗しました。\n{ex.Message}",
+                    "エラー",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+                System.Windows.Application.Current.Shutdown();
             }
         }
+
+
         //マテリアルダークテーマ関連
         private bool isDarkMode = false;
 
