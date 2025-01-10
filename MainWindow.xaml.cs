@@ -513,5 +513,8 @@ namespace HottoMotto
         public bool IsSpeaker { get; set; }    //スピーカーかマイクか
         public string AudioPath { get; set; }  //音声ファイルのパス
         public bool IsComit { get; set; }       //テキスト確定済みか(リアルタイムログで使用)
+
+        public GridLength FirstColumnWidth = GridLength.Auto;
+        public GridLength SecondColumnWidth = new GridLength(1, GridUnitType.Star);
     }
 }

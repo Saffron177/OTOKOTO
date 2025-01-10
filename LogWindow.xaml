@@ -42,11 +42,12 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <Button Click="AudioButtonClick" BorderBrush="{x:Null}" Background="{x:Null}" Width="25" Height="25" Margin="0,0,0,5">
                             <Button.Style>
                                 <Style TargetType="Button">
-                                    <Setter Property="Grid.Column" Value="1"/>
+                                    <Setter Property="Grid.Column" Value="2"/>
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsSpeaker}" Value="True">
@@ -63,21 +64,17 @@
                                 <Binding ElementName="AudioButtonImage" />
                             </Button.Tag>
                         </Button>
-                        <Border CornerRadius="5">
+                        <Border CornerRadius="5" Grid.Column="1">
                             <Border.Style>
                                 <Style TargetType="Border">
                                     <Setter Property="Background" Value="{x:Null}" />
                                     <Setter Property="Padding" Value="0"/>
                                     <Setter Property="Margin" Value="0"/>
-                                    <Setter Property="Grid.Column" Value="0"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
                                             <Setter Property="Background" Value="AliceBlue" />
                                             <Setter Property="Padding" Value="8"/>
                                             <Setter Property="Margin" Value="0,0,0,5"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding IsSpeaker}" Value="True">
-                                            <Setter Property="Grid.Column" Value="1"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
