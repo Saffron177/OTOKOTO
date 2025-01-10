@@ -141,15 +141,27 @@ namespace HottoMotto
                 // リストボックスにデータを追加
                 foreach (var log in logs)
                 {
+                    // 2025/01/10(金)
+                    // ItemControlはWrap設定を無視してしまうため削除した。
+                    // それに伴い、ListBoxModelのTextInlinesは使わず、
+                    // MainWindowと同様にTextにバインディングする方式に変更した。
+                    // HighlightText関数の処理をTextInlinesを使わない処理に変更した。
+                    // 以上の変更で改行されるようになったことを確認したが、
+                    // スクロールして一度画面外に出るとハイライトが消えてしまう問題が発生したため、
+                    // ListBoxに仮想化処理をオフにするプロパティを追加して対応した。
+
                     LogListBox.Items.Add(new ListBoxModel
                     {
                         Memory = (log.TimeStamp + (log.IsSpeaker ? "(スピーカー)" : "(マイク)")),
                         IsHighlighted = false,
                         IsSpeaker = log.IsSpeaker,
+                        Text = (log.TimeStamp + (log.IsSpeaker ? "(スピーカー)" : "(マイク)"))
+                        /*
                         TextInlines = new List<Inline>
                         {
                             new Run { Text = (log.TimeStamp + (log.IsSpeaker ? "(スピーカー)" : "(マイク)"))}
                         }
+                        */
                     });
                     LogListBox.Items.Add(new ListBoxModel
                     {
@@ -157,10 +169,13 @@ namespace HottoMotto
                         IsHighlighted = true,
                         IsSpeaker = log.IsSpeaker,
                         AudioPath = log.AudioPath,
+                        Text = log.Text
+                        /*
                         TextInlines = new List<Inline>
                         {
                             new Run { Text = log.Text}
                         }
+                        */
                     });
 
                 }
@@ -355,21 +370,25 @@ namespace HottoMotto
                             });
 
                             // テキストの変更を通知するためのプロパティを更新
-                            listBoxModel.TextInlines = inlines;
+                            //listBoxModel.TextInlines = inlines;
                             //マッチ数表示
                             //search_enabled = true;
                             //Search_Enabled(search_enabled);
 
+                            //テキストブロックを取得
+                            TextBlock textBlock = FindVisualChild<TextBlock>(listBoxItem);
+                            if (textBlock != null)
+                            {
+                                // 既存のInlinesをクリア
+                                textBlock.Inlines.Clear();
+                                textBlock.Inlines.AddRange(inlines);
+                            }
                         }
                         else
                         {
                             // 検索テキストがない場合は元のテキストをそのまま表示
-                            listBoxModel.TextInlines = new List<Inline>
-                            {
-                                new Run { Text = listBoxModel.Memory }
-                            };
+                            inlines.Add(new Run { Text = listBoxModel.Memory });
                         }
-
                     }
                     else
                     {

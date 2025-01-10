@@ -491,6 +491,7 @@ namespace HottoMotto
             }
         }
 
+        /*
         private List<Inline> _textInlines; 
         public List<Inline> TextInlines
         {
@@ -502,7 +503,7 @@ namespace HottoMotto
                 }
             }
         }
-
+        */
 
         protected void OnPropertyChanged(string propertyName)
         {

@@ -25,7 +25,7 @@
 
         <!--グリッド1(右側)-->
         <!--ログ表示用リストボックス-->
-        <ListBox x:Name="LogListBox" Margin="30,55,20,80" Padding="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Column="1">
+        <ListBox x:Name="LogListBox" VirtualizingStackPanel.IsVirtualizing="False" Margin="30,55,20,80" Padding="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Column="1">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="HorizontalContentAlignment" Value="Left"/>
@@ -82,21 +82,21 @@
                                     </Style.Triggers>
                                 </Style>
                             </Border.Style>
-                            <TextBlock TextWrapping="Wrap">
-                                <TextBlock.Inlines>
-                                    <ItemsControl ItemsSource="{Binding TextInlines}">
-                                        <ItemsControl.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <StackPanel Orientation="Horizontal"/>
-                                            </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <ContentPresenter Content="{Binding}"/>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                </TextBlock.Inlines></TextBlock>
+                            <TextBlock Text="{Binding Text}" TextWrapping="Wrap">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <!-- デフォルトのフォントサイズ -->
+                                        <Setter Property="FontSize" Value="10" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                                                <!-- IsHighlightedがTrueのときフォントサイズを変更 -->
+                                                <Setter Property="FontSize" Value="12" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                                <TextBlock.Inlines/>
+                            </TextBlock>
                         </Border>
                     </Grid>
                 </DataTemplate>
@@ -126,6 +126,5 @@
                 </StackPanel>
             </StackPanel>
         </Border>
-        
     </Grid>
 </Window>
