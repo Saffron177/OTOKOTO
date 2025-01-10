@@ -41,12 +41,13 @@
             <SolidColorBrush x:Key="ComboBoxBorderBrushDark" Color="#333333"/>
             <SolidColorBrush x:Key="ComboBoxItemForegroundBrushDark" Color="#FFFFFF"/>
             <SolidColorBrush x:Key="ComboBoxUnderlineBrushDark" Color="#9C27B0"/>
+           
 
 
             <!-- 切り替えアイコン用カラー -->
-            <SolidColorBrush x:Key="IconBrushLight" Color="#666666"/>
+            <SolidColorBrush x:Key="IconBrushLight" Color="#5f6368"/>
             <!-- 灰色 -->
-            <SolidColorBrush x:Key="IconBrushDark" Color="#6C6C6C"/>
+            <SolidColorBrush x:Key="IconBrushDark" Color="#5f6368"/>
             <!-- gray -->
         </ResourceDictionary>
     </Application.Resources>

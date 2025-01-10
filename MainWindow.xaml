@@ -464,19 +464,17 @@
            Grid.Column="1"
            HorizontalAlignment="Left" 
            Margin="16,25,0,0" 
-           VerticalAlignment="Top" 
-           Foreground="{DynamicResource MaterialDesignBodyLight}"
+           VerticalAlignment="Top"
            FontSize="12" Grid.Row="1"/>
 
         <TextBlock x:Name="RecordingTimeText" 
            Grid.Column="1"
            HorizontalAlignment="Left" 
            Margin="14,46,0,0" 
-           VerticalAlignment="Top" 
-           Foreground="{DynamicResource MaterialDesignBody}"
+           VerticalAlignment="Top"
            FontSize="16" 
            FontWeight="Medium"
-           Text="00:00:00" Grid.Row="1"/>
+           Text="00:00:00" Grid.Row="1" Foreground="{DynamicResource ComboBoxForegroundBrush}"/>
 
         <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="80" Height="54" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center">
             <Image x:Name="RecImage" Source="Resource/rec.png"  Visibility="Hidden" Width="30" Height="30" RenderTransformOrigin="0.5,0.5"/>
