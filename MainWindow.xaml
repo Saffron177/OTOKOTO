@@ -496,7 +496,7 @@
         </Button>
         <ProgressBar
             IsIndeterminate="True"
-            Style="{StaticResource MaterialDesignCircularProgressBar}" x:Name="progressRing" Grid.Column="1" Margin="0,33,17,0" HorizontalAlignment="Right" Width="20" Height="20" VerticalAlignment="Top" RenderTransformOrigin="1.35,0.552" Visibility="Hidden"/>
+            Style="{StaticResource MaterialDesignCircularProgressBar}" x:Name="progressRing" Grid.Column="2" Margin="0,35,46,0" HorizontalAlignment="Right" Width="20.5" Height="20.5" VerticalAlignment="Top" RenderTransformOrigin="1.35,0.552" Visibility="Hidden"/>
     </Grid>
 
 </Window>
