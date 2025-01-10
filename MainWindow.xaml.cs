@@ -363,7 +363,7 @@ namespace HottoMotto
             //_timer.Start();
 
             // 画面が閉じられるときに、タイマを停止
-            this.Closing += new CancelEventHandler(StopTimer);
+            //this.Closing += new CancelEventHandler(StopTimer);
         }
 
         // タイマを停止

@@ -8,6 +8,7 @@
 		<UseWPF>true</UseWPF>
 		<Platforms>AnyCPU;x64</Platforms>
 		<UseWindowsForms>true</UseWindowsForms>
+		<ApplicationIcon>Resource\otocoto.ico</ApplicationIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -26,7 +27,6 @@
 	<ItemGroup>
 		<Folder Include="Logs\" />
 		<Folder Include="Models\" />
-		<Folder Include="Resource\" />
 		<Folder Include="Filler_removal.dist\" />
 	</ItemGroup>
 
