@@ -74,6 +74,12 @@ namespace HottoMotto
             }
         }
 
+        private void ReloadDevices(object sender, RoutedEventArgs e)
+        {
+            LoadAudioDevices();
+            LoadMicDevices();
+        }
+
         /// <summary>
         /// ボタンを押したときのイベント関数
         /// </summary>
