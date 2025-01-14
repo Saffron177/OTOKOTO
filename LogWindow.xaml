@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HottoMotto"
         mc:Ignorable="d"
-        Title="オトコト" Height="450" Width="800" MinWidth="800" MinHeight="450">
+        Title="オトコト" Height="450" Width="800" MinWidth="800" MinHeight="450"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}">
     
 
     <Grid>
@@ -28,12 +30,32 @@
         <ListBox x:Name="LogListBox" VirtualizingStackPanel.IsVirtualizing="False" Margin="30,55,20,80" Padding="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Column="1">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <Border Name="Border" Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <!-- フォーカス時の青枠を削除 -->
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="{x:Null}" />
+                                    </Trigger>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="{x:Null}" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
                     <Setter Property="HorizontalContentAlignment" Value="Left"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsSpeaker}" Value="False">
                             <Setter Property="HorizontalContentAlignment" Value="Right"/>
                         </DataTrigger>
                     </Style.Triggers>
+                    
                 </Style>
             </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
@@ -72,7 +94,7 @@
                                     <Setter Property="Margin" Value="0"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
-                                            <Setter Property="Background" Value="AliceBlue" />
+                                            <Setter Property="Background" Value="{DynamicResource TextBorderBackgroundBrush}" />
                                             <Setter Property="Padding" Value="8"/>
                                             <Setter Property="Margin" Value="0,0,0,5"/>
                                         </DataTrigger>
@@ -113,7 +135,7 @@
         <!--マッチ数を表示するラベル-->
         <Label x:Name="SearchId" Grid.Column="1" Content="{Binding Match_Label}" HorizontalAlignment="Right" Margin="0,2,50,0" VerticalAlignment="Top" RenderTransformOrigin="0.525,0.164" Width="150" FontSize="10" Padding="0,6,0,4" Height="25" Grid.IsSharedSizeScope="True" Visibility="Collapsed" FlowDirection="RightToLeft"/>
 
-        <Border x:Name="SoundData" Grid.Column="1" Visibility="Collapsed" Height="60" Width="Auto" VerticalAlignment="Bottom" Margin="30,0,20,10" CornerRadius="10" Background="#EEEEEE">
+        <Border x:Name="SoundData" Grid.Column="1" Visibility="Collapsed" Height="60" Width="Auto" VerticalAlignment="Bottom" Margin="30,0,20,10" CornerRadius="10" Background="{DynamicResource SeekBarBackgroundBrush}">
             <StackPanel >
                 <Slider x:Name="SeekBar" Minimum="0" Maximum="100" Value="0" Height="20" ValueChanged="SeekBar_ValueChanged" HorizontalAlignment="Center" Foreground="#AAAAAA" VerticalAlignment="Top" Width="400" Margin="0,10,0,0"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="25" VerticalAlignment="Bottom">
