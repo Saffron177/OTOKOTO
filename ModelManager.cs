@@ -95,6 +95,10 @@ public class ModelManager
                             loadingWindow.UpdateProgress("ファイルを解凍しています...");
                             Debug.Print("Download completed. Starting extraction...");
 
+                            // 解凍先のディレクトリを準備する前にメッセージを表示
+                            loadingWindow.UpdateProgress("音声認識モデルを展開中です...\nこれには数分かかることがあります。");
+                            await Task.Delay(100); // UIが更新されるのを待つ
+
                             // 解凍先のディレクトリを準備
                             if (Directory.Exists(targetPath))
                             {
@@ -102,11 +106,19 @@ public class ModelManager
                             }
                             Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
 
-                            loadingWindow.UpdateProgress("音声認識モデルを展開中です...\nこれには数分かかることがあります。");
+                            Debug.Print("Starting model extraction...");
 
-                            // 解凍
-                            ZipFile.ExtractToDirectory(zipPath, "Models");
-                            Debug.Print("Extraction completed");
+                            try
+                            {
+                                // 解凍の実行
+                                ZipFile.ExtractToDirectory(zipPath, "Models");
+                                Debug.Print("Extraction completed successfully");
+                            }
+                            catch (Exception ex)
+                            {
+                                Debug.Print($"Extraction failed: {ex.Message}");
+                                throw;
+                            }
 
                             // 後処理：一時ファイルの削除
                             try
