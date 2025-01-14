@@ -81,23 +81,8 @@ namespace HottoMotto
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        public async Task InitializeAsync()
-        {
-            string modelPath = "Models/vosk-model-ja-0.22";
-            string modelFile = Path.Combine(modelPath, "am/final.mdl");
-
-            if (!Directory.Exists(modelPath) || !File.Exists(modelFile))
-            {
-                await InitializeModelAsync(null);
-            }
-
-            LoadAudioDevices();
-            LoadMicDevices();
-            PlayStartupSound();
-            SetupNotifyIcon();
-            SetupTimer();
+            this.Loaded += MainWindow_Loaded;
+            this.Visibility = Visibility.Hidden;  //ダウンロード中はMW非表示
         }
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
