@@ -28,7 +28,7 @@ public class ModelManager
             if (!Directory.Exists(modelPath) || !File.Exists(modelFile))
             {
                 Debug.Print("Download condition met - starting download process");
-                loadingWindow.UpdateProgress("ダウンロードを開始します...");
+                loadingWindow.UpdateProgress("ダウンロードを開始します...", 0);
 
                 //既にディレクトリがある場合は削除
                 if (Directory.Exists(modelPath))
@@ -78,9 +78,16 @@ public class ModelManager
                                     await fileStream.WriteAsync(buffer, 0, bytesRead);
                                     totalBytesRead += bytesRead;
 
-                                    var percentage = (int)((double)totalBytesRead / contentLength * 100);
-                                    loadingWindow.UpdateProgress($"ダウンロード中... {percentage}%");
-                                    Debug.Print($"Download progress: {percentage}%");
+                                    // 進捗率の計算とプログレスバーの更新
+                                    if (contentLength > 0)  // 0除算を防ぐ
+                                    {
+                                        var percentage = (int)((double)totalBytesRead / contentLength * 100);
+                                        await loadingWindow.Dispatcher.InvokeAsync(() =>
+                                        {
+                                            loadingWindow.UpdateProgress($"ダウンロード中... {percentage}%", percentage);
+                                        });
+                                        Debug.Print($"Download progress: {percentage}%");
+                                    }
                                 }
                                 await fileStream.FlushAsync();
                             }
