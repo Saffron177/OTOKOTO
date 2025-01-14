@@ -416,7 +416,7 @@ namespace HottoMotto
             //今日の日付を取得
             DateTime today = DateTime.Now;
             //ファイル名の初期設定
-            string file_name = today.Year.ToString() + "_" + today.Month.ToString() + "_" + today.Day.ToString() + "_" + today.Hour.ToString() + "_" + today.Minute.ToString() + "_" + today.Second.ToString();
+            string file_name = today.Year.ToString() + "_" + today.Month.ToString("D2") + "_" + today.Day.ToString("D2") + "_" + today.Hour.ToString("D2") + "_" + today.Minute.ToString("D2") + "_" + today.Second.ToString("D2");
 
             //ダイアログを表示
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())

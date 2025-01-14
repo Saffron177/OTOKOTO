@@ -14,19 +14,17 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-            <!-- リストボックスのカスタムカラーの定義 -->
+            <!-- カスタムカラーの定義 -->
             <SolidColorBrush x:Key="BackgroundBrush" Color="#FFFFFF"/>
             <SolidColorBrush x:Key="ForegroundBrush" Color="#000000"/>
-            <SolidColorBrush x:Key="ListBoxBackgroundBrush" Color="#F5F5F5"/>
-            <SolidColorBrush x:Key="ListBoxItemBackgroundBrush" Color="#FFFFFF"/>
-            <SolidColorBrush x:Key="ListBoxHighlightBrush" Color="AliceBlue"/>
 
             <!-- ダークモード用のカラー -->
             <SolidColorBrush x:Key="BackgroundBrushDark" Color="#121212"/>
             <SolidColorBrush x:Key="ForegroundBrushDark" Color="#FFFFFF"/>
-            <SolidColorBrush x:Key="ListBoxBackgroundBrushDark" Color="#1E1E1E"/>
-            <SolidColorBrush x:Key="ListBoxItemBackgroundBrushDark" Color="#2D2D2D"/>
-            <SolidColorBrush x:Key="ListBoxHighlightBrushDark" Color="#3A3A3A"/>
+
+            <!-- リストボックス用のカラー -->
+            <SolidColorBrush x:Key="ListBoxItemBackgroundBrush" Color="AliceBlue"/>
+            <SolidColorBrush x:Key="ListBoxItemBackgroundBrushDark" Color="#272727"/>
 
             <!-- ComboBox用のデフォカラー -->
             <SolidColorBrush x:Key="ComboBoxForegroundBrush" Color="#000000"/>
@@ -42,10 +40,6 @@
             <SolidColorBrush x:Key="ComboBoxItemForegroundBrushDark" Color="#FFFFFF"/>
             <SolidColorBrush x:Key="ComboBoxUnderlineBrushDark" Color="#9C27B0"/>
 
-            <!-- LogWindowリストボックス用カラー -->
-            <SolidColorBrush x:Key="TextBorderBackgroundBrush" Color="AliceBlue"/>
-            <SolidColorBrush x:Key="TextBorderBackgroundBrushDark" Color="#272727"/>
-            
             <!-- 再生バー用カラー -->
             <SolidColorBrush x:Key="SeekBarBackgroundBrush" Color="#DDDDDD"/>
             <SolidColorBrush x:Key="SeekBarBackgroundBrushDark" Color="#222222"/>

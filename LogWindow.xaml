@@ -94,7 +94,7 @@
                                     <Setter Property="Margin" Value="0"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
-                                            <Setter Property="Background" Value="{DynamicResource TextBorderBackgroundBrush}" />
+                                            <Setter Property="Background" Value="{DynamicResource ListBoxItemBackgroundBrush}" />
                                             <Setter Property="Padding" Value="8"/>
                                             <Setter Property="Margin" Value="0,0,0,5"/>
                                         </DataTrigger>
