@@ -92,7 +92,7 @@ public class ModelManager
                                 throw new IOException("ダウンロードが不完全です。");
                             }
 
-                            loadingWindow.UpdateProgress("ファイルを解凍中...");
+                            loadingWindow.UpdateProgress("ファイルを解凍しています...");
                             Debug.Print("Download completed. Starting extraction...");
 
                             // 解凍先のディレクトリを準備
@@ -101,6 +101,8 @@ public class ModelManager
                                 Directory.Delete(targetPath, true);
                             }
                             Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
+
+                            loadingWindow.UpdateProgress("音声認識モデルを展開中です...\nこれには数分かかることがあります。");
 
                             // 解凍
                             ZipFile.ExtractToDirectory(zipPath, "Models");

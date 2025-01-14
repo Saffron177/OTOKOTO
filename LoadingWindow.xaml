@@ -24,14 +24,22 @@
                      Margin="0,0,0,20"
                      HorizontalAlignment="Center"/>
 
+            <!-- 経過時間表示用のTextBlock -->
+            <TextBlock x:Name="TimeElapsedText"
+                     Text="経過時間: 00:00"
+                     Margin="0,0,0,20"
+                     HorizontalAlignment="Center"/>
+
             <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
                        Value="0"
                        IsIndeterminate="True"
                        Width="50"
                        Height="50"/>
 
+            <!-- 進捗状況表示用のTextBlock -->
             <TextBlock x:Name="ProgressText"
                      Text="Preparing..."
+                     TextWrapping="Wrap"
                      Margin="0,20,0,0"
                      HorizontalAlignment="Center"/>
         </StackPanel>
