@@ -195,6 +195,9 @@ namespace HottoMotto
                 resources["ComboBoxBorderBrush"] = resources["ComboBoxBorderBrushDark"];
                 resources["ComboBoxItemForegroundBrush"] = resources["ComboBoxItemForegroundBrushDark"];
                 resources["ComboBoxUnderlineBrush"] = resources["ComboBoxUnderlineBrushDark"];
+                resources["TextBorderBackgroundBrush"] = resources["TextBorderBackgroundBrushDark"];
+                resources["SeekBarBackgroundBrush"] = resources["SeekBarBackgroundBrushDark"];
+                resources["MatchTextBackgroundBrush"] = resources["MatchTextBackgroundBrushDark"];
             }
             else
             {
@@ -203,6 +206,9 @@ namespace HottoMotto
                 resources["ComboBoxBorderBrush"] = new SolidColorBrush(System.Windows.Media.Color.FromRgb(224, 224, 224));
                 resources["ComboBoxItemForegroundBrush"] = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
                 resources["ComboBoxUnderlineBrush"] = new SolidColorBrush(System.Windows.Media.Color.FromRgb(103, 58, 183));
+                resources["TextBorderBackgroundBrush"] = new SolidColorBrush(Colors.AliceBlue);
+                resources["SeekBarBackgroundBrush"] = new SolidColorBrush(System.Windows.Media.Color.FromRgb(221, 221, 221));
+                resources["MatchTextBackgroundBrush"] = new SolidColorBrush(Colors.Yellow);
             }
 
 

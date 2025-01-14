@@ -41,8 +41,18 @@
             <SolidColorBrush x:Key="ComboBoxBorderBrushDark" Color="#333333"/>
             <SolidColorBrush x:Key="ComboBoxItemForegroundBrushDark" Color="#FFFFFF"/>
             <SolidColorBrush x:Key="ComboBoxUnderlineBrushDark" Color="#9C27B0"/>
-           
 
+            <!-- LogWindowリストボックス用カラー -->
+            <SolidColorBrush x:Key="TextBorderBackgroundBrush" Color="AliceBlue"/>
+            <SolidColorBrush x:Key="TextBorderBackgroundBrushDark" Color="#272727"/>
+            
+            <!-- 再生バー用カラー -->
+            <SolidColorBrush x:Key="SeekBarBackgroundBrush" Color="#DDDDDD"/>
+            <SolidColorBrush x:Key="SeekBarBackgroundBrushDark" Color="#222222"/>
+            
+            <!-- 検索ワード用カラー(未使用) -->
+            <SolidColorBrush x:Key="MatchTextBackgroundBrush" Color="Yellow"/>
+            <SolidColorBrush x:Key="MatchTextBackgroundBrushDark" Color="#555500"/>
 
             <!-- 切り替えアイコン用カラー -->
             <SolidColorBrush x:Key="IconBrushLight" Color="#5f6368"/>
