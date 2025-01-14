@@ -136,19 +136,6 @@ namespace HottoMotto
         //マテリアルダークテーマ関連
         private bool isDarkMode = false;
 
-        public static readonly DependencyProperty IsDarkModeFlagProperty = 
-            DependencyProperty.Register(
-                "IsDarkModeFlag",               // プロパティ名
-                typeof(bool),                   // プロパティの型（bool型）
-                typeof(MainWindow),             // プロパティが定義されるクラス（MainWindow）
-                new PropertyMetadata(false));   // プロパティの初期値（false）
-
-        public bool IsDarkModeFlag
-        {
-            get => (bool)GetValue(IsDarkModeFlagProperty);  // GetValue で依存関係プロパティの値を取得
-            set => SetValue(IsDarkModeFlagProperty, value); // SetValue で依存関係プロパティの値を設定
-        }
-
         //(ここからネタ枠)
         private void PlayStartupSound()
         {
@@ -175,7 +162,6 @@ namespace HottoMotto
         private void ThemeToggleButton_Click(object sender, RoutedEventArgs e)
         {
             isDarkMode = !isDarkMode;
-            IsDarkModeFlag = isDarkMode;
 
             var paletteHelper = new PaletteHelper();
             var theme = paletteHelper.GetTheme();
@@ -196,6 +182,7 @@ namespace HottoMotto
                 resources["ComboBoxItemForegroundBrush"] = resources["ComboBoxItemForegroundBrushDark"];
                 resources["ComboBoxUnderlineBrush"] = resources["ComboBoxUnderlineBrushDark"];
                 resources["TextBorderBackgroundBrush"] = resources["TextBorderBackgroundBrushDark"];
+                resources["ListBoxItemBackgroundBrush"] = resources["ListBoxItemBackgroundBrushDark"];
                 resources["SeekBarBackgroundBrush"] = resources["SeekBarBackgroundBrushDark"];
                 resources["MatchTextBackgroundBrush"] = resources["MatchTextBackgroundBrushDark"];
             }
@@ -207,6 +194,7 @@ namespace HottoMotto
                 resources["ComboBoxItemForegroundBrush"] = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
                 resources["ComboBoxUnderlineBrush"] = new SolidColorBrush(System.Windows.Media.Color.FromRgb(103, 58, 183));
                 resources["TextBorderBackgroundBrush"] = new SolidColorBrush(Colors.AliceBlue);
+                resources["ListBoxItemBackgroundBrush"] = new SolidColorBrush(Colors.AliceBlue);
                 resources["SeekBarBackgroundBrush"] = new SolidColorBrush(System.Windows.Media.Color.FromRgb(221, 221, 221));
                 resources["MatchTextBackgroundBrush"] = new SolidColorBrush(Colors.Yellow);
             }

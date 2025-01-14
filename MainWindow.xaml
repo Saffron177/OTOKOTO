@@ -373,28 +373,12 @@
                                     <!--デフォルトの配置(左側)-->
                                     <Setter Property="Grid.Column" Value="0"/>
                                     <Style.Triggers>
-                                        <!-- IsHighlightedがTrueかつIsDarkModeがTrueの場合 -->
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding IsHighlighted}" Value="True"/>
-                                                <Condition Binding="{Binding ElementName=Main_Window, Path=IsDarkModeFlag}" Value="True"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Background" Value="DarkBlue"/>
+                                        <!-- IsHighlightedがTrueのときに背景色を設定 -->
+                                        <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource ListBoxItemBackgroundBrush}" />
                                             <Setter Property="Padding" Value="8"/>
                                             <Setter Property="Margin" Value="0,0,0,5"/>
-                                        </MultiDataTrigger>
-
-                                        <!-- IsHighlightedがTrueかつIsDarkModeがFalseの場合 -->
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding IsHighlighted}" Value="True"/>
-                                                <Condition Binding="{Binding ElementName=Main_Window, Path=IsDarkModeFlag}" Value="False"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Background" Value="AliceBlue"/>
-                                            <Setter Property="Padding" Value="8"/>
-                                            <Setter Property="Margin" Value="0,0,0,5"/>
-                                        </MultiDataTrigger>
-
+                                        </DataTrigger>
                                         <!-- スピーカーの場合は右側に配置 -->
                                         <DataTrigger Binding="{Binding IsSpeaker}" Value="True">
                                             <Setter Property="Grid.Column" Value="1"/>
