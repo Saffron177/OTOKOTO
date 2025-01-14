@@ -82,6 +82,7 @@ namespace HottoMotto
         {
             InitializeComponent();
             this.Loaded += MainWindow_Loaded;
+            this.Visibility = Visibility.Hidden;  //ダウンロード中はMW非表示
         }
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)

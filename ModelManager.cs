@@ -44,7 +44,7 @@ public class ModelManager
                     Debug.Print("Created Models directory");
                 }
 
-                string modelUrl = "https://alphacephei.com/vosk/models/vosk-model-ja-0.22.zip";
+                string modelUrl = "https://dl.dropboxusercontent.com/scl/fi/dttadn18vs9spmcmu2mj4/vosk-model-ja-0.22.zip?rlkey=8p1lvgbbqohofyiva3taxjfdr";
                 string zipPath = Path.Combine(Path.GetTempPath(), $"vosk-model-ja-0.22_{DateTime.Now:yyyyMMddHHmmss}.zip");
                 string targetPath = Path.Combine("Models", "vosk-model-ja-0.22");
 
