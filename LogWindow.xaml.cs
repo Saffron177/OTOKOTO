@@ -498,7 +498,7 @@ namespace HottoMotto
         {
             MessageBoxResult result = System.Windows.MessageBox.Show(
                 "本当に削除しますか？", // メッセージ
-                "確認", // タイトル
+                "", // タイトル
                 MessageBoxButton.YesNo, // ボタンの種類
                 MessageBoxImage.Question // アイコンの種類
             );
