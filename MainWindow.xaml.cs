@@ -373,6 +373,8 @@ namespace HottoMotto
                 logWindow = null;
                 logWindow = new LogWindow();
                 //logWindow.Owner = this;
+                logWindow.Left = Main_Window.Left + 10;
+                logWindow.Top = Main_Window.Top + 10;
                 logWindow.Show();
             }
             else
