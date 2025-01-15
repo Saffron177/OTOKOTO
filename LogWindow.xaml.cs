@@ -560,6 +560,9 @@ namespace HottoMotto
                 //ログを初期化
                 file_Title.Content = "";
                 LogListBox.Items.Clear();
+
+                //再生中の音声を停止
+                PlayAudio.stop(false);
             }
         }
     }
