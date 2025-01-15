@@ -286,9 +286,9 @@
                     <Border BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="1"
                 Background="{TemplateBinding Background}"
-                CornerRadius="4">
-                        <ScrollViewer Padding="{TemplateBinding Padding}"
-                         Style="{StaticResource FadingScrollViewerStyle}">
+                CornerRadius="4"
+                Padding="{TemplateBinding Padding}">
+                        <ScrollViewer Style="{StaticResource FadingScrollViewerStyle}">
                             <ItemsPresenter />
                         </ScrollViewer>
                     </Border>
