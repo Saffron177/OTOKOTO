@@ -397,6 +397,13 @@ namespace HottoMotto
                         {
                             // 検索テキストがない場合は元のテキストをそのまま表示
                             inlines.Add(new Run { Text = listBoxModel.Memory });
+                            TextBlock textBlock = FindVisualChild<TextBlock>(listBoxItem);
+                            if (textBlock != null)
+                            {
+                                // 既存のInlinesをクリア
+                                textBlock.Inlines.Clear();
+                                textBlock.Inlines.AddRange(inlines);
+                            }
                         }
                     }
                     else

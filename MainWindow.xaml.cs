@@ -141,7 +141,7 @@ namespace HottoMotto
         {
             try
             {
-                string startupSoundPath = "Resource/Windows-XP-Startup.wav";  // 音データのパス
+                string startupSoundPath = "Resource/dsstartups_des5e323.wav";  // 音データのパス
                 if (File.Exists(startupSoundPath))
                 {
                     System.Media.SoundPlayer player = new System.Media.SoundPlayer(startupSoundPath);
@@ -364,11 +364,21 @@ namespace HottoMotto
             ComboBox_MicDevices.SelectedIndex = -1;
         }
 
+        private LogWindow ?logWindow;
         private void Button_Log_Click(object sender, RoutedEventArgs e)
         {
             Debug.Print("Button: Log_Click");
-            LogWindow logWindow = new LogWindow();
-            logWindow.Show();
+            if (logWindow == null || !logWindow.IsLoaded)
+            {
+                logWindow = null;
+                logWindow = new LogWindow();
+                //logWindow.Owner = this;
+                logWindow.Show();
+            }
+            else
+            {
+                logWindow.Activate();
+            }
         }
 
         private void ComboBox_AudioDevices_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
