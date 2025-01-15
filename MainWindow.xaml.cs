@@ -141,7 +141,7 @@ namespace HottoMotto
         {
             try
             {
-                string startupSoundPath = "Resource/Windows-XP-Startup.wav";  // 音データのパス
+                string startupSoundPath = "Resource/dsstartups_des5e323.wav";  // 音データのパス
                 if (File.Exists(startupSoundPath))
                 {
                     System.Media.SoundPlayer player = new System.Media.SoundPlayer(startupSoundPath);
