@@ -28,7 +28,7 @@ public class ModelManager
             if (!Directory.Exists(modelPath) || !File.Exists(modelFile))
             {
                 Debug.Print("Download condition met - starting download process");
-                loadingWindow.UpdateProgress("ダウンロードを開始します...");
+                loadingWindow.UpdateProgress("ダウンロードを開始します...", 0);
 
                 //既にディレクトリがある場合は削除
                 if (Directory.Exists(modelPath))
@@ -78,9 +78,16 @@ public class ModelManager
                                     await fileStream.WriteAsync(buffer, 0, bytesRead);
                                     totalBytesRead += bytesRead;
 
-                                    var percentage = (int)((double)totalBytesRead / contentLength * 100);
-                                    loadingWindow.UpdateProgress($"ダウンロード中... {percentage}%");
-                                    Debug.Print($"Download progress: {percentage}%");
+                                    // 進捗率の計算とプログレスバーの更新
+                                    if (contentLength > 0)  // 0除算を防ぐ
+                                    {
+                                        var percentage = (int)((double)totalBytesRead / contentLength * 100);
+                                        await loadingWindow.Dispatcher.InvokeAsync(() =>
+                                        {
+                                            loadingWindow.UpdateProgress($"ダウンロード中... {percentage}%", percentage);
+                                        });
+                                        Debug.Print($"Download progress: {percentage}%");
+                                    }
                                 }
                                 await fileStream.FlushAsync();
                             }
@@ -92,8 +99,12 @@ public class ModelManager
                                 throw new IOException("ダウンロードが不完全です。");
                             }
 
-                            loadingWindow.UpdateProgress("ファイルを解凍中...");
+                            loadingWindow.UpdateProgress("ファイルを解凍しています...");
                             Debug.Print("Download completed. Starting extraction...");
+
+                            // 解凍先のディレクトリを準備する前にメッセージを表示
+                            loadingWindow.UpdateProgress("音声認識モデルを展開中です...\nこれには数分かかることがあります。");
+                            await Task.Delay(100); // UIが更新されるのを待つ
 
                             // 解凍先のディレクトリを準備
                             if (Directory.Exists(targetPath))
@@ -102,9 +113,19 @@ public class ModelManager
                             }
                             Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
 
-                            // 解凍
-                            ZipFile.ExtractToDirectory(zipPath, "Models");
-                            Debug.Print("Extraction completed");
+                            Debug.Print("Starting model extraction...");
+
+                            try
+                            {
+                                // 解凍の実行
+                                ZipFile.ExtractToDirectory(zipPath, "Models");
+                                Debug.Print("Extraction completed successfully");
+                            }
+                            catch (Exception ex)
+                            {
+                                Debug.Print($"Extraction failed: {ex.Message}");
+                                throw;
+                            }
 
                             // 後処理：一時ファイルの削除
                             try

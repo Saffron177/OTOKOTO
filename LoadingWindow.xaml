@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:HottoMotto"
         mc:Ignorable="d"
         Title="Loading" 
-        Height="200" 
+        Height="250" 
         Width="400"
         WindowStyle="None"
         ResizeMode="NoResize"
@@ -24,15 +24,43 @@
                      Margin="0,0,0,20"
                      HorizontalAlignment="Center"/>
 
-            <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
-                       Value="0"
-                       IsIndeterminate="True"
-                       Width="50"
-                       Height="50"/>
+            <!-- 経過時間表示用のTextBlock -->
+            <TextBlock x:Name="TimeElapsedText"
+                     Text="経過時間: 00:00"
+                     Margin="0,0,0,20"
+                     HorizontalAlignment="Center"/>
 
+            <!-- 円形プログレスバー -->
+            <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                       IsIndeterminate="True"
+                       Value="0"
+                       Width="50"
+                       Height="50"
+                       Margin="0,0,0,20"/>
+
+            <!-- ダウンロード進捗用のプログレスバー -->
+            <Grid Width="300" Margin="0,0,0,20">
+                <ProgressBar x:Name="DownloadProgressBar"
+                           Height="20"
+                           Value="0"
+                           Maximum="100"
+                           Background="{DynamicResource MaterialDesignPaper}"
+                           BorderBrush="{DynamicResource MaterialDesignDivider}"
+                           Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+
+                <!-- プログレスバー上の進捗率テキスト -->
+                <TextBlock x:Name="ProgressPercentText"
+                         Text="0%"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center"
+                         Foreground="{DynamicResource MaterialDesignBody}"/>
+            </Grid>
+
+            <!-- 進捗状況表示用のTextBlock -->
             <TextBlock x:Name="ProgressText"
                      Text="Preparing..."
-                     Margin="0,20,0,0"
+                     TextWrapping="Wrap"
+                     Margin="0,0,0,0"
                      HorizontalAlignment="Center"/>
         </StackPanel>
     </Grid>
