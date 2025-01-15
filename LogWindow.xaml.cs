@@ -362,9 +362,9 @@ namespace HottoMotto
                                 inlines.Add(new Run
                                 {
                                     Text = listBoxModel.Memory.Substring(startIndex, searchText.Length),
-                                    Background = System.Windows.Media.Brushes.Yellow
+                                    //Background = System.Windows.Media.Brushes.Yellow
                                     //↓ダークテーマ対応したが挙動に問題あり
-                                    //Background = (System.Windows.Media.Brush)System.Windows.Application.Current.Resources["MatchTextBackgroundBrush"]
+                                    Background = (System.Windows.Media.Brush)System.Windows.Application.Current.Resources["MatchTextBackgroundBrush"]
                                 });
                                 matchCounter++;
                                 // 次の検索開始位置を更新
