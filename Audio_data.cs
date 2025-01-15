@@ -338,6 +338,9 @@ namespace HottoMotto
 
                 //タイマーを停止
                 _timer.Stop();
+
+                //クリアボタンを有効化
+                ClearButton.IsEnabled = true;
             }
             //開始処理
             else
@@ -362,6 +365,9 @@ namespace HottoMotto
 
                 //タイマーを起動
                 _timer.Start();
+
+                //クリアボタンを無効化
+                ClearButton.IsEnabled = false;
             }
         }
 

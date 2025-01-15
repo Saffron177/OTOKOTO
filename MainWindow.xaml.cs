@@ -477,6 +477,14 @@ namespace HottoMotto
         {
 
         }
+
+        //リアルタイムログのクリアボタンイベント
+        private void ClearButtonClick(object sender, RoutedEventArgs e)
+        {
+            RealtimeListBox.Items.Clear();
+            realtimeLogs.Clear();
+            PlayAudio.stop(true);
+        }
     }
     public class ListBoxModel : INotifyPropertyChanged
     {
