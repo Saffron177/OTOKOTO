@@ -8,9 +8,26 @@ using System.Threading.Tasks;
 
 public class ModelManager
 {
+    private static CancellationTokenSource _cancellationTokenSource;
+    private static bool _isPaused = false;
+    private static readonly SemaphoreSlim _pauseSemaphore = new SemaphoreSlim(1, 1);
+
     public static async Task DownloadAndExtractModel(LoadingWindow loadingWindow)
     {
         Debug.Print("=== ModelManager.DownloadAndExtractModel started ===");
+        _cancellationTokenSource = new CancellationTokenSource();
+
+        loadingWindow.PauseRequested += (s, isPaused) =>
+        {
+            _isPaused = isPaused;
+            if (!isPaused)
+                _pauseSemaphore.Release();
+        };
+
+        loadingWindow.CancelRequested += (s, e) =>
+        {
+            _cancellationTokenSource.Cancel();
+        };
 
         try
         {
@@ -75,19 +92,24 @@ public class ModelManager
 
                                 while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
                                 {
+                                    // キャンセルチェック
+                                    _cancellationTokenSource.Token.ThrowIfCancellationRequested();
+
+                                    // 一時停止チェック
+                                    if (_isPaused)
+                                    {
+                                        await _pauseSemaphore.WaitAsync();
+                                    }
+
                                     await fileStream.WriteAsync(buffer, 0, bytesRead);
                                     totalBytesRead += bytesRead;
 
-                                    // 進捗率の計算とプログレスバーの更新
-                                    if (contentLength > 0)  // 0除算を防ぐ
+                                    var percentage = (int)((double)totalBytesRead / contentLength * 100);
+                                    await loadingWindow.Dispatcher.InvokeAsync(() =>
                                     {
-                                        var percentage = (int)((double)totalBytesRead / contentLength * 100);
-                                        await loadingWindow.Dispatcher.InvokeAsync(() =>
-                                        {
-                                            loadingWindow.UpdateProgress($"ダウンロード中... {percentage}%", percentage);
-                                        });
-                                        Debug.Print($"Download progress: {percentage}%");
-                                    }
+                                        loadingWindow.UpdateProgress($"ダウンロード中... {percentage}%", percentage);
+                                    });
+                                    Debug.Print($"Download progress: {percentage}%");
                                 }
                                 await fileStream.FlushAsync();
                             }
@@ -169,6 +191,11 @@ public class ModelManager
                 Debug.Print("Existing model file found - skipping download");
             }
         }
+        catch (OperationCanceledException)
+        {
+            Debug.Print("Download cancelled by user");
+            throw new OperationCanceledException("ダウンロードがキャンセルされました。");
+        }
         catch (Exception ex)
         {
             Debug.Print($"=== Error in ModelManager.DownloadAndExtractModel ===");
@@ -180,6 +207,8 @@ public class ModelManager
         finally
         {
             Debug.Print("=== ModelManager.DownloadAndExtractModel completed ===");
+            _cancellationTokenSource?.Dispose();
+            _cancellationTokenSource = null;
         }
     }
 }
