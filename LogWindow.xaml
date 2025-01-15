@@ -3,12 +3,152 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:HottoMotto"
         mc:Ignorable="d"
         Title="オトコト" Height="450" Width="800" MinWidth="800" MinHeight="450"
         Background="{DynamicResource MaterialDesignPaper}"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}">
-    
+
+    <Window.Resources>
+
+        <!-- スクロールバーのThumbスタイル -->
+        <Style x:Key="ScrollBarThumbStyle" TargetType="{x:Type Thumb}">
+            <Setter Property="MinHeight" Value="50"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Thumb}">
+                        <Border Background="{DynamicResource MaterialDesignScrollBarBackground}" 
+                        CornerRadius="4"
+                        MinHeight="50"
+                        Margin="2,4,2,4"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- スクロールバーのページボタンスタイル -->
+        <Style x:Key="ScrollBarPageButtonStyle" TargetType="{x:Type RepeatButton}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RepeatButton}">
+                        <Border Background="Transparent"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- スクロールバー全体のスタイル -->
+        <Style x:Key="FadingScrollBarStyle" TargetType="{x:Type ScrollBar}">
+            <Setter Property="Width" Value="10"/>
+            <Setter Property="Margin" Value="0,2,2,2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ScrollBar}">
+                        <Grid x:Name="GridRoot">
+                            <Track x:Name="PART_Track" IsDirectionReversed="True">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.PageUpCommand" 
+                                            Style="{StaticResource ScrollBarPageButtonStyle}"/>
+                                </Track.DecreaseRepeatButton>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.PageDownCommand" 
+                                            Style="{StaticResource ScrollBarPageButtonStyle}"/>
+                                </Track.IncreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb Style="{StaticResource ScrollBarThumbStyle}"/>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- ScrollViewerのスタイル -->
+        <Style x:Key="FadingScrollViewerStyle" TargetType="{x:Type ScrollViewer}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <ScrollContentPresenter Grid.Column="0"/>
+                            <Border x:Name="PART_ScrollBarBorder" 
+                            Grid.Column="1" 
+                            Width="8"
+                            Margin="0,1"
+                            Background="Transparent">
+                                <ScrollBar x:Name="PART_VerticalScrollBar"
+                                 Value="{TemplateBinding VerticalOffset}"
+                                 Maximum="{TemplateBinding ScrollableHeight}"
+                                 ViewportSize="{TemplateBinding ViewportHeight}"
+                                 Background="{DynamicResource MaterialDesignDivider}"
+                                 Opacity="0">
+                                    <ScrollBar.Template>
+                                        <ControlTemplate TargetType="{x:Type ScrollBar}">
+                                            <Grid>
+                                                <Track x:Name="PART_Track" IsDirectionReversed="True">
+                                                    <Track.Thumb>
+                                                        <Thumb MinHeight="50">
+                                                            <Thumb.Template>
+                                                                <ControlTemplate TargetType="{x:Type Thumb}">
+                                                                    <Border Background="{DynamicResource MaterialDesignBody}"
+                                                                    CornerRadius="4"
+                                                                    Margin="2,0"/>
+                                                                </ControlTemplate>
+                                                            </Thumb.Template>
+                                                        </Thumb>
+                                                    </Track.Thumb>
+                                                </Track>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </ScrollBar.Template>
+                                </ScrollBar>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <EventTrigger SourceName="PART_ScrollBarBorder" 
+                            RoutedEvent="MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation 
+                                        Storyboard.TargetName="PART_VerticalScrollBar"
+                                        Storyboard.TargetProperty="Opacity"
+                                        To="1" Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger SourceName="PART_ScrollBarBorder" 
+                            RoutedEvent="MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation 
+                                        Storyboard.TargetName="PART_VerticalScrollBar"
+                                        Storyboard.TargetProperty="Opacity"
+                                        To="0" Duration="0:0:0.5"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- ListBoxのテンプレ -->
+        <ControlTemplate x:Key="ListBoxTemplate" TargetType="ListBox">
+            <Border BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="1"
+                Background="{TemplateBinding Background}"
+                CornerRadius="4"
+                Padding="{TemplateBinding Padding}">
+                <ScrollViewer Style="{StaticResource FadingScrollViewerStyle}">
+                    <ItemsPresenter />
+                </ScrollViewer>
+            </Border>
+        </ControlTemplate>
+    </Window.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -17,7 +157,11 @@
         </Grid.ColumnDefinitions>
         <!--グリッド0(左側)-->
         <!--ファイル表示用リストボックス-->
-        <ListBox x:Name="logList" Margin="20,56,0,20" Grid.Column="0"/>
+        <ListBox x:Name="logList" Margin="20,56,0,20" Grid.Column="0"
+                 BorderBrush="{DynamicResource MaterialDesignDivider}" 
+                 Background="{DynamicResource MaterialDesignPaper}"
+                 Template="{StaticResource ListBoxTemplate}">
+        </ListBox>
         <!--ファイル検索用テキストボックス-->
         <TextBox x:Name="search_Textbox" HorizontalAlignment="Left" Height="25" Width="185" Margin="45,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="Search_Textbox_Changed" Grid.Column="0" FontSize="15" CaretBrush="Black" SelectionBrush="{x:Null}" />
         <Image HorizontalAlignment="Left" Height="25" Margin="20,20,0,0" VerticalAlignment="Top" Width="25" Source="/Resource/search.png" Grid.Column="0"/>
@@ -27,7 +171,15 @@
 
         <!--グリッド1(右側)-->
         <!--ログ表示用リストボックス-->
-        <ListBox x:Name="LogListBox" VirtualizingStackPanel.IsVirtualizing="False" Margin="30,55,20,80" Padding="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Column="1">
+        <ListBox x:Name="LogListBox" VirtualizingStackPanel.IsVirtualizing="False" 
+                 Margin="30,55,20,80" Padding="5,10,0,10"
+                 HorizontalAlignment="Stretch" 
+                 VerticalAlignment="Stretch" 
+                 BorderBrush="{DynamicResource MaterialDesignDivider}" 
+                 Background="{DynamicResource MaterialDesignPaper}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                 Grid.Column="1"
+                 Template="{StaticResource ListBoxTemplate}">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="Template">
