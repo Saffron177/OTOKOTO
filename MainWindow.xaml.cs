@@ -477,6 +477,7 @@ namespace HottoMotto
         {
 
         }
+        //↑なにこれ
 
         //リアルタイムログのクリアボタンイベント
         private void ClearButtonClick(object sender, RoutedEventArgs e)
@@ -486,6 +487,8 @@ namespace HottoMotto
             PlayAudio.stop(true);
         }
     }
+
+    //ログリストボックスに追加するアイテムのデータモデル
     public class ListBoxModel : INotifyPropertyChanged
     {
         public string Text { get; set; }       //ログのテキスト

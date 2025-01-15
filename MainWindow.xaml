@@ -528,6 +528,7 @@
         />
         </Button>
 
+        <!--リアルタイムログのクリアボタン-->
         <Button x:Name="ClearButton"
                 IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                 Style="{StaticResource MaterialDesignIconButton}" 
