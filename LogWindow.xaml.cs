@@ -71,24 +71,26 @@ namespace HottoMotto
                 txtFiles = Directory.GetFiles(directoryPath, "*.txt");
 
                 // 取得したtxtファイルをListBoxに表示
-                logList.Items.Clear(); //ListBoxの中身を初期化
+                logList.ItemsSource = new List<object>(); //ListBoxの中身を初期化
 
                 if (txtFiles.Length > 0) //logfileが見つかればfile名を出力
                 {
-
+                    List<object> items = new List<object>();
                     foreach (string file in txtFiles)
                     {
-                        logList.Items.Add(System.IO.Path.GetFileName(file));
+                        items.Add(new { Text = System.IO.Path.GetFileName(file) });
                     }
+                    logList.ItemsSource = (items);
                 }
                 else //fileがない場合
                 {
-                    logList.Items.Add("ログが見つかりませんでした。");
+                    logList.ItemsSource = new List<object> { new { Text = "ログが見つかりませんでした。" } };
                 }
             }
             else //ディレクトリが存在しない場合
             {
-                logList.Items.Add("ログを保存するとここから確認できるようになります。");
+                //logList.Items.Add("ログを保存するとここから確認できるようになります。");
+                logList.ItemsSource = new List<object> { new { Text = "ログを保存するとここから確認できるようになります。" } };
             }
         }
 
@@ -97,7 +99,8 @@ namespace HottoMotto
         {
             if (logList.SelectedItem != null)
             {
-                string selectedFile = logList.SelectedItem.ToString() ?? "";
+                var item = logList.SelectedItem as dynamic;
+                string selectedFile = item.Text;
 
                 Debug.Print("selectedFile:" + selectedFile);
 
@@ -137,6 +140,7 @@ namespace HottoMotto
                 // JSONをリストに変換（デシリアライズ）
                 var logs = JsonSerializer.Deserialize<List<Conversation_Log_Data>>(jsonText);
 
+                //リストボックスを初期化
                 LogListBox.Items.Clear();
                 // リストボックスにデータを追加
                 foreach (var log in logs)
@@ -204,16 +208,19 @@ namespace HottoMotto
         // ListBoxの内容を更新するメソッド
         private void UpdateListBox(string[] filteredFiles)
         {
-            logList.Items.Clear();
+            //リストボックスを初期化
+            logList.ItemsSource = new List<object>();
             if (filteredFiles.Length <= 0)
             {
-                logList.Items.Add("ファイルが見つかりませんでした。");
+                logList.ItemsSource = new List<object> { new { Text = "ファイルが見つかりませんでした。" } };
                 return;
             }
+            List<object> items = new List<object>();
             foreach (string file in filteredFiles)
             {
-                logList.Items.Add(System.IO.Path.GetFileName(file));
+                items.Add(new { Text = System.IO.Path.GetFileName(file) });
             }
+            logList.ItemsSource = (items);
         }
 
         //コピーボタンのクリック処理
@@ -478,6 +485,75 @@ namespace HottoMotto
                 //HighlightText();
             }
 
+        }
+
+        private void DeleteButtonClick(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = System.Windows.MessageBox.Show(
+                "本当に削除しますか？", // メッセージ
+                "確認", // タイトル
+                MessageBoxButton.YesNo, // ボタンの種類
+                MessageBoxImage.Question // アイコンの種類
+            );
+
+            // 結果が「はい」の場合
+            if (result == MessageBoxResult.Yes)
+            {
+                // 「はい」を押したときの処理
+                DeleteLog(sender, e);
+            }
+        }
+
+        private void DeleteLog(object sender, RoutedEventArgs e)
+        {
+            //ボタンを取得
+            System.Windows.Controls.Button? button = sender as System.Windows.Controls.Button;
+
+            if (button != null)
+            {
+                //ファイル名を取得
+                var dataContext = button.DataContext;
+                String text = dataContext?.GetType().GetProperty("Text")?.GetValue(dataContext)?.ToString() ?? "";
+
+                string filePath = "./Logs/" + text;
+
+                // ファイルが存在するかチェック
+                if (!File.Exists(filePath))
+                {
+                    Debug.Print("JSONファイルが見つかりません。");
+                    return;
+                }
+
+                // ファイルの内容を読み込む
+                string jsonText = File.ReadAllText(filePath);
+
+                // JSONをリストに変換（デシリアライズ）
+                List<Conversation_Log_Data> logs = JsonSerializer.Deserialize<List<Conversation_Log_Data>>(jsonText) ?? new List<Conversation_Log_Data>();
+
+                //音声ファイル削除
+                foreach (Conversation_Log_Data log in logs)
+                {
+                    if (File.Exists(log.AudioPath))
+                    {
+                        File.Delete(log.AudioPath);
+                        Debug.Print("音声ファイル<" + log.AudioPath + ">が削除されました。");
+                    }
+                }
+
+                //ログファイルを削除
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                    Debug.Print("ログファイル<" + filePath + ">が削除されました。");
+                }
+
+                //ファイル一覧を更新
+                LogFileCheck();
+
+                //ログを初期化
+                file_Title.Content = "";
+                LogListBox.Items.Clear();
+            }
         }
     }
 

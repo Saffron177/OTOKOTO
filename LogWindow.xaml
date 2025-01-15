@@ -161,6 +161,35 @@
                  BorderBrush="{DynamicResource MaterialDesignDivider}" 
                  Background="{DynamicResource MaterialDesignPaper}"
                  Template="{StaticResource ListBoxTemplate}">
+            <!-- デフォルトのスタイルは維持しつつ、横幅いっぱいに広げる -->
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <!-- ここから天ぷら -->
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding Text}" 
+                                   Margin="5,0,5,0" 
+                                   Grid.Column="0"/>
+                        <Button Margin="5,0,5,0" 
+                                Style="{x:Null}" 
+                                Background="{x:Null}" 
+                                BorderBrush="{x:Null}" 
+                                Width="20" Height="20" 
+                                Click="DeleteButtonClick"
+                                Grid.Column="1">
+                            <Image Source="Resource/delete.png"/>
+                        </Button>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
         </ListBox>
         <!--ファイル検索用テキストボックス-->
         <TextBox x:Name="search_Textbox" HorizontalAlignment="Left" Height="25" Width="185" Margin="45,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="Search_Textbox_Changed" Grid.Column="0" FontSize="15" CaretBrush="Black" SelectionBrush="{x:Null}" />
