@@ -201,7 +201,7 @@
         <!--グリッド1(右側)-->
         <!--ログ表示用リストボックス-->
         <ListBox x:Name="LogListBox" VirtualizingStackPanel.IsVirtualizing="False" 
-                 Margin="30,55,20,80" Padding="5,10,0,10"
+                 Margin="30,55,20,80" Padding="5,2,0,2"
                  HorizontalAlignment="Stretch" 
                  VerticalAlignment="Stretch" 
                  BorderBrush="{DynamicResource MaterialDesignDivider}" 

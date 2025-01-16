@@ -133,7 +133,7 @@
         <!-- ListBoxの部分 -->
         <ListBox x:Name="RealtimeListBox" 
          Margin="26,52,5,12"
-         Padding="5,10,0,10"
+         Padding="5,2,0,2"
          Style="{x:Null}" 
          RenderTransformOrigin="0.5,0.5"  
          BorderBrush="{DynamicResource MaterialDesignDivider}" 
@@ -536,6 +536,8 @@
             IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
             Style="{StaticResource MaterialDesignIconButton}"
             ToolTip="デバイスの更新" 
+            ToolTipService.Placement="Top" 
+            ToolTipService.InitialShowDelay="200"
             Grid.Column="2" Grid.Row="3" 
             Width="24" Height="24" 
             Grid.ColumnSpan="1" 
