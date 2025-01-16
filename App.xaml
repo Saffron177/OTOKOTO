@@ -51,7 +51,7 @@
             <!-- 切り替えアイコン用カラー -->
             <SolidColorBrush x:Key="IconBrushLight" Color="#5f6368"/>
             <!-- 灰色 -->
-            <SolidColorBrush x:Key="IconBrushDark" Color="#5f6368"/>
+            <SolidColorBrush x:Key="IconBrushDark" Color="#888888"/>
             <!-- gray -->
         </ResourceDictionary>
     </Application.Resources>
