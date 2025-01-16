@@ -1,67 +1,88 @@
 ﻿<Window x:Class="HottoMotto.LoadingWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:local="clr-namespace:HottoMotto"
-        mc:Ignorable="d"
-        Title="Loading" 
-        Height="250" 
-        Width="400"
-        WindowStyle="None"
-        ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen"
-        Background="{DynamicResource MaterialDesignPaper}"
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}">
+       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+       xmlns:local="clr-namespace:HottoMotto"
+       mc:Ignorable="d"
+       Title="Loading" 
+       Height="250" 
+       Width="400"
+       WindowStyle="None"
+       ResizeMode="NoResize"
+       WindowStartupLocation="CenterScreen"
+       Background="{DynamicResource MaterialDesignPaper}"
+       TextElement.Foreground="{DynamicResource MaterialDesignBody}">
 
     <Grid>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
             <!-- コメントアウトなんかエラー出るから -->
             <!--<TextBlock Text="モデルファイルをダウンロード中..."-->
-            <TextBlock Text="音声認識モデルをダウンロード中..."
-                     FontSize="16"
-                     Margin="0,0,0,20"
-                     HorizontalAlignment="Center"/>
+            <TextBlock Text="Downloading model files..."
+                    FontSize="16"
+                    Margin="0,0,0,20"
+                    HorizontalAlignment="Center"/>
 
             <!-- 経過時間表示用のTextBlock -->
             <TextBlock x:Name="TimeElapsedText"
-                     Text="経過時間: 00:00"
-                     Margin="0,0,0,20"
-                     HorizontalAlignment="Center"/>
+                    Text="経過時間: 00:00"
+                    Margin="0,0,0,20"
+                    HorizontalAlignment="Center"/>
 
             <!-- 円形プログレスバー -->
             <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
-                       IsIndeterminate="True"
-                       Value="0"
-                       Width="50"
-                       Height="50"
-                       Margin="0,0,0,20"/>
+                      IsIndeterminate="True"
+                      Value="0"
+                      Width="50"
+                      Height="50"
+                      Margin="0,0,0,20"/>
 
             <!-- ダウンロード進捗用のプログレスバー -->
             <Grid Width="300" Margin="0,0,0,20">
                 <ProgressBar x:Name="DownloadProgressBar"
-                           Height="20"
-                           Value="0"
-                           Maximum="100"
-                           Background="{DynamicResource MaterialDesignPaper}"
-                           BorderBrush="{DynamicResource MaterialDesignDivider}"
-                           Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+                          Height="20"
+                          Value="0"
+                          Maximum="100"
+                          Background="{DynamicResource MaterialDesignPaper}"
+                          BorderBrush="{DynamicResource MaterialDesignDivider}"
+                          Foreground="{DynamicResource PrimaryHueMidBrush}"/>
 
-                <!-- プログレスバー上の進捗率テキスト -->
                 <TextBlock x:Name="ProgressPercentText"
-                         Text="0%"
-                         HorizontalAlignment="Center"
-                         VerticalAlignment="Center"
-                         Foreground="{DynamicResource MaterialDesignBody}"/>
+                        Text="0%"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Foreground="{DynamicResource MaterialDesignBody}"/>
             </Grid>
 
             <!-- 進捗状況表示用のTextBlock -->
             <TextBlock x:Name="ProgressText"
-                     Text="Preparing..."
-                     TextWrapping="Wrap"
-                     Margin="0,0,0,0"
-                     HorizontalAlignment="Center"/>
+                    Text="Preparing..."
+                    TextWrapping="Wrap"
+                    Margin="0,0,0,20"
+                    HorizontalAlignment="Center"/>
+
+            <!-- コントロールボタン -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+                <Button x:Name="PauseButton" 
+                       Click="PauseButton_Click"
+                       Style="{StaticResource MaterialDesignFlatButton}"
+                       Margin="0,0,10,0">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Pause" />
+                        <TextBlock Text=" 一時停止" Margin="5,0,0,0"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="CancelButton" 
+                       Click="CancelButton_Click"
+                       Style="{StaticResource MaterialDesignFlatButton}">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Cancel" />
+                        <TextBlock Text=" キャンセル" Margin="5,0,0,0"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>

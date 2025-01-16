@@ -92,18 +92,37 @@ namespace HottoMotto
                 string modelFile = Path.Combine(modelPath, "am/final.mdl");
 
                 //ダウンロードが必要な場合のみLoadingWindowを表示
+                LoadingWindow loadingWindow = new LoadingWindow();
                 if (!Directory.Exists(modelPath) || !File.Exists(modelFile))
                 {
-                    LoadingWindow loadingWindow = new LoadingWindow();
-                    loadingWindow.Show();
+                    // ダウンロードの確認
+                    var result = System.Windows.MessageBox.Show(
+                        "音声認識に必要なモデルファイルがありません。\nダウンロードしますか？(約1.8GB)",
+                        "確認",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
 
-                    try
+                    if (result == MessageBoxResult.Yes)
                     {
-                        await InitializeModelAsync(loadingWindow);
+                        loadingWindow.Show();
+                        try
+                        {
+                            await InitializeModelAsync(loadingWindow);
+                        }
+                        finally
+                        {
+                            loadingWindow.Close();
+                        }
                     }
-                    finally
+                    else
                     {
-                        loadingWindow.Close();
+                        System.Windows.MessageBox.Show(
+                            "モデルファイルがないため、アプリケーションを終了します。再度起動するか手動でモデルを配置してください。",
+                            "終了",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information);
+                        System.Windows.Application.Current.Shutdown();
+                        return;
                     }
                 }
                 else
@@ -118,10 +137,20 @@ namespace HottoMotto
                 PlayStartupSound();
                 SetupNotifyIcon();
                 SetupTimer();
+
+                // すべての初期化が完了したらメインウィンドウを表示
+                this.Show();
+                Debug.Print("MainWindow shown");
             }
             catch (Exception ex)
             {
                 Debug.Print($"初期化エラー: {ex.Message}");
+                System.Windows.MessageBox.Show(
+                    $"アプリケーションの初期化に失敗しました。\n{ex.Message}",
+                    "エラー",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
                 System.Windows.MessageBox.Show(
                     $"アプリケーションの初期化に失敗しました。\n{ex.Message}",
                     "エラー",
