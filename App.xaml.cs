@@ -33,11 +33,12 @@ namespace HottoMotto
                     loadingWindow.Show();
                     try
                     {
+                        
                         await InitializeModelAsync(loadingWindow);
                     }
-                    catch
+                    catch(Exception ex)
                     {
-
+                        Debug.Print(ex.Message);
                     }
                     finally
                     {
@@ -60,6 +61,7 @@ namespace HottoMotto
                 // モデル既に存在する場合はスルー
             }
             //メインウィンドウを表示
+            
             var mainWindow = new MainWindow();
             mainWindow.Show();
         }
