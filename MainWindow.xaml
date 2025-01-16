@@ -334,6 +334,7 @@
                             <ColumnDefinition Width="Auto"/>
                             <!--テキストの幅は親要素(ListBox)の幅に依存-->
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <!--再生ボタン-->
                         <Button Click="AudioButtonClick" BorderBrush="{x:Null}" Background="{x:Null}" Width="25" Height="25" Margin="0,0,0,5">
@@ -501,10 +502,17 @@
             <Label x:Name="Label_status" Margin="0" Width="80" Height="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
         </StackPanel>
 
-        <Button x:Name="Button_Capture" Click="Button_Capture_Click" Style="{StaticResource CActionButtons}" BorderBrush="{x:Null}" Grid.Column="1" Grid.Row="2" Margin="80,0,0,0" VerticalAlignment="Center">
-            <StackPanel Orientation="Horizontal">
-                <Image x:Name="CaptureButtonImage" Source="Resource/start.png" Width="48" Height="48"/>
-            </StackPanel>
+        <Button x:Name="Button_Capture" 
+                Click="Button_Capture_Click" 
+                BorderBrush="{x:Null}" 
+                Grid.Column="1" Grid.Row="2" 
+                Margin="80,0,0,0" 
+                VerticalAlignment="Center"
+                IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                Style="{StaticResource MaterialDesignIconButton}" 
+                Foreground="{DynamicResource IconBrushLight}"
+                materialDesign:RippleAssist.Feedback="Gray">
+            <materialDesign:PackIcon x:Name="CaptureButtonIcon" Kind="PlayCircleOutline" Width="48" Height="48"/>
         </Button>
 
 
@@ -521,8 +529,14 @@
         <Button
             IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
             Style="{StaticResource MaterialDesignIconButton}"
-            ToolTip="デバイスの更新" Grid.Column="2" Grid.Row="3" Width="24" Height="24" Grid.ColumnSpan="1" HorizontalAlignment="Right" VerticalAlignment="Top" Click="ReloadDevices" Foreground="{DynamicResource IconBrushLight}"
-        >
+            ToolTip="デバイスの更新" 
+            Grid.Column="2" Grid.Row="3" 
+            Width="24" Height="24" 
+            Grid.ColumnSpan="1" 
+            HorizontalAlignment="Right" VerticalAlignment="Top" 
+            Click="ReloadDevices" 
+            Foreground="{DynamicResource IconBrushLight}"
+            materialDesign:RippleAssist.Feedback="Gray">
             <materialDesign:PackIcon
             Kind="Reload" Height="24" Width="24"
         />
@@ -541,7 +555,8 @@
                 Click="ClearButtonClick"
                 ToolTip="ログをクリア" 
                 ToolTipService.Placement="Top" 
-                ToolTipService.InitialShowDelay="200">
+                ToolTipService.InitialShowDelay="200"
+                materialDesign:RippleAssist.Feedback="Gray">
             <materialDesign:PackIcon
                 Kind="Refresh" Height="24" Width="24"/>
         </Button>
