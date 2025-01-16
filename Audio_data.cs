@@ -500,7 +500,7 @@ namespace HottoMotto
                         M_writer = new WaveFileWriter(M_outputPath, mic_capture.WaveFormat);
                     }
                 }
-                ButtonIcon.Source = new BitmapImage(new Uri("Resource/mic.png", UriKind.Relative));
+                MuteButtonIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Microphone;
             }
             else
             {
@@ -512,7 +512,7 @@ namespace HottoMotto
                     Button_Mute.IsEnabled = false;
                     mic_capture.StopRecording();
                 }
-                ButtonIcon.Source = new BitmapImage(new Uri("Resource/mic_off.png", UriKind.Relative));
+                MuteButtonIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.MicrophoneOff;
             }
         }
 

@@ -209,6 +209,7 @@ namespace HottoMotto
                 resources["ListBoxItemBackgroundBrush"] = resources["ListBoxItemBackgroundBrushDark"];
                 resources["SeekBarBackgroundBrush"] = resources["SeekBarBackgroundBrushDark"];
                 resources["MatchTextBackgroundBrush"] = resources["MatchTextBackgroundBrushDark"];
+                resources["IconBrushLight"] = resources["IconBrushDark"];
             }
             else
             {
@@ -221,6 +222,7 @@ namespace HottoMotto
                 resources["ListBoxItemBackgroundBrush"] = new SolidColorBrush(Colors.AliceBlue);
                 resources["SeekBarBackgroundBrush"] = new SolidColorBrush(System.Windows.Media.Color.FromRgb(221, 221, 221));
                 resources["MatchTextBackgroundBrush"] = new SolidColorBrush(Colors.Yellow);
+                resources["IconBrushLight"] = new SolidColorBrush(System.Windows.Media.Color.FromRgb(95, 99, 104));
             }
 
 
