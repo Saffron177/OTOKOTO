@@ -319,7 +319,7 @@ namespace HottoMotto
             if (recFlag)
             {
                 //画像を差し替え
-                FadeAnimation(CaptureButtonImage, "Resource/start.png");
+                CaptureButtonIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.PlayCircleOutline;
 
                 //RECマークを非表示
                 RecImage.Visibility = Visibility.Hidden;
@@ -346,7 +346,7 @@ namespace HottoMotto
             else
             {
                 //画像を差し替え
-                FadeAnimation(CaptureButtonImage, "Resource/stop.png");
+                CaptureButtonIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.PauseCircleOutline;
 
                 //RECマークを表示
                 RecImage.Visibility = Visibility.Visible;
@@ -369,23 +369,6 @@ namespace HottoMotto
                 //クリアボタンを無効化
                 ClearButton.IsEnabled = false;
             }
-        }
-
-        //Imageコントロールに画像をフェードインで差し替えるメソッド
-        private void FadeAnimation(System.Windows.Controls.Image image, string imagePath)
-        {
-            // フェードアウトアニメーション
-            var fadeOut = new DoubleAnimation(1, 0, TimeSpan.FromSeconds(0.1));
-            fadeOut.Completed += (s, _) =>
-            {
-                // フェードアウト完了後に画像を変更
-                image.Source = new BitmapImage(new Uri(imagePath, UriKind.Relative));
-                // フェードインアニメーション
-                var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(0.1));
-                image.BeginAnimation(UIElement.OpacityProperty, fadeIn);
-            };
-            // アニメーション開始
-            image.BeginAnimation(UIElement.OpacityProperty, fadeOut);
         }
 
         //点滅アニメーション
