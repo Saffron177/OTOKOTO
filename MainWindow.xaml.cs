@@ -151,12 +151,7 @@ namespace HottoMotto
                     MessageBoxButton.OK,
                     MessageBoxImage.Error
                 );
-                System.Windows.MessageBox.Show(
-                    $"アプリケーションの初期化に失敗しました。\n{ex.Message}",
-                    "エラー",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error
-                );
+                
                 System.Windows.Application.Current.Shutdown();
             }
         }
