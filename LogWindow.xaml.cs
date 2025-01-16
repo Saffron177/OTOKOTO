@@ -534,19 +534,30 @@ namespace HottoMotto
                 // ファイルの内容を読み込む
                 string jsonText = File.ReadAllText(filePath);
 
-                // JSONをリストに変換（デシリアライズ）
-                List<Conversation_Log_Data> logs = JsonSerializer.Deserialize<List<Conversation_Log_Data>>(jsonText) ?? new List<Conversation_Log_Data>();
-
-                //音声ファイル削除
-                foreach (Conversation_Log_Data log in logs)
+                try
                 {
-                    if (File.Exists(log.AudioPath))
-                    {
-                        File.Delete(log.AudioPath);
-                        Debug.Print("音声ファイル<" + log.AudioPath + ">が削除されました。");
-                    }
-                }
 
+
+                    // JSONをリストに変換（デシリアライズ）
+                    List<Conversation_Log_Data> logs = JsonSerializer.Deserialize<List<Conversation_Log_Data>>(jsonText) ?? new List<Conversation_Log_Data>();
+
+                    //音声ファイル削除
+                    foreach (Conversation_Log_Data log in logs)
+                    {
+                        if (File.Exists(log.AudioPath))
+                        {
+                            File.Delete(log.AudioPath);
+                            Debug.Print("音声ファイル<" + log.AudioPath + ">が削除されました。");
+                        }
+                    }
+                }catch (JsonException ex)
+                {
+                    Debug.Print($"JSONの解析に失敗しました: {ex.Message}");
+                }
+                catch (Exception ex)
+                {
+                    Debug.Print($"エラー: {ex.Message}");
+                }
                 //ログファイルを削除
                 if (File.Exists(filePath))
                 {
