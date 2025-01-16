@@ -132,7 +132,6 @@ namespace HottoMotto
             string jsonText = File.ReadAllText(filePath);
             //ファイル名を表示
             file_Title.Content = System.IO.Path.GetFileName(filePath);
-            Copy_Button.ToolTip = "コピー";
             Copy_Button.Visibility = Visibility.Visible;
 
             try
@@ -233,7 +232,6 @@ namespace HottoMotto
 
                 // クリップボードにコピー
                 System.Windows.Clipboard.SetText(allItemsText);
-                Copy_Button.ToolTip = "コピーしました";
             }
             else
             {
