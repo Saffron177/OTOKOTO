@@ -1,5 +1,9 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;  // WPFのWindowを使用
 using System.Windows.Threading;
+using System.Windows.Controls;  // WPFのコントロール
+using MaterialDesignThemes.Wpf.Transitions;
+using MaterialDesignThemes.Wpf;
 
 namespace HottoMotto
 {
@@ -7,6 +11,11 @@ namespace HottoMotto
     {
         private DispatcherTimer timer;
         private DateTime startTime;
+        private bool isPaused = false;
+        public bool IsCancelled { get; private set; } = false;
+
+        public event EventHandler<bool> PauseRequested;
+        public event EventHandler CancelRequested;
 
         public LoadingWindow()
         {
@@ -21,7 +30,7 @@ namespace HottoMotto
         }
 
         // タイマーのTickイベントハンドラ
-        private void Timer_Tick(object sender, EventArgs e)
+        private void Timer_Tick(object? sender, EventArgs e)
         {
             var elapsed = DateTime.Now - startTime;
             TimeElapsedText.Text = $"経過時間: {elapsed.Minutes:D2}:{elapsed.Seconds:D2}";
@@ -45,6 +54,46 @@ namespace HottoMotto
             }
         }
 
+        // 一時停止ボタンのクリックイベント
+        private void PauseButton_Click(object sender, RoutedEventArgs e)
+        {
+            isPaused = !isPaused;
+            var button = (System.Windows.Controls.Button)sender;
+            var icon = (PackIcon)((StackPanel)button.Content).Children[0];
+            var text = (TextBlock)((StackPanel)button.Content).Children[1];
+
+            if (isPaused)
+            {
+                icon.Kind = PackIconKind.Play;
+                text.Text = " 再開";
+                timer.Stop(); // タイマーを停止
+            }
+            else
+            {
+                icon.Kind = PackIconKind.Pause;
+                text.Text = " 一時停止";
+                timer.Start(); // タイマーを再開
+            }
+
+            PauseRequested?.Invoke(this, isPaused);
+        }
+
+        // キャンセルボタンのクリックイベント
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            var result = System.Windows.MessageBox.Show(
+                "ダウンロードをキャンセルしますか？",
+                "確認",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                IsCancelled = true;
+                CancelRequested?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
         // ウィンドウが閉じられる時の処理
         protected override void OnClosed(EventArgs e)
         {
@@ -52,7 +101,6 @@ namespace HottoMotto
             base.OnClosed(e);
         }
 
-        // ウィンドウを前面に表示
         public void BringToFront()
         {
             if (Dispatcher.CheckAccess()) // UIスレッドの場合

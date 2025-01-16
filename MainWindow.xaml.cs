@@ -92,18 +92,37 @@ namespace HottoMotto
                 string modelFile = Path.Combine(modelPath, "am/final.mdl");
 
                 //ダウンロードが必要な場合のみLoadingWindowを表示
+                LoadingWindow loadingWindow = new LoadingWindow();
                 if (!Directory.Exists(modelPath) || !File.Exists(modelFile))
                 {
-                    LoadingWindow loadingWindow = new LoadingWindow();
-                    loadingWindow.Show();
+                    // ダウンロードの確認
+                    var result = System.Windows.MessageBox.Show(
+                        "音声認識に必要なモデルファイルがありません。\nダウンロードしますか？(約1.8GB)",
+                        "確認",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
 
-                    try
+                    if (result == MessageBoxResult.Yes)
                     {
-                        await InitializeModelAsync(loadingWindow);
+                        loadingWindow.Show();
+                        try
+                        {
+                            await InitializeModelAsync(loadingWindow);
+                        }
+                        finally
+                        {
+                            loadingWindow.Close();
+                        }
                     }
-                    finally
+                    else
                     {
-                        loadingWindow.Close();
+                        System.Windows.MessageBox.Show(
+                            "モデルファイルがないため、アプリケーションを終了します。再度起動するか手動でモデルを配置してください。",
+                            "終了",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information);
+                        System.Windows.Application.Current.Shutdown();
+                        return;
                     }
                 }
                 else
@@ -118,6 +137,10 @@ namespace HottoMotto
                 PlayStartupSound();
                 SetupNotifyIcon();
                 SetupTimer();
+
+                // すべての初期化が完了したらメインウィンドウを表示
+                this.Show();
+                Debug.Print("MainWindow shown");
             }
             catch (Exception ex)
             {
@@ -128,6 +151,7 @@ namespace HottoMotto
                     MessageBoxButton.OK,
                     MessageBoxImage.Error
                 );
+                
                 System.Windows.Application.Current.Shutdown();
             }
         }
@@ -185,6 +209,7 @@ namespace HottoMotto
                 resources["ListBoxItemBackgroundBrush"] = resources["ListBoxItemBackgroundBrushDark"];
                 resources["SeekBarBackgroundBrush"] = resources["SeekBarBackgroundBrushDark"];
                 resources["MatchTextBackgroundBrush"] = resources["MatchTextBackgroundBrushDark"];
+                resources["IconBrushLight"] = resources["IconBrushDark"];
             }
             else
             {
@@ -197,6 +222,7 @@ namespace HottoMotto
                 resources["ListBoxItemBackgroundBrush"] = new SolidColorBrush(Colors.AliceBlue);
                 resources["SeekBarBackgroundBrush"] = new SolidColorBrush(System.Windows.Media.Color.FromRgb(221, 221, 221));
                 resources["MatchTextBackgroundBrush"] = new SolidColorBrush(Colors.Yellow);
+                resources["IconBrushLight"] = new SolidColorBrush(System.Windows.Media.Color.FromRgb(95, 99, 104));
             }
 
 
