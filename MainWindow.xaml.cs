@@ -117,7 +117,7 @@ namespace HottoMotto
                     else
                     {
                         System.Windows.MessageBox.Show(
-                            "モデルファイルがないため、アプリケーションを終了します。再度起動するか手動でモデルを配置してください。",
+                            "モデルファイルがないため、アプリケーションを終了します。再起動するか手動でモデルを配置してください。",
                             "終了",
                             MessageBoxButton.OK,
                             MessageBoxImage.Information);
