@@ -30,36 +30,23 @@ namespace HottoMotto
         private List<string> json_list = new List<string>();
 
         private Model model;
-
-
-        private async Task InitializeModelAsync(LoadingWindow loadingWindow)  // 引数を追加
+        public MainWindow()
         {
-            Debug.Print("=== InitializeModelAsync started ===");
+            InitializeComponent();
+            this.Loaded += MainWindow_Loaded;
+        }
 
+        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            string modelPath = "Models/vosk-model-ja-0.22";
             try
             {
-                string modelPath = "Models/vosk-model-ja-0.22";
-                string modelFile = Path.Combine(modelPath, "am/final.mdl");
-
-                Debug.Print($"Current Directory: {Directory.GetCurrentDirectory()}");
-                Debug.Print($"Model Path (Full): {Path.GetFullPath(modelPath)}");
-                Debug.Print($"Model File (Full): {Path.GetFullPath(modelFile)}");
-                Debug.Print($"Model directory exists: {Directory.Exists(modelPath)}");
-                Debug.Print($"Model file exists: {File.Exists(modelFile)}");
-
-                if (!Directory.Exists(modelPath) || !File.Exists(modelFile))
-                {
-                    await ModelManager.DownloadAndExtractModel(loadingWindow);
-
-                    // モデルファイルの存在を再確認
-                    if (!File.Exists(modelFile))
-                    {
-                        throw new FileNotFoundException("モデルファイルが見つかりません。", modelFile);
-                    }
-                }
-
-                Debug.Print("モデルパス: " + modelPath);
-
+                //初期化処理
+                LoadAudioDevices();
+                LoadMicDevices();
+                PlayStartupSound();
+                SetupNotifyIcon();
+                SetupTimer();
                 // モデルとレコグナイザーの初期化
                 model = new Model(modelPath);
                 recognizer = new VoskRecognizer(model, 16000.0f);
@@ -69,74 +56,6 @@ namespace HottoMotto
                 {
                     Directory.CreateDirectory("Audio");
                 }
-            }
-            catch (Exception ex)
-            {
-                Debug.Print($"モデルの初期化でエラーが発生: {ex.Message}");
-                throw;
-            }
-        }
-
-
-        public MainWindow()
-        {
-            InitializeComponent();
-            this.Loaded += MainWindow_Loaded;
-        }
-
-        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                string modelPath = "Models/vosk-model-ja-0.22";
-                string modelFile = Path.Combine(modelPath, "am/final.mdl");
-
-                //ダウンロードが必要な場合のみLoadingWindowを表示
-                LoadingWindow loadingWindow = new LoadingWindow();
-                if (!Directory.Exists(modelPath) || !File.Exists(modelFile))
-                {
-                    // ダウンロードの確認
-                    var result = System.Windows.MessageBox.Show(
-                        "音声認識に必要なモデルファイルがありません。\nダウンロードしますか？(約1.8GB)",
-                        "確認",
-                        MessageBoxButton.YesNo,
-                        MessageBoxImage.Question);
-
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        loadingWindow.Show();
-                        try
-                        {
-                            await InitializeModelAsync(loadingWindow);
-                        }
-                        finally
-                        {
-                            loadingWindow.Close();
-                        }
-                    }
-                    else
-                    {
-                        System.Windows.MessageBox.Show(
-                            "モデルファイルがないため、アプリケーションを終了します。再度起動するか手動でモデルを配置してください。",
-                            "終了",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Information);
-                        System.Windows.Application.Current.Shutdown();
-                        return;
-                    }
-                }
-                else
-                {
-                    // モデル既に存在する場合は直接初期化
-                    await InitializeModelAsync(null);
-                }
-
-                //初期化処理
-                LoadAudioDevices();
-                LoadMicDevices();
-                PlayStartupSound();
-                SetupNotifyIcon();
-                SetupTimer();
 
                 // すべての初期化が完了したらメインウィンドウを表示
                 this.Show();
