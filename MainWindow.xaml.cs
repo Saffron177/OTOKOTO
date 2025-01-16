@@ -513,8 +513,13 @@ namespace HottoMotto
         //リアルタイムログのクリアボタンイベント
         private void ClearButtonClick(object sender, RoutedEventArgs e)
         {
+            //ログクリア
             RealtimeListBox.Items.Clear();
             realtimeLogs.Clear();
+            //タイマーリセット
+            RecordingTimeText.Text = "00:00:00";
+            _secondsElapsed = 0;
+            //再生中の音声を停止
             PlayAudio.stop(true);
         }
     }
