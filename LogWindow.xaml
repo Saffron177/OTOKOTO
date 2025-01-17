@@ -192,7 +192,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <!--ファイル検索用テキストボックス-->
-        <TextBox x:Name="search_Textbox" HorizontalAlignment="Left" Height="25" Width="185" Margin="45,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="Search_Textbox_Changed" Grid.Column="0" FontSize="15" CaretBrush="Black" SelectionBrush="{x:Null}" />
+        <TextBox x:Name="search_Textbox" HorizontalAlignment="Left" Height="25" Width="150" Margin="45,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="Search_Textbox_Changed" Grid.Column="0" FontSize="15" CaretBrush="Black" SelectionBrush="{x:Null}" />
         <Image HorizontalAlignment="Left" Height="25" Margin="20,20,0,0" VerticalAlignment="Top" Width="25" Source="/Resource/search.png" Grid.Column="0"/>
         
         <materialDesign:PackIcon Kind="Magnify" 
@@ -310,12 +310,12 @@
         <!--ファイル名表示用ラベル-->
         <Label x:Name="file_Title" Grid.Column="1" Content="" HorizontalAlignment="Left" Margin="30,20,0,0" VerticalAlignment="Top"/>
         <!--ログ内容の検索用テキストボックス-->
-        <TextBox x:Name="log_Search_Textbox" Grid.Column="1" HorizontalAlignment="Right" Margin="0,20,50,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="25" Width="150" FontSize="14" Cursor="" CaretBrush="Black" SelectionBrush="{x:Null}" TextChanged="Log_Search_Textbox_Textchanged" KeyDown="log_Search_KeyDown"/>
+        <TextBox x:Name="log_Search_Textbox" Grid.Column="1" HorizontalAlignment="Right" Margin="0,20,30,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="25" Width="150" FontSize="14" Cursor="" CaretBrush="Black" SelectionBrush="{x:Null}" TextChanged="Log_Search_Textbox_Textchanged" KeyDown="log_Search_KeyDown"/>
         
         <materialDesign:PackIcon Kind="Magnify" 
                                  Height="25" Width="25"
                                  Grid.Column="1"
-                                 Margin="0,20,200,0"
+                                 Margin="0,20,180,0"
                                  HorizontalAlignment="Right"
                                  VerticalAlignment="Top"
                                  IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
@@ -324,7 +324,7 @@
         <Button x:Name="Copy_Button" 
                 Grid.Column="1" 
                 HorizontalAlignment="Right" 
-                Margin="0,18,230,0" 
+                Margin="0,18,200,0" 
                 VerticalAlignment="Top" 
                 Click="Copy_Button_Click" 
                 Width="30" Height="30" 
@@ -350,5 +350,20 @@
                 </StackPanel>
             </StackPanel>
         </Border>
+        <!--ファイル一覧の更新ボタン-->
+        <Button x:Name="Refresh_Button"
+                Grid.Column="0"
+                HorizontalAlignment="Left" 
+                Margin="200,30,0,0" 
+                VerticalAlignment="Top" 
+                Click="Refresh_Button_Clicked" 
+                Width="30" Height="30" 
+                BorderBrush="{x:Null}" Background="{x:Null}" 
+                ToolTip="ファイル一覧の更新" ToolTipService.Placement="Top" ToolTipService.InitialShowDelay="100"
+                Style="{StaticResource MaterialDesignIconButton}" 
+                Foreground="{DynamicResource IconBrushLight}"
+                materialDesign:RippleAssist.Feedback="Gray">
+            <materialDesign:PackIcon Kind="Refresh" Width="24" Height="24"/>
+        </Button>
     </Grid>
 </Window>

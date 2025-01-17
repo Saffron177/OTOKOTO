@@ -89,7 +89,6 @@ namespace HottoMotto
             }
             else //ディレクトリが存在しない場合
             {
-                //logList.Items.Add("ログを保存するとここから確認できるようになります。");
                 logList.ItemsSource = new List<object> { new { Text = "ログを保存するとここから確認できるようになります。" } };
             }
         }
@@ -112,6 +111,10 @@ namespace HottoMotto
                 if(SoundData.Visibility != Visibility.Visible)
                 {
                     SoundData.Visibility = Visibility.Visible;
+                }
+                if(log_Search_Textbox.Text != null)
+                {
+                    log_Search_Textbox.Text = null;
                 }
             }
         }
@@ -573,6 +576,12 @@ namespace HottoMotto
                 //再生中の音声を停止
                 PlayAudio.stop(false);
             }
+        }
+
+        //ログファイル一覧の更新ボタン
+        private void Refresh_Button_Clicked(object sender, RoutedEventArgs e)
+        {
+            LogFileCheck();
         }
     }
 
