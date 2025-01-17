@@ -324,7 +324,7 @@
         <Button x:Name="Copy_Button" 
                 Grid.Column="1" 
                 HorizontalAlignment="Right" 
-                Margin="0,18,200,0" 
+                Margin="0,18,210,0" 
                 VerticalAlignment="Top" 
                 Click="Copy_Button_Click" 
                 Width="30" Height="30" 
