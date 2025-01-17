@@ -194,9 +194,14 @@
         <!--ファイル検索用テキストボックス-->
         <TextBox x:Name="search_Textbox" HorizontalAlignment="Left" Height="25" Width="185" Margin="45,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="Search_Textbox_Changed" Grid.Column="0" FontSize="15" CaretBrush="Black" SelectionBrush="{x:Null}" />
         <Image HorizontalAlignment="Left" Height="25" Margin="20,20,0,0" VerticalAlignment="Top" Width="25" Source="/Resource/search.png" Grid.Column="0"/>
-        <Border CornerRadius="5" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#434343" Height="25" Width="25" Margin="20,20,0,0" Grid.Column="0">
-            <Image Height="25" Width="25" Source="/Resource/search.png" Grid.Column="0"/>
-        </Border>
+        
+        <materialDesign:PackIcon Kind="Magnify" 
+                                 HorizontalAlignment="Left" VerticalAlignment="Top"
+                                 Height="25" Width="25" 
+                                 Margin="20,20,0,0" 
+                                 Grid.Column="0"
+                                 IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                                 Foreground="{DynamicResource IconBrushLight}"/>
 
         <!--グリッド1(右側)-->
         <!--ログ表示用リストボックス-->
@@ -306,9 +311,15 @@
         <Label x:Name="file_Title" Grid.Column="1" Content="" HorizontalAlignment="Left" Margin="30,20,0,0" VerticalAlignment="Top"/>
         <!--ログ内容の検索用テキストボックス-->
         <TextBox x:Name="log_Search_Textbox" Grid.Column="1" HorizontalAlignment="Right" Margin="0,20,50,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="25" Width="150" FontSize="14" Cursor="" CaretBrush="Black" SelectionBrush="{x:Null}" TextChanged="Log_Search_Textbox_Textchanged" KeyDown="log_Search_KeyDown"/>
-        <Border CornerRadius="5" Background="#343434" HorizontalAlignment="Right" Height="25" Margin="0,20,200,0" VerticalAlignment="Top" Width="25"  Grid.Column="1">
-            <Image  Source="/Resource/search.png" Height="25" Width="25"/>
-        </Border>
+        
+        <materialDesign:PackIcon Kind="Magnify" 
+                                 Height="25" Width="25"
+                                 Grid.Column="1"
+                                 Margin="0,20,200,0"
+                                 HorizontalAlignment="Right"
+                                 VerticalAlignment="Top"
+                                 IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                                 Foreground="{DynamicResource IconBrushLight}"/>
         <!--コピーボタン-->
         <Button x:Name="Copy_Button" 
                 Grid.Column="1" 
