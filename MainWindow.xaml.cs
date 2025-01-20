@@ -44,7 +44,6 @@ namespace HottoMotto
                 //初期化処理
                 LoadAudioDevices();
                 LoadMicDevices();
-                PlayStartupSound();
                 SetupNotifyIcon();
                 SetupTimer();
                 // モデルとレコグナイザーの初期化
@@ -79,28 +78,6 @@ namespace HottoMotto
         //マテリアルダークテーマ関連
         private bool isDarkMode = false;
 
-        //(ここからネタ枠)
-        private void PlayStartupSound()
-        {
-            try
-            {
-                string startupSoundPath = "Resource/dsstartups_des5e323.wav";  // 音データのパス
-                if (File.Exists(startupSoundPath))
-                {
-                    System.Media.SoundPlayer player = new System.Media.SoundPlayer(startupSoundPath);
-                    player.Play();
-                }
-                else
-                {
-                    Debug.Print("起動音ファイルが見つかりません: " + startupSoundPath);
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.Print($"起動音の再生でエラーが発生: {ex.Message}");
-            }
-        }
-        //ここまでネタ枠
 
         private void ThemeToggleButton_Click(object sender, RoutedEventArgs e)
         {
