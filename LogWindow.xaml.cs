@@ -89,7 +89,6 @@ namespace HottoMotto
             }
             else //ディレクトリが存在しない場合
             {
-                //logList.Items.Add("ログを保存するとここから確認できるようになります。");
                 logList.ItemsSource = new List<object> { new { Text = "ログを保存するとここから確認できるようになります。" } };
             }
         }
@@ -113,6 +112,10 @@ namespace HottoMotto
                 {
                     SoundData.Visibility = Visibility.Visible;
                 }
+                if(log_Search_Textbox.Text != null)
+                {
+                    log_Search_Textbox.Text = null;
+                }
             }
         }
 
@@ -132,7 +135,6 @@ namespace HottoMotto
             string jsonText = File.ReadAllText(filePath);
             //ファイル名を表示
             file_Title.Content = System.IO.Path.GetFileName(filePath);
-            Copy_Button.ToolTip = "コピー";
             Copy_Button.Visibility = Visibility.Visible;
 
             try
@@ -233,7 +235,6 @@ namespace HottoMotto
 
                 // クリップボードにコピー
                 System.Windows.Clipboard.SetText(allItemsText);
-                Copy_Button.ToolTip = "コピーしました";
             }
             else
             {
@@ -575,6 +576,12 @@ namespace HottoMotto
                 //再生中の音声を停止
                 PlayAudio.stop(false);
             }
+        }
+
+        //ログファイル一覧の更新ボタン
+        private void Refresh_Button_Clicked(object sender, RoutedEventArgs e)
+        {
+            LogFileCheck();
         }
     }
 

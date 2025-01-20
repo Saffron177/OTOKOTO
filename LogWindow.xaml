@@ -192,16 +192,21 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <!--ファイル検索用テキストボックス-->
-        <TextBox x:Name="search_Textbox" HorizontalAlignment="Left" Height="25" Width="185" Margin="45,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="Search_Textbox_Changed" Grid.Column="0" FontSize="15" CaretBrush="Black" SelectionBrush="{x:Null}" />
+        <TextBox x:Name="search_Textbox" HorizontalAlignment="Left" Height="25" Width="150" Margin="45,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="Search_Textbox_Changed" Grid.Column="0" FontSize="15" CaretBrush="Black" SelectionBrush="{x:Null}" />
         <Image HorizontalAlignment="Left" Height="25" Margin="20,20,0,0" VerticalAlignment="Top" Width="25" Source="/Resource/search.png" Grid.Column="0"/>
-        <Border CornerRadius="5" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#434343" Height="25" Width="25" Margin="20,20,0,0" Grid.Column="0">
-            <Image Height="25" Width="25" Source="/Resource/search.png" Grid.Column="0"/>
-        </Border>
+        
+        <materialDesign:PackIcon Kind="Magnify" 
+                                 HorizontalAlignment="Left" VerticalAlignment="Top"
+                                 Height="25" Width="25" 
+                                 Margin="20,20,0,0" 
+                                 Grid.Column="0"
+                                 IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                                 Foreground="{DynamicResource IconBrushLight}"/>
 
         <!--グリッド1(右側)-->
         <!--ログ表示用リストボックス-->
         <ListBox x:Name="LogListBox" VirtualizingStackPanel.IsVirtualizing="False" 
-                 Margin="30,55,20,80" Padding="5,10,0,10"
+                 Margin="30,55,20,80" Padding="5,2,0,2"
                  HorizontalAlignment="Stretch" 
                  VerticalAlignment="Stretch" 
                  BorderBrush="{DynamicResource MaterialDesignDivider}" 
@@ -305,13 +310,32 @@
         <!--ファイル名表示用ラベル-->
         <Label x:Name="file_Title" Grid.Column="1" Content="" HorizontalAlignment="Left" Margin="30,20,0,0" VerticalAlignment="Top"/>
         <!--ログ内容の検索用テキストボックス-->
-        <TextBox x:Name="log_Search_Textbox" Grid.Column="1" HorizontalAlignment="Right" Margin="0,20,50,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="25" Width="150" FontSize="14" Cursor="" CaretBrush="Black" SelectionBrush="{x:Null}" TextChanged="Log_Search_Textbox_Textchanged" KeyDown="log_Search_KeyDown"/>
-        <Border CornerRadius="5" Background="#343434" HorizontalAlignment="Right" Height="25" Margin="0,20,200,0" VerticalAlignment="Top" Width="25"  Grid.Column="1">
-            <Image  Source="/Resource/search.png" Height="25" Width="25"/>
-        </Border>
+        <TextBox x:Name="log_Search_Textbox" Grid.Column="1" HorizontalAlignment="Right" Margin="0,20,30,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="25" Width="150" FontSize="14" Cursor="" CaretBrush="Black" SelectionBrush="{x:Null}" TextChanged="Log_Search_Textbox_Textchanged" KeyDown="log_Search_KeyDown"/>
+        
+        <materialDesign:PackIcon Kind="Magnify" 
+                                 Height="25" Width="25"
+                                 Grid.Column="1"
+                                 Margin="0,20,180,0"
+                                 HorizontalAlignment="Right"
+                                 VerticalAlignment="Top"
+                                 IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                                 Foreground="{DynamicResource IconBrushLight}"/>
         <!--コピーボタン-->
-        <Button x:Name="Copy_Button" Grid.Column="1" HorizontalAlignment="Right" Margin="0,20,230,0" VerticalAlignment="Top" Click="Copy_Button_Click" Width="25" Height="25" Style="{x:Null}" BorderBrush="{x:Null}" Background="{x:Null}" Visibility="Hidden" ToolTip="コピー" ToolTipService.Placement="Top" ToolTipService.InitialShowDelay="0">
-            <Image Source="/Resource/copy.png" Height="Auto" Width="Auto"/>
+        <Button x:Name="Copy_Button" 
+                Grid.Column="1" 
+                HorizontalAlignment="Right" 
+                Margin="0,18,210,0" 
+                VerticalAlignment="Top" 
+                Click="Copy_Button_Click" 
+                Width="30" Height="30" 
+                BorderBrush="{x:Null}" Background="{x:Null}" 
+                Visibility="Hidden" 
+                ToolTip="コピー" ToolTipService.Placement="Top" ToolTipService.InitialShowDelay="100"
+                IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                Style="{StaticResource MaterialDesignIconButton}" 
+                Foreground="{DynamicResource IconBrushLight}"
+                materialDesign:RippleAssist.Feedback="Gray">
+            <materialDesign:PackIcon Kind="ContentCopy" Width="24" Height="24"/>
         </Button>
         <!--マッチ数を表示するラベル-->
         <Label x:Name="SearchId" Grid.Column="1" Content="{Binding Match_Label}" HorizontalAlignment="Right" Margin="0,2,50,0" VerticalAlignment="Top" RenderTransformOrigin="0.525,0.164" Width="150" FontSize="10" Padding="0,6,0,4" Height="25" Grid.IsSharedSizeScope="True" Visibility="Collapsed" FlowDirection="RightToLeft"/>
@@ -326,5 +350,20 @@
                 </StackPanel>
             </StackPanel>
         </Border>
+        <!--ファイル一覧の更新ボタン-->
+        <Button x:Name="Refresh_Button"
+                Grid.Column="0"
+                HorizontalAlignment="Left" 
+                Margin="200,30,0,0" 
+                VerticalAlignment="Top" 
+                Click="Refresh_Button_Clicked" 
+                Width="30" Height="30" 
+                BorderBrush="{x:Null}" Background="{x:Null}" 
+                ToolTip="ファイル一覧の更新" ToolTipService.Placement="Top" ToolTipService.InitialShowDelay="100"
+                Style="{StaticResource MaterialDesignIconButton}" 
+                Foreground="{DynamicResource IconBrushLight}"
+                materialDesign:RippleAssist.Feedback="Gray">
+            <materialDesign:PackIcon Kind="Refresh" Width="24" Height="24"/>
+        </Button>
     </Grid>
 </Window>
