@@ -23,7 +23,7 @@ namespace HottoMotto
             {
                 // ダウンロードの確認
                 var result = System.Windows.MessageBox.Show(
-                    "音声認識に必要なモデルファイルがありません。\nダウンロードしますか？(約1.8GB)",
+                    "音声認識に必要なモデルファイルがありません。\nダウンロードしますか？(約0.98GB)",
                     "確認",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Question);
