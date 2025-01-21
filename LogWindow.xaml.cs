@@ -78,18 +78,18 @@ namespace HottoMotto
                     List<object> items = new List<object>();
                     foreach (string file in txtFiles)
                     {
-                        items.Add(new { Text = System.IO.Path.GetFileName(file) });
+                        items.Add(new { Text = System.IO.Path.GetFileName(file), OnDelete = true });
                     }
                     logList.ItemsSource = (items);
                 }
                 else //fileがない場合
                 {
-                    logList.ItemsSource = new List<object> { new { Text = "ログが見つかりませんでした。" } };
+                    logList.ItemsSource = new List<object> { new { Text = "ログが見つかりませんでした。", OnDelete = false } };
                 }
             }
             else //ディレクトリが存在しない場合
             {
-                logList.ItemsSource = new List<object> { new { Text = "ログを保存するとここから確認できるようになります。" } };
+                logList.ItemsSource = new List<object> { new { Text = "ログを保存するとここから確認できるようになります。", OnDelete = false } };
             }
         }
 
@@ -214,13 +214,13 @@ namespace HottoMotto
             logList.ItemsSource = new List<object>();
             if (filteredFiles.Length <= 0)
             {
-                logList.ItemsSource = new List<object> { new { Text = "ファイルが見つかりませんでした。" } };
+                logList.ItemsSource = new List<object> { new { Text = "ファイルが見つかりませんでした。", OnDelete = false } };
                 return;
             }
             List<object> items = new List<object>();
             foreach (string file in filteredFiles)
             {
-                items.Add(new { Text = System.IO.Path.GetFileName(file) });
+                items.Add(new { Text = System.IO.Path.GetFileName(file), OnDelete = true });
             }
             logList.ItemsSource = (items);
         }

@@ -177,14 +177,34 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{Binding Text}" 
                                    Margin="5,0,5,0" 
-                                   Grid.Column="0"/>
+                                   Grid.Column="0">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextWrapping" Value="NoWrap"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding OnDelete}" Value="False">
+                                            <Setter Property="TextWrapping" Value="Wrap"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
                         <Button Margin="5,0,5,0" 
-                                Style="{x:Null}" 
                                 Background="{x:Null}" 
                                 BorderBrush="{x:Null}" 
                                 Width="20" Height="20" 
                                 Click="DeleteButtonClick"
                                 Grid.Column="1">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding OnDelete}" Value="False">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
                             <Image Source="Resource/delete.png"/>
                         </Button>
                     </Grid>
