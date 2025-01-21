@@ -85,16 +85,14 @@ namespace HottoMotto
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ButtonCaptureStart(object sender, RoutedEventArgs e)
+        private bool ButtonCaptureStart(object sender, RoutedEventArgs e)
         {
-            ComboBox_AudioDevices.IsEnabled = false;
-            ComboBox_MicDevices.IsEnabled = false;
             is_Mic_Connected = true;
             Debug.Print("Button: capture_start_Click");
             if (ComboBox_AudioDevices.SelectedIndex == -1)
             {
                 System.Windows.MessageBox.Show("再生デバイスを選択してください");
-                return;
+                return false;
             }
             if (ComboBox_MicDevices.SelectedIndex == -1)
             {
@@ -285,6 +283,7 @@ namespace HottoMotto
                 System.Windows.MessageBox.Show(ex.Message,"エラー");
                 ExitApplication();
             }
+            return true;
         }
         private void ButtonCaptureStop(object sender, RoutedEventArgs e)
         {
@@ -345,29 +344,31 @@ namespace HottoMotto
             //開始処理
             else
             {
-                //画像を差し替え
-                CaptureButtonIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.PauseCircleOutline;
+                if (ButtonCaptureStart(sender, e))
+                {
+                    //画像を差し替え
+                    CaptureButtonIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.PauseCircleOutline;
 
-                //RECマークを表示
-                RecImage.Visibility = Visibility.Visible;
-                //RECラベルを変更
-                Label_status.Content = "録音中...";
-                //点滅アニメーションを適用
-                RecImage.BeginAnimation(UIElement.OpacityProperty, BlinkAnimation());
+                    //RECマークを表示
+                    RecImage.Visibility = Visibility.Visible;
+                    //RECラベルを変更
+                    Label_status.Content = "録音中...";
+                    //点滅アニメーションを適用
+                    RecImage.BeginAnimation(UIElement.OpacityProperty, BlinkAnimation());
+                    //タスクトレイを変更
+                    menu_capture_click_button.Text = "録音停止";
+                    menu_status.Text = "録音中...";
+                    recFlag = true;
+                    //再生デバイス選択を無効化
+                    ComboBox_AudioDevices.IsEnabled = false;
+                    ComboBox_MicDevices.IsEnabled = false;
 
-                //録音開始メソッド
-                ButtonCaptureStart(sender, e);
+                    //タイマーを起動
+                    _timer.Start();
 
-                //タスクトレイを変更
-                menu_capture_click_button.Text = "録音停止";
-                menu_status.Text = "録音中...";
-                recFlag = true;
-
-                //タイマーを起動
-                _timer.Start();
-
-                //クリアボタンを無効化
-                ClearButton.IsEnabled = false;
+                    //クリアボタンを無効化
+                    ClearButton.IsEnabled = false;
+                }
             }
         }
 
