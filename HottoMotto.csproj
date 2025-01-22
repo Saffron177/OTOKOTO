@@ -9,7 +9,7 @@
 		<Platforms>AnyCPU;x64</Platforms>
 		<UseWindowsForms>true</UseWindowsForms>
 		<ApplicationIcon>Resource\otocoto.ico</ApplicationIcon>
-		<AssemblyName>OTOCOTO</AssemblyName>
+		<AssemblyName>OTOKOTO</AssemblyName>
 	</PropertyGroup>
 
 	<ItemGroup>
